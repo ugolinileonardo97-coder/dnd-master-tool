@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:wght@400;500;600;700&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap");
 * {
   box-sizing: border-box;
 }
@@ -368,7 +367,7 @@ select {
   color: #e7d2aa;
   border-radius: 6px;
   padding: 10px 12px;
-  font-family: "Cormorant Garamond", Georgia, serif;
+  font-family: "Inter", sans-serif;
   font-size: 17px;
   outline: none;
 }
@@ -691,4 +690,51 @@ button:hover {
   .identity-strip {
     grid-template-columns: 1fr;
   }
+}
+/* FONT SYSTEM */
+
+h1,
+h2,
+h3,
+.sidebar-header h1,
+.merchant-header h1,
+.section-kicker,
+.merchant-list-title,
+label,
+.primary-button,
+.secondary-button,
+.mode-button {
+  font-family: "Cinzel", serif;
+}
+
+body,
+input,
+textarea,
+select,
+button,
+p,
+span,
+div,
+td,
+th {
+  font-family: "Inter", sans-serif;
+}
+
+/* leggibilità */
+
+textarea,
+input,
+select {
+  line-height: 1.5;
+}
+
+.lore-textarea {
+  font-size: 16px;
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+}
+
+.quest-textarea,
+.reward-textarea {
+  line-height: 1.7;
 }
