@@ -738,3 +738,120 @@ select {
 .reward-textarea {
   line-height: 1.7;
 }
+/* MOBILE / TABLET OPTIMIZATION */
+
+@media (max-width: 900px) {
+  .app {
+    display: block;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid rgba(141, 91, 32, 0.45);
+    padding: 16px;
+  }
+
+  .sidebar-header h1 {
+    font-size: 32px;
+  }
+
+  .mode-switch {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .main {
+    padding: 12px;
+  }
+
+  .main-inner {
+    max-width: 100%;
+  }
+
+  .merchant-header {
+    height: auto;
+    min-height: 220px;
+    padding: 22px;
+  }
+
+  .merchant-header h1 {
+    font-size: 42px;
+  }
+
+  .merchant-shop-name {
+    font-size: 18px;
+  }
+
+  .merchant-badges {
+    gap: 8px;
+  }
+
+  .merchant-badges span {
+    font-size: 13px;
+    padding: 7px 10px;
+  }
+
+  .merchant-delete {
+    position: static;
+    margin-top: 16px;
+  }
+
+  .description-columns,
+  .description-footer,
+  .lower-workspace,
+  .identity-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .fantasy-card {
+    padding: 18px;
+  }
+
+  .lore-textarea {
+    min-height: 220px;
+    font-size: 15px;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+
+  button {
+    min-height: 44px;
+  }
+
+  .inventory-table {
+    overflow-x: auto;
+  }
+
+  .inventory-row {
+    min-width: 850px;
+  }
+}
+
+@media (max-width: 500px) {
+  .sidebar-header h1 {
+    font-size: 28px;
+  }
+
+  .merchant-header h1 {
+    font-size: 34px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  .merchant-badges {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .primary-button,
+  .secondary-button,
+  .danger-button {
+    width: 100%;
+  }
+}
