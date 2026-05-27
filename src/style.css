@@ -486,10 +486,16 @@ select:focus {
 
 .reading-panel {
   min-height: 430px;
+  height: auto;
   padding: 30px 32px;
+
+  display: flex;
+  flex-direction: column;
+
   background:
     radial-gradient(circle at top left, rgba(201, 137, 50, 0.08), transparent 36%),
     linear-gradient(180deg, rgba(25, 18, 13, 0.94), rgba(12, 8, 6, 0.98));
+
   border: 1px solid rgba(156, 96, 28, 0.62);
   border-radius: 8px;
 }
@@ -506,14 +512,20 @@ select:focus {
 
 .large-reading-textarea {
   min-height: 310px;
+  height: auto;
+
   padding: 0;
+
   border: none;
   background: transparent;
   box-shadow: none;
+
   resize: none;
-  overflow: hidden;
+  overflow: visible;
+
   font-size: 21px;
   line-height: 1.65;
+
   color: #f0dfc2;
 }
 
@@ -1183,4 +1195,16 @@ button:hover {
   .service-price {
     font-size: 18px;
   }
+}
+.display-text {
+  white-space: pre-wrap;
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+}
+.display-text {
+  white-space: pre-wrap;
+  height: auto;
+  min-height: 0;
+  overflow: visible;
 }
