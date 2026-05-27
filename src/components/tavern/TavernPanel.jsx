@@ -1,3 +1,4 @@
+import dishIcon from "../../assets/dish_icon.png";
 export function TavernPanel({
   tavern,
   onUpdateMerchant,
@@ -5,19 +6,26 @@ export function TavernPanel({
 }) {
   return (
     <>
-      <section className="description-card fantasy-card">
+      {/* HEADER LOCANDA */}
+
+      <section className="merchant-sheet-card fantasy-card">
         <div className="card-title-row">
-          <h2>🍺 Descrizione Locanda</h2>
+          <div>
+            <div className="card-icon">🍺</div>
+            <h2>Scheda Locanda</h2>
+          </div>
 
           <button
             className="secondary-button compact"
             onClick={onRegenerateDescriptions}
           >
-            🎲 Rigenera
+            Rigenera
           </button>
         </div>
 
-        <div className="identity-strip">
+        {/* IDENTITÀ */}
+
+        <div className="merchant-identity-inline">
           <div>
             <label>Nome Locandiere</label>
 
@@ -67,24 +75,16 @@ export function TavernPanel({
           </div>
         </div>
 
-        <div className="description-columns">
-          <div>
-            <label>Descrizione del locandiere</label>
+        {/* DESCRIZIONI */}
+
+        <div className="large-description-grid">
+          <article className="reading-panel">
+            <div className="reading-title">
+              🍺 Descrizione Locanda
+            </div>
 
             <textarea
-              className="lore-textarea"
-              value={tavern.story || ""}
-              onChange={(e) =>
-                onUpdateMerchant("story", e.target.value)
-              }
-            />
-          </div>
-
-          <div>
-            <label>Descrizione della locanda</label>
-
-            <textarea
-              className="lore-textarea"
+              className="large-reading-textarea"
               value={tavern.locationDescription || ""}
               onChange={(e) =>
                 onUpdateMerchant(
@@ -93,130 +93,147 @@ export function TavernPanel({
                 )
               }
             />
+          </article>
+
+          <article className="reading-panel">
+            <div className="reading-title">
+              🧙 Descrizione Locandiere
+            </div>
+
+            <textarea
+              className="large-reading-textarea"
+              value={tavern.story || ""}
+              onChange={(e) =>
+                onUpdateMerchant("story", e.target.value)
+              }
+            />
+          </article>
+        </div>
+      </section>
+
+      {/* PIATTO DEL GIORNO */}
+
+      <section className="daily-dish-card fantasy-card">
+        <div className="dish-title-row">
+          <div className="card-icon">
+  <img
+    src={dishIcon}
+    className="panel-icon"
+    alt=""
+  />
+</div>
+
+          <h2>Piatto del Giorno</h2>
+        </div>
+
+        <div className="dish-divider">✦</div>
+
+        <input
+          className="dish-name-input"
+          value={tavern.dishName || ""}
+          onChange={(e) =>
+            onUpdateMerchant("dishName", e.target.value)
+          }
+        />
+
+        <textarea
+          className="dish-description-input"
+          value={tavern.dishDescription || ""}
+          onChange={(e) =>
+            onUpdateMerchant(
+              "dishDescription",
+              e.target.value
+            )
+          }
+        />
+
+        <div className="dish-effects-grid">
+          <div className="dish-effect-card bonus">
+            <span>✦ Bonus</span>
+
+            <textarea
+              value={tavern.dishBonus || ""}
+              onChange={(e) =>
+                onUpdateMerchant(
+                  "dishBonus",
+                  e.target.value
+                )
+              }
+            />
+          </div>
+
+          <div className="dish-effect-card malus">
+            <span>✦ Malus</span>
+
+            <textarea
+              value={tavern.dishMalus || ""}
+              onChange={(e) =>
+                onUpdateMerchant(
+                  "dishMalus",
+                  e.target.value
+                )
+              }
+            />
           </div>
         </div>
       </section>
 
-      <section className="lower-workspace">
-        <div className="fantasy-card">
-          <h2>🍖 Piatto Tipico</h2>
+      {/* SERVIZI */}
 
-          <label>Piatto del giorno</label>
+<section className="tavern-services-card fantasy-card">
+  <div className="services-title-row">
+    <div className="card-icon">🏷️</div>
+    <h2>Servizi</h2>
+  </div>
 
-          <input
-            value={tavern.dishName || ""}
-            onChange={(e) =>
-              onUpdateMerchant("dishName", e.target.value)
-            }
-          />
+  <div className="dish-divider">✦</div>
 
-          <label>Descrizione</label>
-
-          <textarea
-            className="quest-textarea"
-            value={tavern.dishDescription || ""}
-            onChange={(e) =>
-              onUpdateMerchant(
-                "dishDescription",
-                e.target.value
-              )
-            }
-          />
-
-          <label>Bonus</label>
-
-          <textarea
-            className="reward-textarea"
-            value={tavern.dishBonus || ""}
-            onChange={(e) =>
-              onUpdateMerchant("dishBonus", e.target.value)
-            }
-          />
-
-          <label>Malus</label>
-
-          <textarea
-            className="reward-textarea"
-            value={tavern.dishMalus || ""}
-            onChange={(e) =>
-              onUpdateMerchant("dishMalus", e.target.value)
-            }
-          />
+  <div className="services-grid">
+    {(tavern.services || []).map((service, index) => (
+      <div className="service-card" key={`${service.name}-${index}`}>
+        <div className="service-left">
+          <span className="service-icon">{service.icon || "📜"}</span>
+          <span className="service-name">{service.name}</span>
         </div>
 
-        <div className="fantasy-card">
-          <h2>🛏 Camere & Servizi</h2>
+        <span className="service-price">{service.price}</span>
+      </div>
+    ))}
+  </div>
+</section>
 
-          <label>Camere disponibili</label>
+     {/* SIDE QUEST */}
 
-          <input
-            type="number"
-            min="3"
-            max="10"
-            value={tavern.roomsAvailable || 3}
-            onChange={(e) =>
-              onUpdateMerchant(
-                "roomsAvailable",
-                e.target.value
-              )
-            }
-          />
+<section className="sidequest-card fantasy-card">
+  <div className="services-title-row">
+    <div className="card-icon">📋</div>
+    <h2>Side Quest</h2>
+  </div>
 
-          <label>Prezzo camera</label>
+  <div className="dish-divider">✦</div>
 
-          <input
-            value={tavern.roomPrice || ""}
-            onChange={(e) =>
-              onUpdateMerchant("roomPrice", e.target.value)
-            }
-          />
+  <textarea
+    className="sidequest-main-text"
+    value={tavern.sideQuest || ""}
+    onChange={(e) =>
+      onUpdateMerchant("sideQuest", e.target.value)
+    }
+  />
 
-          <label>Servizi disponibili</label>
+  <div className="sidequest-reward-box">
+    <span className="sidequest-reward-title">
+      🏆 Ricompensa
+    </span>
 
-          <textarea
-            className="lore-textarea"
-            value={
-              tavern.services
-                ?.map(
-                  (service) =>
-                    `${service.name} — ${service.price}\n${service.description}`
-                )
-                .join("\n\n") || ""
-            }
-            readOnly
-          />
-        </div>
-      </section>
-
-      <section className="lower-workspace">
-        <div className="quest-card fantasy-card">
-          <h2>📜 Side Quest</h2>
-
-          <label>Quest</label>
-
-          <textarea
-            className="quest-textarea"
-            value={tavern.sideQuest || ""}
-            onChange={(e) =>
-              onUpdateMerchant("sideQuest", e.target.value)
-            }
-          />
-        </div>
-
-        <div className="quest-card fantasy-card">
-          <h2>🎁 Ricompensa</h2>
-
-          <label>Ricompensa</label>
-
-          <textarea
-            className="reward-textarea"
-            value={tavern.reward || ""}
-            onChange={(e) =>
-              onUpdateMerchant("reward", e.target.value)
-            }
-          />
-        </div>
-      </section>
+    <textarea
+      className="sidequest-reward-text"
+      value={tavern.reward || ""}
+      onChange={(e) =>
+        onUpdateMerchant("reward", e.target.value)
+      }
+    />
+  </div>
+</section>
     </>
   );
 }

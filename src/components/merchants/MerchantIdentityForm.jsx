@@ -1,7 +1,7 @@
 export function MerchantIdentityForm({ merchant, onUpdateMerchant }) {
   return (
-    <section className="identity-card fantasy-card">
-      <h2>⚜ Identità</h2>
+    <section className="identity-card fantasy-card sheet-card">
+      <h2><span className="section-glyph">▧</span> Identità</h2>
 
       <label>Nome commerciante</label>
       <input

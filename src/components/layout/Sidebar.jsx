@@ -17,10 +17,34 @@ export function Sidebar({
 }) {
   const isTavern = mode === "tavern";
 
+  function generateShop() {
+    onChangeMode("shop");
+    setTimeout(() => onAddGeneratedMerchant(), 0);
+  }
+
+  function generateTavern() {
+    onChangeMode("tavern");
+    setTimeout(() => onAddGeneratedMerchant(), 0);
+  }
+
+  function addEmptyShop() {
+    onChangeMode("shop");
+    setTimeout(() => onAddMerchant(), 0);
+  }
+
+  function addEmptyTavern() {
+    onChangeMode("tavern");
+    setTimeout(() => onAddMerchant(), 0);
+  }
+
+  const visibleItems = merchants.filter((item) =>
+    isTavern ? item.type === "tavern" : item.type !== "tavern"
+  );
+
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
-        <h1>D&D Shop</h1>
+        <h1>D&amp;D Shop</h1>
         <p>Assistente Master</p>
       </div>
 
@@ -29,18 +53,18 @@ export function Sidebar({
           className={mode === "shop" ? "mode-button active" : "mode-button"}
           onClick={() => onChangeMode("shop")}
         >
-          🛒 Shop
+          🛒 Mercanti
         </button>
 
         <button
           className={mode === "tavern" ? "mode-button active" : "mode-button"}
           onClick={() => onChangeMode("tavern")}
         >
-          🍺 Locanda
+          🍺 Locande
         </button>
       </div>
 
-      <div className="panel">
+      <div className="panel level-panel">
         <label>{isTavern ? "Livello Locanda" : "Livello Party"}</label>
 
         <input
@@ -51,16 +75,22 @@ export function Sidebar({
           onChange={(e) => onChangePartyLevel(e.target.value)}
         />
 
-        <div className="party-level-display">
-          {isTavern ? `Locanda Livello ${partyLevel}` : `Party Livello ${partyLevel}`}
-        </div>
+        <div className="party-level-display">Livello {partyLevel}</div>
 
-        <button className="primary-button" onClick={onAddGeneratedMerchant}>
-          🎲 {isTavern ? "Genera Locanda" : "Genera Mercante"}
+        <button className="primary-button" onClick={generateShop}>
+          🎲 Genera Mercante
         </button>
 
-        <button className="secondary-button" onClick={onAddMerchant}>
-          + {isTavern ? "Locanda Vuota" : "Mercante Vuoto"}
+        <button className="primary-button tavern-button" onClick={generateTavern}>
+          🍺 Genera Locanda
+        </button>
+
+        <button className="secondary-button" onClick={addEmptyShop}>
+          + Mercante Vuoto
+        </button>
+
+        <button className="secondary-button" onClick={addEmptyTavern}>
+          + Locanda Vuota
         </button>
       </div>
 
@@ -69,9 +99,7 @@ export function Sidebar({
       </div>
 
       <MerchantList
-        merchants={merchants.filter((item) =>
-          isTavern ? item.type === "tavern" : item.type !== "tavern"
-        )}
+        merchants={visibleItems}
         selectedMerchantId={selectedMerchantId}
         onSelectMerchant={onSelectMerchant}
       />

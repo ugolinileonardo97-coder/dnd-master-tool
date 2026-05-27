@@ -16,8 +16,10 @@ export function MainPanel({
   if (!selectedMerchant) {
     return (
       <main className="main">
-        <div className="fantasy-card empty-state">
-          Nessun elemento selezionato
+        <div className="grimoire-empty fantasy-card">
+          <div className="empty-symbol">⚜</div>
+          <h1>DM’s Grimoire</h1>
+          <p>Genera un mercante o una locanda per iniziare la sessione.</p>
         </div>
       </main>
     );
@@ -47,19 +49,17 @@ export function MainPanel({
               onRegenerateDescriptions={onRegenerateDescriptions}
             />
 
-            <section className="lower-workspace">
-              <MerchantQuestPanel
-                merchant={selectedMerchant}
-                onUpdateMerchant={onUpdateMerchant}
-              />
+            <InventoryTable
+              inventory={selectedMerchant.inventory}
+              onAddInventoryItem={onAddInventoryItem}
+              onUpdateInventoryItem={onUpdateInventoryItem}
+              onDeleteInventoryItem={onDeleteInventoryItem}
+            />
 
-              <InventoryTable
-                inventory={selectedMerchant.inventory}
-                onAddInventoryItem={onAddInventoryItem}
-                onUpdateInventoryItem={onUpdateInventoryItem}
-                onDeleteInventoryItem={onDeleteInventoryItem}
-              />
-            </section>
+            <MerchantQuestPanel
+              merchant={selectedMerchant}
+              onUpdateMerchant={onUpdateMerchant}
+            />
           </>
         )}
       </div>

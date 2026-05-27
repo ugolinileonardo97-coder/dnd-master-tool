@@ -4,18 +4,24 @@ export function MerchantBehaviorForm({
   onRegenerateDescriptions,
 }) {
   return (
-    <section className="description-card fantasy-card">
+    <section className="merchant-sheet-card fantasy-card">
       <div className="card-title-row">
-        <h2>⚔ Descrizione Commerciante</h2>
+        <div>
+          <div className="card-icon">⚔</div>
+          <h2>Scheda Commerciante</h2>
+        </div>
 
-        <button className="secondary-button compact" onClick={onRegenerateDescriptions}>
-          🎲 Rigenera
+        <button
+          className="secondary-button compact"
+          onClick={onRegenerateDescriptions}
+        >
+          Rigenera
         </button>
       </div>
 
-      <div className="identity-strip">
+      <div className="merchant-identity-inline">
         <div>
-          <label>Nome</label>
+          <label>Nome commerciante</label>
           <input
             value={merchant.name || ""}
             onChange={(e) => onUpdateMerchant("name", e.target.value)}
@@ -31,7 +37,7 @@ export function MerchantBehaviorForm({
         </div>
 
         <div>
-          <label>Bottega</label>
+          <label>Nome bottega</label>
           <input
             value={merchant.shopName || ""}
             onChange={(e) => onUpdateMerchant("shopName", e.target.value)}
@@ -47,29 +53,29 @@ export function MerchantBehaviorForm({
         </div>
       </div>
 
-      <div className="description-columns">
-        <div>
-          <label>Descrizione del venditore</label>
+      <div className="large-description-grid">
+        <article className="reading-panel">
+          <div className="reading-title">🏬 Descrizione Shop</div>
           <textarea
-            className="lore-textarea"
-            value={merchant.story || ""}
-            onChange={(e) => onUpdateMerchant("story", e.target.value)}
-          />
-        </div>
-
-        <div>
-          <label>Descrizione dello shop / luogo</label>
-          <textarea
-            className="lore-textarea"
+            className="large-reading-textarea"
             value={merchant.locationDescription || ""}
             onChange={(e) =>
               onUpdateMerchant("locationDescription", e.target.value)
             }
           />
-        </div>
+        </article>
+
+        <article className="reading-panel">
+          <div className="reading-title">🧙 Descrizione Mercante</div>
+          <textarea
+            className="large-reading-textarea"
+            value={merchant.story || ""}
+            onChange={(e) => onUpdateMerchant("story", e.target.value)}
+          />
+        </article>
       </div>
 
-      <div className="description-footer">
+      <div className="merchant-sheet-footer">
         <div>
           <label>Inclinazione agli sconti</label>
           <select

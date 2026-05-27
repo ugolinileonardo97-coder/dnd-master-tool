@@ -1,27 +1,56 @@
-export function MerchantHeader({ merchant, onDeleteMerchant }) {
+export function MerchantHeader({
+  merchant,
+  onDeleteMerchant,
+}) {
+  const isTavern = merchant.type === "tavern";
+
   return (
     <section className="merchant-header fantasy-card">
+      <div className="header-overlay" />
+
       <div className="merchant-header-content">
-        <p className="section-kicker">Scheda Commerciante</p>
+        <div className="section-kicker">
+          {isTavern ? "LOCANDA" : "COMMERCIANTE"}
+        </div>
 
-        <h1>{merchant.name || "Mercante"}</h1>
+        <h1>{merchant.name}</h1>
 
-        <p className="merchant-shop-name">
-          {merchant.shopName || "Bottega senza nome"}
-        </p>
+        <div className="merchant-shop-name">
+          {merchant.shopName || "Nome attività"}
+        </div>
 
         <div className="merchant-badges">
-          <span>🧝 Razza: {merchant.race || "-"}</span>
-          <span>💰 Oro disponibile: {merchant.gold || 0} mo</span>
-          <span>🏪 Tier: {merchant.shopTier || "-"}</span>
-          <span>🤝 Sconti: {merchant.discount || "-"}</span>
+          <span>⚜ {merchant.race}</span>
+
+          <span>
+            💰 {merchant.gold || 0} mo
+          </span>
+
+          <span>
+            🛒 {merchant.shopTier || "Comune"}
+          </span>
+
+          <span>
+            🎭 {merchant.discount || "Basso"}
+          </span>
+
+          {isTavern && (
+            <span>
+              🍺 {merchant.reputation}
+            </span>
+          )}
         </div>
       </div>
 
-      <div className="header-watermark">◈</div>
+      <div className="header-watermark">
+        ⚔
+      </div>
 
-      <button className="danger-button merchant-delete" onClick={onDeleteMerchant}>
-        🗑 Elimina
+      <button
+        className="danger-button merchant-delete"
+        onClick={onDeleteMerchant}
+      >
+        Elimina
       </button>
     </section>
   );

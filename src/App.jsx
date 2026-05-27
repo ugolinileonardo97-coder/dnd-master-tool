@@ -75,7 +75,47 @@ export default function App() {
   }
 
   function regenerateDescriptions() {
-    if (selectedMerchant?.type === "tavern") return;
+    function regenerateDescriptions() {
+  if (!selectedMerchant) return;
+
+  const regenerated =
+    selectedMerchant.type === "tavern"
+      ? generateTavern(Number(partyLevel))
+      : {
+          ...selectedMerchant,
+          ...generateMerchantDescriptions(selectedMerchant),
+        };
+
+  setMerchants((currentMerchants) =>
+    currentMerchants.map((merchant) =>
+      merchant.id === selectedMerchant.id
+        ? {
+            ...merchant,
+            story: regenerated.story,
+            locationDescription: regenerated.locationDescription,
+            sideQuest: regenerated.sideQuest,
+            reward: regenerated.reward,
+
+            ...(selectedMerchant.type === "tavern"
+              ? {
+                  dishName: regenerated.dishName,
+                  dishDescription: regenerated.dishDescription,
+                  dishBonus: regenerated.dishBonus,
+                  dishMalus: regenerated.dishMalus,
+                  services: regenerated.services,
+                  roomsAvailable: regenerated.roomsAvailable,
+                  roomPrice: regenerated.roomPrice,
+                  reputation: regenerated.reputation,
+                  shopTier: regenerated.shopTier,
+                  discount: regenerated.discount,
+                  gold: regenerated.gold,
+                }
+              : {}),
+          }
+        : merchant
+    )
+  );
+}
 
     const descriptions = generateMerchantDescriptions(selectedMerchant);
 
