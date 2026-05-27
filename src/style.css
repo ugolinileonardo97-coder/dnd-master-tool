@@ -55,8 +55,6 @@ body {
   font-family: "Cinzel", serif;
   font-size: 43px;
   font-weight: 800;
-  line-height: 1;
-  letter-spacing: 0.02em;
   color: #d99a3a;
 }
 
@@ -142,20 +140,11 @@ body {
 
 .sidebar .primary-button {
   margin-bottom: 11px;
-  background: linear-gradient(180deg, #c74737 0%, #9e2d25 48%, #651915 100%);
-  border: 1px solid rgba(229, 189, 116, 0.35);
-  color: #f4d8a6;
 }
 
 .sidebar .tavern-button {
   margin-bottom: 11px;
   background: linear-gradient(180deg, #9b5b24 0%, #6e3a17 48%, #47240d 100%);
-}
-
-.sidebar .secondary-button {
-  background: linear-gradient(180deg, rgba(44, 28, 18, 0.96), rgba(27, 17, 11, 0.96));
-  border: 1px solid rgba(125, 77, 24, 0.75);
-  color: #d8b982;
 }
 
 .sidebar .secondary-button + .secondary-button {
@@ -306,6 +295,7 @@ body {
 /* HEADER */
 
 .merchant-header {
+  position: relative;
   min-height: 210px;
   margin-bottom: 14px;
   padding: 28px 30px;
@@ -346,10 +336,17 @@ body {
   position: absolute;
   right: 56px;
   top: 32px;
+  z-index: 1;
   font-size: 132px;
   color: rgba(201, 137, 50, 0.065);
   transform: rotate(-10deg);
   pointer-events: none;
+}
+
+.header-watermark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .merchant-badges {
@@ -389,6 +386,16 @@ h2 {
   font-size: 25px;
   margin-bottom: 8px;
   color: #e5bd74;
+}
+
+.panel-icon {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  opacity: 0.96;
+  filter:
+    drop-shadow(0 0 12px rgba(255, 170, 60, 0.22))
+    brightness(1.04);
 }
 
 .card-title-row {
@@ -434,7 +441,7 @@ select:focus {
   box-shadow: 0 0 0 1px rgba(217, 154, 58, 0.35);
 }
 
-/* SCHEDA COMMERCIANTE */
+/* SCHEDA MERCANTE / LOCANDA */
 
 .merchant-sheet-card {
   margin-bottom: 14px;
@@ -501,6 +508,7 @@ select:focus {
 .notes-textarea {
   min-height: 70px;
 }
+
 /* INVENTARIO */
 
 .inventory-card {
@@ -605,30 +613,19 @@ select:focus {
 
 .item-details-input {
   min-height: 54px;
-
   resize: none;
-
   overflow: hidden;
-
   padding: 0;
-
   font-size: 13px !important;
-
   line-height: 1.45;
-
   color: rgba(240, 223, 194, 0.84) !important;
-
   background: transparent;
-
   scrollbar-width: none;
 }
-
-/* Chrome / Edge / Safari */
 
 .item-details-input::-webkit-scrollbar {
   display: none;
 }
-
 
 .item-qty-input {
   font-size: 16px !important;
@@ -661,245 +658,7 @@ select:focus {
   font-size: 16px;
   font-style: italic;
 }
-/* QUEST */
 
-.quest-card {
-  margin-top: 0;
-  min-height: 220px;
-}
-
-.quest-textarea {
-  min-height: 90px;
-}
-
-.reward-textarea {
-  min-height: 70px;
-}
-
-/* BUTTON */
-
-button {
-  cursor: pointer;
-  transition: 160ms ease;
-}
-
-.primary-button,
-.secondary-button,
-.danger-button,
-.icon-button {
-  min-height: 38px;
-  border-radius: 7px;
-  padding: 9px 14px;
-  font-family: "Cinzel", serif;
-  font-weight: 700;
-}
-
-.primary-button {
-  background: linear-gradient(180deg, #c74737, #7b1f1a);
-  border: 1px solid rgba(229, 189, 116, 0.35);
-  color: #f2d9a2;
-}
-
-.secondary-button {
-  background: linear-gradient(180deg, rgba(88, 34, 24, 0.85), rgba(52, 20, 15, 0.92));
-  border: 1px solid rgba(201, 137, 50, 0.42);
-  color: #d8b982;
-}
-
-.secondary-button.compact,
-.primary-button.compact {
-  min-height: 38px;
-  padding: 8px 14px;
-  font-size: 12px;
-}
-
-.danger-button {
-  background: linear-gradient(180deg, #a83229, #7b1f1a);
-  border: 1px solid rgba(229, 189, 116, 0.25);
-  color: #f2d9a2;
-}
-
-.icon-button {
-  width: 42px;
-  height: 42px;
-  background: rgba(123, 31, 26, 0.9);
-  border: 1px solid rgba(229, 189, 116, 0.18);
-  color: #f2d9a2;
-}
-
-button:hover {
-  filter: brightness(1.08);
-}
-
-/* TAVERN */
-
-.identity-strip {
-  display: grid;
-  grid-template-columns: 1fr 0.8fr 1.2fr 1fr;
-  gap: 12px;
-  margin-bottom: 18px;
-}
-
-/* EMPTY */
-
-.grimoire-empty {
-  min-height: calc(100vh - 28px);
-  display: grid;
-  place-items: center;
-  text-align: center;
-}
-
-.empty-symbol {
-  font-size: 70px;
-  color: rgba(217, 154, 58, 0.3);
-}
-
-.grimoire-empty h1 {
-  margin: 14px 0 0;
-  font-family: "Cinzel", serif;
-  color: #e5bd74;
-  font-size: clamp(42px, 6vw, 72px);
-}
-
-.grimoire-empty p {
-  max-width: 520px;
-  color: #a88b63;
-  line-height: 1.7;
-}
-
-/* RESPONSIVE */
-
-@media (max-width: 1100px) {
-  .app {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar {
-    width: 100%;
-    min-height: auto;
-  }
-
-  .merchant-identity-inline,
-  .large-description-grid,
-  .merchant-sheet-footer,
-  .identity-strip {
-    grid-template-columns: 1fr;
-  }
-
-  .merchant-delete {
-    position: static;
-    margin-top: 16px;
-  }
-
-  .inventory-tabs {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .inventory-list-head {
-    display: none;
-  }
-
-  .inventory-list-row {
-    grid-template-columns: 1fr;
-    gap: 8px;
-    padding: 18px;
-    border: 1px solid rgba(156, 96, 28, 0.32);
-    border-radius: 8px;
-    margin-bottom: 12px;
-  }
-}
-/* =========================
-   TAVERN PREMIUM LAYOUT
-========================= */
-
-.tavern-description-grid {
-  display: contents;
-}
-
-.merchant-description-panels {
-  display: grid;
-
-  grid-template-columns: 1fr 1fr;
-
-  gap: 32px;
-
-  margin-top: 26px;
-
-  margin-bottom: 30px;
-}
-
-.merchant-description-box {
-  position: relative;
-
-  min-height: 420px;
-
-  padding: 34px;
-
-  border-radius: 12px;
-
-  border: 1px solid rgba(173, 110, 38, 0.34);
-
-  background:
-    radial-gradient(circle at top,
-      rgba(120, 70, 24, 0.14),
-      rgba(15, 8, 4, 0.96));
-
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 187, 92, 0.05),
-    inset 0 0 60px rgba(255, 145, 0, 0.03);
-}
-
-.merchant-box-title {
-  display: flex;
-
-  align-items: center;
-
-  gap: 12px;
-
-  margin-bottom: 28px;
-
-  color: #d8a14f;
-
-  font-family: "Cinzel", serif;
-
-  font-size: 21px;
-
-  font-weight: 700;
-
-  letter-spacing: 0.04em;
-}
-
-.merchant-description-box textarea {
-  width: 100%;
-
-  height: 290px;
-
-  border: none;
-
-  resize: none;
-
-  background: transparent;
-
-  color: rgba(248, 231, 203, 0.92);
-
-  font-size: 19px;
-
-  line-height: 1.9;
-
-  font-family: "Inter", sans-serif;
-
-  overflow: hidden;
-
-  scrollbar-width: none;
-}
-
-.merchant-description-box textarea::-webkit-scrollbar {
-  display: none;
-}
-
-.merchant-description-box textarea:focus {
-  outline: none;
-}
 /* PIATTO DEL GIORNO */
 
 .daily-dish-card {
@@ -1027,12 +786,7 @@ button:hover {
   color: #ff8a8a;
 }
 
-@media (max-width: 900px) {
-  .dish-effects-grid {
-    grid-template-columns: 1fr;
-  }
-}
-/* SERVIZI LOCANDA */
+/* SERVIZI */
 
 .tavern-services-card {
   padding: 36px;
@@ -1062,7 +816,6 @@ button:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   background: rgba(22, 17, 14, 0.82);
   border: 1px solid rgba(156, 96, 28, 0.22);
   border-radius: 6px;
@@ -1092,11 +845,6 @@ button:hover {
   text-transform: uppercase;
 }
 
-@media (max-width: 900px) {
-  .services-grid {
-    grid-template-columns: 1fr;
-  }
-}
 /* SIDE QUEST */
 
 .sidequest-card {
@@ -1107,19 +855,14 @@ button:hover {
 .sidequest-main-text {
   width: 100%;
   min-height: 90px;
-
   border: none;
   background: transparent;
-
   resize: none;
   overflow: hidden;
-
   padding: 0;
-
   font-size: 22px;
   line-height: 1.6;
   font-style: italic;
-
   color: #f0e0c0;
 }
 
@@ -1130,49 +873,32 @@ button:hover {
 
 .sidequest-reward-box {
   margin-top: 18px;
-
   padding: 22px 24px;
-
   border-radius: 6px;
-
-  background:
-    linear-gradient(
-      90deg,
-      rgba(48, 28, 10, 0.82),
-      rgba(24, 15, 10, 0.72)
-    );
-
+  background: linear-gradient(90deg, rgba(48, 28, 10, 0.82), rgba(24, 15, 10, 0.72));
   border: 1px solid rgba(156, 96, 28, 0.28);
 }
 
 .sidequest-reward-title {
   display: block;
-
   margin-bottom: 12px;
-
   font-family: "Cinzel", serif;
   font-size: 22px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-
   color: #d7a24a;
 }
 
 .sidequest-reward-text {
   width: 100%;
   min-height: 40px;
-
   border: none;
   background: transparent;
-
   resize: none;
   overflow: hidden;
-
   padding: 0;
-
   font-size: 20px;
   line-height: 1.45;
-
   color: #f4ead7;
 }
 
@@ -1180,34 +906,93 @@ button:hover {
   border: none;
   box-shadow: none;
 }
-.panel-icon {
-  width: 62;
-  height: 62px;
 
-  object-fit: contain;
+/* BUTTON */
 
-  opacity: 0.96;
-
-  filter:
-    drop-shadow(0 0 12px rgba(255, 170, 60, 0.22))
-    brightness(1.04);
-
+button {
+  cursor: pointer;
+  transition: 160ms ease;
 }
-/* =========================================================
-   SMARTPHONE OPTIMIZATION
-========================================================= */
+
+.primary-button,
+.secondary-button,
+.danger-button,
+.icon-button {
+  min-height: 38px;
+  border-radius: 7px;
+  padding: 9px 14px;
+  font-family: "Cinzel", serif;
+  font-weight: 700;
+}
+
+.primary-button {
+  background: linear-gradient(180deg, #c74737, #7b1f1a);
+  border: 1px solid rgba(229, 189, 116, 0.35);
+  color: #f2d9a2;
+}
+
+.secondary-button {
+  background: linear-gradient(180deg, rgba(88, 34, 24, 0.85), rgba(52, 20, 15, 0.92));
+  border: 1px solid rgba(201, 137, 50, 0.42);
+  color: #d8b982;
+}
+
+.secondary-button.compact,
+.primary-button.compact {
+  min-height: 38px;
+  padding: 8px 14px;
+  font-size: 12px;
+}
+
+.danger-button {
+  background: linear-gradient(180deg, #a83229, #7b1f1a);
+  border: 1px solid rgba(229, 189, 116, 0.25);
+  color: #f2d9a2;
+}
+
+.icon-button {
+  background: rgba(123, 31, 26, 0.9);
+  border: 1px solid rgba(229, 189, 116, 0.18);
+  color: #f2d9a2;
+}
+
+button:hover {
+  filter: brightness(1.08);
+}
+
+/* EMPTY */
+
+.grimoire-empty {
+  min-height: calc(100vh - 28px);
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.empty-symbol {
+  font-size: 70px;
+  color: rgba(217, 154, 58, 0.3);
+}
+
+.grimoire-empty h1 {
+  margin: 14px 0 0;
+  font-family: "Cinzel", serif;
+  color: #e5bd74;
+  font-size: clamp(42px, 6vw, 72px);
+}
+
+.grimoire-empty p {
+  max-width: 520px;
+  color: #a88b63;
+  line-height: 1.7;
+}
+
+/* SOLO SMARTPHONE */
 
 @media (max-width: 600px) {
-  body {
-    overflow-x: hidden;
-  }
-
   .app {
     display: block;
-    min-height: 100vh;
   }
-
-  /* SIDEBAR MOBILE */
 
   .sidebar {
     width: 100%;
@@ -1217,54 +1002,14 @@ button:hover {
     border-bottom: 1px solid rgba(156, 96, 28, 0.55);
   }
 
-  .sidebar-header {
-    margin-bottom: 18px;
-    padding-bottom: 12px;
-  }
-
   .sidebar-header h1 {
     font-size: 34px;
-  }
-
-  .sidebar-header p {
-    font-size: 14px;
-  }
-
-  .mode-switch {
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-
-  .mode-button {
-    min-height: 44px;
-    font-size: 12px;
-  }
-
-  .level-panel {
-    padding: 16px;
-    margin-bottom: 20px;
-  }
-
-  .party-level-display {
-    font-size: 22px;
-  }
-
-  .sidebar .primary-button,
-  .sidebar .secondary-button {
-    min-height: 46px;
-    font-size: 12px;
   }
 
   .merchant-list {
     max-height: 240px;
     overflow-y: auto;
   }
-
-  .merchant-button {
-    min-height: 58px;
-  }
-
-  /* MAIN MOBILE */
 
   .main {
     padding: 10px;
@@ -1274,8 +1019,6 @@ button:hover {
     padding: 20px 16px;
   }
 
-  /* HEADER */
-
   .merchant-header {
     min-height: auto;
     padding: 22px 18px;
@@ -1283,11 +1026,6 @@ button:hover {
 
   .merchant-header h1 {
     font-size: 42px;
-    line-height: 1;
-  }
-
-  .merchant-shop-name {
-    font-size: 17px;
   }
 
   .merchant-delete {
@@ -1297,19 +1035,17 @@ button:hover {
   }
 
   .header-watermark {
-    display: none;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 120px;
+    opacity: 0.06;
   }
 
   .merchant-badges {
     flex-direction: column;
     align-items: stretch;
   }
-
-  .merchant-badges span {
-    font-size: 14px;
-  }
-
-  /* SCHEDE */
 
   .merchant-identity-inline,
   .large-description-grid,
@@ -1319,75 +1055,25 @@ button:hover {
     grid-template-columns: 1fr;
   }
 
-  h2 {
-    font-size: 23px;
-  }
-
   .reading-panel {
     min-height: auto;
     padding: 24px 20px;
   }
 
-  .reading-title {
-    font-size: 22px;
-  }
-
   .large-reading-textarea {
     min-height: 260px;
     font-size: 18px;
-    line-height: 1.65;
   }
 
-  /* PIATTO */
-
-  .daily-dish-card {
+  .inventory-card,
+  .daily-dish-card,
+  .tavern-services-card,
+  .sidequest-card {
     padding: 24px 18px;
-  }
-
-  .dish-title-row h2 {
-    font-size: 24px;
-  }
-
-  .dish-name-input {
-    font-size: 23px;
-  }
-
-  .dish-description-input {
-    font-size: 18px;
-  }
-
-  .dish-effect-card textarea {
-    font-size: 18px;
-  }
-
-  /* SERVIZI */
-
-  .service-card {
-    min-height: 76px;
-    padding: 0 18px;
-  }
-
-  .service-name {
-    font-size: 18px;
-  }
-
-  .service-price {
-    font-size: 18px;
-  }
-
-  /* INVENTARIO MOBILE */
-
-  .inventory-card {
-    padding: 24px 14px;
   }
 
   .inventory-tabs {
     grid-template-columns: 1fr 1fr;
-  }
-
-  .inventory-tab {
-    min-height: 52px;
-    font-size: 15px;
   }
 
   .inventory-list-head {
@@ -1395,30 +1081,12 @@ button:hover {
   }
 
   .inventory-list-row {
-    display: grid;
     grid-template-columns: 1fr;
-    gap: 10px;
+    gap: 8px;
     padding: 18px;
-    margin-bottom: 14px;
-    border: 1px solid rgba(156, 96, 28, 0.35);
+    border: 1px solid rgba(156, 96, 28, 0.32);
     border-radius: 8px;
-    background: rgba(12, 8, 5, 0.72);
-  }
-
-  .item-name-input {
-    font-size: 19px !important;
-  }
-
-  .item-details-input {
-    min-height: 72px;
-    font-size: 14px !important;
-  }
-
-  .item-qty-input,
-  .item-type-input,
-  .item-price-input {
-    text-align: left;
-    font-size: 16px !important;
+    margin-bottom: 12px;
   }
 
   .inventory-delete-button {
@@ -1426,21 +1094,13 @@ button:hover {
     height: 44px;
   }
 
-  /* SIDE QUEST */
-
-  .sidequest-card {
-    padding: 24px 18px;
+  .service-card {
+    min-height: 76px;
+    padding: 0 18px;
   }
 
-  .sidequest-main-text {
-    font-size: 18px;
-  }
-
-  .sidequest-reward-title {
-    font-size: 18px;
-  }
-
-  .sidequest-reward-text {
+  .service-name,
+  .service-price {
     font-size: 18px;
   }
 }
