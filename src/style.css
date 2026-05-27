@@ -1012,6 +1012,61 @@ button:hover {
 }
 
 /* SOLO SMARTPHONE */
+@media (max-width: 1100px) and (min-width: 601px) {
+
+  .large-reading-textarea {
+    font-size: 17px;
+    line-height: 1.5;
+  }
+
+  .reading-panel {
+    min-height: 360px;
+    padding: 24px;
+  }
+
+  .merchant-header h1 {
+    font-size: 44px;
+  }
+
+  .merchant-shop-name {
+    font-size: 16px;
+  }
+
+  .merchant-badges span {
+    font-size: 13px;
+    padding: 7px 11px;
+  }
+
+  .dish-description-input {
+    font-size: 18px;
+  }
+
+  .sidequest-main-text {
+    font-size: 18px;
+  }
+
+  .sidequest-reward-text {
+    font-size: 17px;
+  }
+
+  .service-name {
+    font-size: 18px;
+  }
+
+  .service-price {
+    font-size: 18px;
+  }
+
+  .item-details-input {
+    font-size: 12px !important;
+    line-height: 1.35;
+  }
+
+  .inventory-list-row {
+    min-height: 72px;
+  }
+
+}
 
 @media (max-width: 600px) {
   .app {
