@@ -343,10 +343,34 @@ body {
   pointer-events: none;
 }
 
+.header-watermark {
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 320px;
+  height: 320px;
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .header-watermark img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+
+  filter:
+    brightness(0.9)
+    sepia(1)
+    hue-rotate(-20deg)
+    saturate(2);
+
+  opacity: 0.5;
 }
 
 .merchant-badges {
@@ -1035,12 +1059,13 @@ button:hover {
   }
 
   .header-watermark {
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 120px;
-    opacity: 0.06;
-  }
+  width: 180px;
+  height: 180px;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.05;
+}
 
   .merchant-badges {
     flex-direction: column;
