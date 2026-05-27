@@ -1193,3 +1193,254 @@ button:hover {
     brightness(1.04);
 
 }
+/* =========================================================
+   SMARTPHONE OPTIMIZATION
+========================================================= */
+
+@media (max-width: 600px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .app {
+    display: block;
+    min-height: 100vh;
+  }
+
+  /* SIDEBAR MOBILE */
+
+  .sidebar {
+    width: 100%;
+    min-height: auto;
+    padding: 18px 14px;
+    border-right: none;
+    border-bottom: 1px solid rgba(156, 96, 28, 0.55);
+  }
+
+  .sidebar-header {
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+  }
+
+  .sidebar-header h1 {
+    font-size: 34px;
+  }
+
+  .sidebar-header p {
+    font-size: 14px;
+  }
+
+  .mode-switch {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .mode-button {
+    min-height: 44px;
+    font-size: 12px;
+  }
+
+  .level-panel {
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+
+  .party-level-display {
+    font-size: 22px;
+  }
+
+  .sidebar .primary-button,
+  .sidebar .secondary-button {
+    min-height: 46px;
+    font-size: 12px;
+  }
+
+  .merchant-list {
+    max-height: 240px;
+    overflow-y: auto;
+  }
+
+  .merchant-button {
+    min-height: 58px;
+  }
+
+  /* MAIN MOBILE */
+
+  .main {
+    padding: 10px;
+  }
+
+  .fantasy-card {
+    padding: 20px 16px;
+  }
+
+  /* HEADER */
+
+  .merchant-header {
+    min-height: auto;
+    padding: 22px 18px;
+  }
+
+  .merchant-header h1 {
+    font-size: 42px;
+    line-height: 1;
+  }
+
+  .merchant-shop-name {
+    font-size: 17px;
+  }
+
+  .merchant-delete {
+    position: static;
+    width: 100%;
+    margin-top: 18px;
+  }
+
+  .header-watermark {
+    display: none;
+  }
+
+  .merchant-badges {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .merchant-badges span {
+    font-size: 14px;
+  }
+
+  /* SCHEDE */
+
+  .merchant-identity-inline,
+  .large-description-grid,
+  .merchant-sheet-footer,
+  .dish-effects-grid,
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  h2 {
+    font-size: 23px;
+  }
+
+  .reading-panel {
+    min-height: auto;
+    padding: 24px 20px;
+  }
+
+  .reading-title {
+    font-size: 22px;
+  }
+
+  .large-reading-textarea {
+    min-height: 260px;
+    font-size: 18px;
+    line-height: 1.65;
+  }
+
+  /* PIATTO */
+
+  .daily-dish-card {
+    padding: 24px 18px;
+  }
+
+  .dish-title-row h2 {
+    font-size: 24px;
+  }
+
+  .dish-name-input {
+    font-size: 23px;
+  }
+
+  .dish-description-input {
+    font-size: 18px;
+  }
+
+  .dish-effect-card textarea {
+    font-size: 18px;
+  }
+
+  /* SERVIZI */
+
+  .service-card {
+    min-height: 76px;
+    padding: 0 18px;
+  }
+
+  .service-name {
+    font-size: 18px;
+  }
+
+  .service-price {
+    font-size: 18px;
+  }
+
+  /* INVENTARIO MOBILE */
+
+  .inventory-card {
+    padding: 24px 14px;
+  }
+
+  .inventory-tabs {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .inventory-tab {
+    min-height: 52px;
+    font-size: 15px;
+  }
+
+  .inventory-list-head {
+    display: none;
+  }
+
+  .inventory-list-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 18px;
+    margin-bottom: 14px;
+    border: 1px solid rgba(156, 96, 28, 0.35);
+    border-radius: 8px;
+    background: rgba(12, 8, 5, 0.72);
+  }
+
+  .item-name-input {
+    font-size: 19px !important;
+  }
+
+  .item-details-input {
+    min-height: 72px;
+    font-size: 14px !important;
+  }
+
+  .item-qty-input,
+  .item-type-input,
+  .item-price-input {
+    text-align: left;
+    font-size: 16px !important;
+  }
+
+  .inventory-delete-button {
+    width: 100%;
+    height: 44px;
+  }
+
+  /* SIDE QUEST */
+
+  .sidequest-card {
+    padding: 24px 18px;
+  }
+
+  .sidequest-main-text {
+    font-size: 18px;
+  }
+
+  .sidequest-reward-title {
+    font-size: 18px;
+  }
+
+  .sidequest-reward-text {
+    font-size: 18px;
+  }
+}
