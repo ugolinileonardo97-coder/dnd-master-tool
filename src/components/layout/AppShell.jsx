@@ -3,10 +3,11 @@ import { MainPanel } from "./MainPanel";
 
 export function AppShell(props) {
   return (
-    <div className="app">
+    <div className="app-shell">
       <Sidebar {...props} />
 
       <MainPanel
+        mode={props.mode}
         selectedMerchant={props.selectedMerchant}
         onDeleteMerchant={props.onDeleteMerchant}
         onUpdateMerchant={props.onUpdateMerchant}

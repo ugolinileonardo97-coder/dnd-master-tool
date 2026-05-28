@@ -16,6 +16,7 @@ export function Sidebar({
   onAddGeneratedMerchant,
 }) {
   const isTavern = mode === "tavern";
+  const isBestiary = mode === "bestiary";
 
   function generateShop() {
     onAddGeneratedMerchant("shop");
@@ -54,7 +55,7 @@ export function Sidebar({
         <p>Assistente Master</p>
       </div>
 
-      <div className="mode-switch">
+      <div className="mode-switch three-modes">
         <button
           className={mode === "shop" ? "mode-button active" : "mode-button"}
           onClick={() => onChangeMode("shop")}
@@ -68,56 +69,69 @@ export function Sidebar({
         >
           🍺 Locande
         </button>
-      </div>
-
-      <div className="panel level-panel">
-        <label>{isTavern ? "Livello Locanda" : "Livello Party"}</label>
-
-        <input
-          type="range"
-          min="1"
-          max="20"
-          value={partyLevel}
-          onChange={(e) => onChangePartyLevel(e.target.value)}
-        />
-
-        <div className="party-level-display">Livello {partyLevel}</div>
-
-        <button className="primary-button" onClick={generateShop}>
-          🎲 Genera Mercante
-        </button>
 
         <button
-          className="primary-button tavern-button"
-          onClick={generateTavern}
+          className={mode === "bestiary" ? "mode-button active" : "mode-button"}
+          onClick={() => onChangeMode("bestiary")}
         >
-          🍺 Genera Locanda
-        </button>
-
-        <button className="secondary-button" onClick={addEmptyShop}>
-          + Mercante Vuoto
-        </button>
-
-        <button className="secondary-button" onClick={addEmptyTavern}>
-          + Locanda Vuota
+          🐉 Bestiario
         </button>
       </div>
 
-      <div className="merchant-list-title">
-        {isTavern ? "Locande" : "Commercianti"}
-      </div>
+      {!isBestiary && (
+        <div className="panel level-panel">
+          <label>{isTavern ? "Livello Locanda" : "Livello Party"}</label>
 
-      <MerchantList
-        merchants={visibleItems}
-        selectedMerchantId={selectedMerchantId}
-        onSelectMerchant={(id) => {
-          const selectedItem = merchants.find((item) => item.id === id);
+          <input
+            type="range"
+            min="1"
+            max="20"
+            value={partyLevel}
+            onChange={(e) => onChangePartyLevel(e.target.value)}
+          />
 
-          if (selectedItem) {
-            selectItem(selectedItem);
-          }
-        }}
-      />
+          <div className="party-level-display">Livello {partyLevel}</div>
+
+          <button className="primary-button" onClick={generateShop}>
+            🎲 Genera Mercante
+          </button>
+
+          <button
+            className="primary-button tavern-button"
+            onClick={generateTavern}
+          >
+            🍺 Genera Locanda
+          </button>
+
+          <button className="secondary-button" onClick={addEmptyShop}>
+            + Mercante Vuoto
+          </button>
+
+          <button className="secondary-button" onClick={addEmptyTavern}>
+            + Locanda Vuota
+          </button>
+        </div>
+      )}
+
+      {!isBestiary && (
+        <>
+          <div className="merchant-list-title">
+            {isTavern ? "Locande" : "Commercianti"}
+          </div>
+
+          <MerchantList
+            merchants={visibleItems}
+            selectedMerchantId={selectedMerchantId}
+            onSelectMerchant={(id) => {
+              const selectedItem = merchants.find((item) => item.id === id);
+
+              if (selectedItem) {
+                selectItem(selectedItem);
+              }
+            }}
+          />
+        </>
+      )}
 
       <div className="sidebar-footer">
         <button className="sidebar-footer-button">⚙ Impostazioni</button>

@@ -3,8 +3,10 @@ import { MerchantBehaviorForm } from "../merchants/MerchantBehaviorForm";
 import { MerchantQuestPanel } from "../merchants/MerchantQuestPanel";
 import { InventoryTable } from "../inventory/InventoryTable";
 import { TavernPanel } from "../tavern/TavernPanel";
+import { BestiaryPanel } from "../bestiary/BestiaryPanel";
 
 export function MainPanel({
+  mode,
   selectedMerchant,
   onDeleteMerchant,
   onUpdateMerchant,
@@ -13,6 +15,16 @@ export function MainPanel({
   onUpdateInventoryItem,
   onDeleteInventoryItem,
 }) {
+  if (mode === "bestiary") {
+    return (
+      <main className="main">
+        <div className="main-inner">
+          <BestiaryPanel />
+        </div>
+      </main>
+    );
+  }
+
   if (!selectedMerchant) {
     return (
       <main className="main">

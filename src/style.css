@@ -71,6 +71,14 @@ body {
   margin-bottom: 22px;
 }
 
+.mode-switch.three-modes {
+  grid-template-columns: 1fr;
+}
+
+.mode-switch.three-modes .mode-button {
+  width: 100%;
+}
+
 .mode-button {
   min-height: 42px;
   border-radius: 8px;
@@ -1656,3 +1664,480 @@ button:hover {
     grid-area: delete;
   }
 }
+/* BESTIARIO */
+
+.bestiary-hero {
+  min-height: 210px;
+  margin-bottom: 14px;
+  padding: 30px;
+  overflow: hidden;
+}
+
+.bestiary-hero-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+}
+
+.bestiary-hero h1 {
+  margin: 0;
+  font-family: "Cinzel", serif;
+  font-size: 52px;
+  line-height: 0.95;
+  font-weight: 800;
+  color: #e5bd74;
+}
+
+.bestiary-hero p {
+  max-width: 760px;
+  margin: 14px 0 0;
+  font-size: 17px;
+  line-height: 1.65;
+  color: #c8a979;
+}
+
+.bestiary-hero-mark {
+  flex: 0 0 auto;
+  font-size: 92px;
+  opacity: 0.2;
+  filter: drop-shadow(0 0 24px rgba(217, 154, 58, 0.25));
+}
+
+.bestiary-list-card {
+  padding: 34px 36px;
+  margin-bottom: 14px;
+}
+
+.bestiary-toolbar {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 180px 180px;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.bestiary-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 0 12px;
+  border: 1px solid rgba(217, 154, 58, 0.25);
+  border-radius: 8px;
+  background: rgba(8, 5, 3, 0.58);
+}
+
+.bestiary-search span {
+  color: #d99a3a;
+}
+
+.bestiary-search input,
+.bestiary-toolbar select {
+  width: 100%;
+  min-width: 0;
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid rgba(217, 154, 58, 0.25);
+  border-radius: 8px;
+  background: rgba(8, 5, 3, 0.58);
+  color: #f1d7a8;
+}
+
+.bestiary-search input {
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+.monster-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(120px, 1fr));
+  gap: 12px;
+}
+
+.monster-card {
+  min-width: 0;
+  min-height: 150px;
+  padding: 14px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(217, 154, 58, 0.22);
+  background:
+    radial-gradient(circle at top, rgba(217, 154, 58, 0.1), transparent 60%),
+    rgba(18, 12, 8, 0.82);
+  color: #f1d7a8;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.monster-card:hover,
+.monster-card.active {
+  border-color: rgba(217, 154, 58, 0.7);
+  background:
+    radial-gradient(circle at top, rgba(217, 154, 58, 0.22), transparent 62%),
+    rgba(28, 18, 10, 0.92);
+  transform: translateY(-1px);
+}
+
+.monster-token-wrap {
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 10px;
+  display: grid;
+  place-items: center;
+}
+
+.monster-token {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 12px rgba(223, 77, 24, 0.3));
+}
+
+.monster-card-text {
+  display: grid;
+  gap: 3px;
+  text-align: center;
+}
+
+.monster-card-level {
+  font-family: "Cinzel", serif;
+  color: #d99a3a;
+  font-weight: 800;
+}
+
+.monster-card-name {
+  max-width: 100%;
+  font-size: 14px;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
+.bestiary-detail {
+  padding: 34px 36px;
+  margin-bottom: 14px;
+}
+
+.bestiary-detail-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.bestiary-detail-actions button {
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(217, 154, 58, 0.32);
+  background: rgba(25, 14, 8, 0.72);
+  color: #d99a3a;
+  font-family: "Cinzel", serif;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.bestiary-detail-main {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: 28px;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.monster-big-token-wrap {
+  width: 174px;
+  height: 174px;
+}
+
+.monster-big-token {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 18px rgba(223, 77, 24, 0.32));
+}
+
+.monster-detail-header {
+  min-width: 0;
+}
+
+.monster-detail-header h2 {
+  margin: 0;
+  font-family: "Cinzel", serif;
+  font-size: 34px;
+  line-height: 1.12;
+  color: #d99a3a;
+}
+
+.monster-detail-header p {
+  margin: 10px 0 16px;
+  color: #b89562;
+  font-style: italic;
+}
+
+.monster-stat-pills,
+.monster-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.monster-stat-pills span,
+.monster-tags span {
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(217, 154, 58, 0.25);
+  background: rgba(8, 5, 3, 0.48);
+  color: #f1d7a8;
+  font-size: 13px;
+}
+
+.monster-tags {
+  margin-top: 10px;
+}
+
+.monster-tags span {
+  color: #d3b176;
+}
+
+.monster-section {
+  margin-top: 24px;
+}
+
+.monster-section h3 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 12px;
+  font-family: "Cinzel", serif;
+  font-size: 16px;
+  color: #d99a3a;
+  text-transform: uppercase;
+}
+
+.monster-section h3::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: rgba(217, 154, 58, 0.22);
+}
+
+.monster-section p {
+  color: #dec89e;
+  line-height: 1.6;
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+.monster-abilities {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+}
+
+.monster-ability {
+  min-height: 72px;
+  border-radius: 8px;
+  border: 1px solid rgba(217, 154, 58, 0.2);
+  background: rgba(8, 5, 3, 0.46);
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.monster-ability span {
+  font-family: "Cinzel", serif;
+  font-size: 12px;
+  color: #d99a3a;
+  font-weight: 800;
+}
+
+.monster-ability strong {
+  display: block;
+  margin-top: 4px;
+  color: #e9d2a8;
+}
+
+.monster-bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+@media (max-width: 600px) {
+  .bestiary-hero {
+    min-height: auto;
+    padding: 24px 18px;
+  }
+
+  .bestiary-hero-content {
+    align-items: flex-start;
+  }
+
+  .bestiary-hero h1 {
+    font-size: 42px;
+  }
+
+  .bestiary-hero-mark {
+    display: none;
+  }
+
+  .bestiary-list-card,
+  .bestiary-detail {
+    padding: 24px 18px;
+  }
+
+  .bestiary-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .monster-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .bestiary-detail-main {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .monster-big-token-wrap {
+    margin: 0 auto;
+  }
+
+  .monster-stat-pills,
+  .monster-tags {
+    justify-content: center;
+  }
+
+  .monster-abilities {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .monster-bottom-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   FIX DEFINITIVO LAYOUT GENERALE
+   - Scroll solo della pagina/browser
+   - Sidebar e contenuto scorrono insieme
+   - Nessuna colonna fixed/sticky
+   - Nessuno scroll interno su sidebar o main
+   - Tablet = desktop
+   - Mobile solo sotto 600px
+   ========================================================= */
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #050302;
+}
+
+.app-shell {
+  width: 100%;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  align-items: start;
+  background:
+    radial-gradient(circle at top, rgba(217, 154, 58, 0.08), transparent 42%),
+    #050302;
+  overflow: visible;
+}
+
+.sidebar {
+  position: relative;
+  top: auto;
+  left: auto;
+  align-self: start;
+  width: 320px;
+  min-width: 320px;
+  min-height: auto;
+  height: auto;
+  overflow: visible;
+  box-sizing: border-box;
+  z-index: 5;
+}
+
+.main {
+  width: 100%;
+  min-width: 0;
+  min-height: auto;
+  height: auto;
+  margin-left: 0;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.main-inner {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 18px;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.bestiary-page {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Evita comportamenti fixed/sticky accidentali nella scheda destra */
+.bestiary-detail {
+  position: relative;
+  top: auto;
+}
+
+/* Evita scroll interni accidentali sulle card principali */
+.fantasy-card,
+.merchant-sheet-card,
+.inventory-card,
+.tavern-rooms-card,
+.daily-dish-card,
+.tavern-services-card,
+.sidequest-card,
+.bestiary-left,
+.bestiary-detail {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* SOLO SMARTPHONE */
+@media (max-width: 600px) {
+  .app-shell {
+    display: block;
+    min-height: 100vh;
+  }
+
+  .sidebar {
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    min-height: auto;
+    overflow: visible;
+  }
+
+  .main {
+    width: 100%;
+    height: auto;
+    min-height: auto;
+    overflow: visible;
+  }
+
+  .main-inner {
+    padding: 12px;
+  }
+}
+
