@@ -25,53 +25,74 @@ export default function App() {
 
   const selectedMerchant =
     merchants.find((merchant) => merchant.id === selectedMerchantId) ||
-    merchants[0];
+    merchants[0] ||
+    null;
 
-  function addGeneratedMerchant() {
-    const newMerchant =
-      mode === "tavern"
-        ? generateTavern(Number(partyLevel))
-        : {
-            ...generateMerchant(Number(partyLevel)),
-            location: "",
-            notes: "",
-            inventory: generateShopInventory(Number(partyLevel)),
-          };
+  function addGeneratedMerchant(targetMode = "shop") {
+    const isTavern = targetMode === "tavern";
 
-    setMerchants((currentMerchants) => [...currentMerchants, newMerchant]);
-    setSelectedMerchantId(newMerchant.id);
+    const newItem = isTavern
+      ? {
+          ...generateTavern(Number(partyLevel)),
+          type: "tavern",
+          inventory: [],
+        }
+      : {
+          ...generateMerchant(Number(partyLevel)),
+          type: "shop",
+          location: "",
+          notes: "",
+          inventory: generateShopInventory(Number(partyLevel)),
+        };
+
+    setMode(targetMode);
+    setMerchants((currentMerchants) => [...currentMerchants, newItem]);
+    setSelectedMerchantId(newItem.id);
   }
 
-  function addMerchant() {
-    const newMerchant = {
+  function addMerchant(targetMode = "shop") {
+    const isTavern = targetMode === "tavern";
+
+    const newItem = {
       id: Date.now(),
-      type: mode,
-      name: mode === "tavern" ? "Nuovo locandiere" : "Nuovo commerciante",
+      type: isTavern ? "tavern" : "shop",
+
+      name: isTavern ? "Nuovo locandiere" : "Nuovo commerciante",
       race: "",
-      shopName: mode === "tavern" ? "Nuova locanda" : "",
+      shopName: isTavern ? "Nuova locanda" : "",
       location: "",
+
       story: "",
       locationDescription: "",
+
       discount: "Basso",
       gold: 100,
-      shopTier: mode === "tavern" ? "Neutrale" : "Povero",
+      shopTier: isTavern ? "Neutrale" : "Povero",
+
       sideQuest: "",
       reward: "",
       notes: "",
+
       inventory: [],
 
-      dishName: mode === "tavern" ? "" : undefined,
-      dishDescription: mode === "tavern" ? "" : undefined,
-      dishBonus: mode === "tavern" ? "" : undefined,
-      dishMalus: mode === "tavern" ? "" : undefined,
-      dishPrice: mode === "tavern" ? "2 ma" : undefined,
-      dishTier: mode === "tavern" ? "Modesto" : undefined,
-      rooms: mode === "tavern" ? [] : undefined,
-      services: mode === "tavern" ? [] : undefined,
+      roomsAvailable: isTavern ? 3 : undefined,
+      roomPrice: isTavern ? "5 ma" : undefined,
+      reputation: isTavern ? "Neutrale" : undefined,
+
+      dishName: isTavern ? "" : undefined,
+      dishDescription: isTavern ? "" : undefined,
+      dishBonus: isTavern ? "" : undefined,
+      dishMalus: isTavern ? "" : undefined,
+      dishPrice: isTavern ? "2 ma" : undefined,
+      dishTier: isTavern ? "Modesto" : undefined,
+
+      rooms: isTavern ? [] : undefined,
+      services: isTavern ? [] : undefined,
     };
 
-    setMerchants((currentMerchants) => [...currentMerchants, newMerchant]);
-    setSelectedMerchantId(newMerchant.id);
+    setMode(targetMode);
+    setMerchants((currentMerchants) => [...currentMerchants, newItem]);
+    setSelectedMerchantId(newItem.id);
   }
 
   function regenerateDescriptions() {
@@ -85,24 +106,33 @@ export default function App() {
           merchant.id === selectedMerchant.id
             ? {
                 ...merchant,
+                type: "tavern",
+
                 story: regeneratedTavern.story,
                 locationDescription: regeneratedTavern.locationDescription,
+
                 sideQuest: regeneratedTavern.sideQuest,
                 reward: regeneratedTavern.reward,
+
                 dishName: regeneratedTavern.dishName,
                 dishDescription: regeneratedTavern.dishDescription,
                 dishBonus: regeneratedTavern.dishBonus,
                 dishMalus: regeneratedTavern.dishMalus,
+                dishPrice: regeneratedTavern.dishPrice,
+                dishTier: regeneratedTavern.dishTier,
+
                 services: regeneratedTavern.services,
+
                 rooms: regeneratedTavern.rooms,
                 roomsAvailable: regeneratedTavern.roomsAvailable,
                 roomPrice: regeneratedTavern.roomPrice,
+
                 reputation: regeneratedTavern.reputation,
                 shopTier: regeneratedTavern.shopTier,
                 discount: regeneratedTavern.discount,
                 gold: regeneratedTavern.gold,
-                dishPrice: regeneratedTavern.dishPrice,
-                dishTier: regeneratedTavern.dishTier,
+
+                inventory: [],
               }
             : merchant
         )
@@ -118,6 +148,7 @@ export default function App() {
         merchant.id === selectedMerchant.id
           ? {
               ...merchant,
+              type: merchant.type === "tavern" ? "tavern" : "shop",
               ...descriptions,
             }
           : merchant
@@ -126,17 +157,25 @@ export default function App() {
   }
 
   function deleteMerchant() {
-    if (merchants.length <= 1) return;
+    if (!selectedMerchant || merchants.length <= 1) return;
 
     const updatedMerchants = merchants.filter(
       (merchant) => merchant.id !== selectedMerchant.id
     );
 
     setMerchants(updatedMerchants);
-    setSelectedMerchantId(updatedMerchants[0].id);
+    setSelectedMerchantId(updatedMerchants[0]?.id || null);
+
+    if (updatedMerchants[0]?.type === "tavern") {
+      setMode("tavern");
+    } else {
+      setMode("shop");
+    }
   }
 
   function updateMerchant(field, value) {
+    if (!selectedMerchant) return;
+
     setMerchants((currentMerchants) =>
       currentMerchants.map((merchant) =>
         merchant.id === selectedMerchant.id
@@ -150,6 +189,8 @@ export default function App() {
   }
 
   function addInventoryItem() {
+    if (!selectedMerchant || selectedMerchant.type === "tavern") return;
+
     const newItem = {
       id: Date.now(),
       category: "Varie",
@@ -157,6 +198,7 @@ export default function App() {
       qty: 1,
       price: "",
       notes: "",
+      rarity: "Comune",
     };
 
     setMerchants((currentMerchants) =>
@@ -164,7 +206,7 @@ export default function App() {
         merchant.id === selectedMerchant.id
           ? {
               ...merchant,
-              inventory: [...merchant.inventory, newItem],
+              inventory: [...(merchant.inventory || []), newItem],
             }
           : merchant
       )
@@ -172,12 +214,14 @@ export default function App() {
   }
 
   function updateInventoryItem(itemId, field, value) {
+    if (!selectedMerchant || selectedMerchant.type === "tavern") return;
+
     setMerchants((currentMerchants) =>
       currentMerchants.map((merchant) =>
         merchant.id === selectedMerchant.id
           ? {
               ...merchant,
-              inventory: merchant.inventory.map((item) =>
+              inventory: (merchant.inventory || []).map((item) =>
                 item.id === itemId
                   ? {
                       ...item,
@@ -192,12 +236,16 @@ export default function App() {
   }
 
   function deleteInventoryItem(itemId) {
+    if (!selectedMerchant || selectedMerchant.type === "tavern") return;
+
     setMerchants((currentMerchants) =>
       currentMerchants.map((merchant) =>
         merchant.id === selectedMerchant.id
           ? {
               ...merchant,
-              inventory: merchant.inventory.filter((item) => item.id !== itemId),
+              inventory: (merchant.inventory || []).filter(
+                (item) => item.id !== itemId
+              ),
             }
           : merchant
       )

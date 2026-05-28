@@ -82,20 +82,17 @@ const sideQuests = [
   {
     quest:
       "Nel seminterrato si sentono rumori durante la notte, ma nessuno osa scendere.",
-    reward:
-      "Una chiave antica trovata sotto il bancone e 50 mo.",
+    reward: "Una chiave antica trovata sotto il bancone e 50 mo.",
   },
   {
     quest:
       "Un ospite incappucciato ha lasciato una borsa sigillata chiedendo di non aprirla fino all’alba.",
-    reward:
-      "Una pozione rara e il favore del locandiere.",
+    reward: "Una pozione rara e il favore del locandiere.",
   },
   {
     quest:
       "Qualcuno sta avvelenando lentamente le botti migliori della cantina.",
-    reward:
-      "Vitto gratuito per una settimana e 75 mo.",
+    reward: "Vitto gratuito per una settimana e 75 mo.",
   },
 ];
 
@@ -116,7 +113,11 @@ const roomNamesByTier = {
   Modesta: ["Stanza Singola", "Stanza Doppia", "Camera del Viandante"],
   Confortevole: ["Camera Privata", "Stanza Doppia", "Camera con Camino"],
   Ricca: ["Suite del Mercante", "Camera Nobile", "Camera Padronale"],
-  Aristocratica: ["Suite Aristocratica", "Appartamento Privato", "Camera del Conte"],
+  Aristocratica: [
+    "Suite Aristocratica",
+    "Appartamento Privato",
+    "Camera del Conte",
+  ],
 };
 
 function randomItem(array) {
@@ -137,10 +138,22 @@ function getRoomCountByLevel(level) {
 }
 
 function getRoomTierPoolByLevel(level) {
-  if (level <= 4) return ["Povera", "Modesta", "Modesta"];
-  if (level <= 8) return ["Modesta", "Confortevole", "Confortevole"];
-  if (level <= 12) return ["Modesta", "Confortevole", "Ricca"];
-  if (level <= 16) return ["Confortevole", "Ricca", "Ricca"];
+  if (level <= 4) {
+    return ["Povera", "Modesta", "Modesta"];
+  }
+
+  if (level <= 8) {
+    return ["Modesta", "Confortevole", "Confortevole"];
+  }
+
+  if (level <= 12) {
+    return ["Modesta", "Confortevole", "Ricca"];
+  }
+
+  if (level <= 16) {
+    return ["Confortevole", "Ricca", "Ricca"];
+  }
+
   return ["Ricca", "Aristocratica", "Aristocratica"];
 }
 
@@ -263,7 +276,8 @@ export function generateTavern(level = 1) {
     gold: getGoldByLevel(numericLevel),
     shopTier: reputation,
 
-    roomsAvailable: rooms.filter((room) => room.status === "Disponibile").length,
+    roomsAvailable: rooms.filter((room) => room.status === "Disponibile")
+      .length,
     roomPrice: getRoomPriceByTier(getRoomTierByLevel(numericLevel)),
     rooms,
 

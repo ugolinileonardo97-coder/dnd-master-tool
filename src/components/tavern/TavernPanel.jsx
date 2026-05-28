@@ -4,44 +4,26 @@ const fallbackRooms = [
   {
     name: "Stanza Singola",
     tier: "Modesta",
-    description: "Minimalista e pulita, perfetta per chi vuole solo dormire in pace",
+    description:
+      "Minimalista e pulita, perfetta per chi vuole solo dormire in pace.",
     status: "Disponibile",
-    price: "4 mo",
-  },
-  {
-    name: "Stanza Singola",
-    tier: "Modesta",
-    description: "Camera con scrivania, scaffale e un candeliere a tre braccia",
-    status: "Disponibile",
-    price: "4 mo",
+    price: "5 ma",
   },
   {
     name: "Stanza Doppia",
     tier: "Modesta",
-    description: "Camera accogliente con un piccolo camino, coperte calde e un tappeto di pelle",
+    description:
+      "Camera accogliente con un piccolo camino, coperte calde e un tappeto di pelle.",
     status: "Disponibile",
-    price: "5 mo",
+    price: "5 ma",
   },
   {
-    name: "Stanza Singola",
-    tier: "Modesta",
-    description: "Letto cigolante, lenzuola pulite ma ruvide, una candela sul comodino",
+    name: "Camera Privata",
+    tier: "Confortevole",
+    description:
+      "Camera con scrivania, scaffale e un candeliere a tre braccia.",
     status: "Disponibile",
-    price: "4 mo",
-  },
-  {
-    name: "Stanza Doppia",
-    tier: "Modesta",
-    description: "Stanza spaziosa con letto a baldacchino e una vasca per lavarsi",
-    status: "Occupata",
-    price: "5 mo",
-  },
-  {
-    name: "Stanza Singola",
-    tier: "Modesta",
-    description: "Camera accogliente con un piccolo camino, coperte calde e un tappeto di pelle",
-    status: "Disponibile",
-    price: "4 mo",
+    price: "8 ma",
   },
 ];
 
@@ -166,19 +148,19 @@ export function TavernPanel({
 
       <section className="daily-dish-card fantasy-card">
         <div className="dish-header-row">
-  <div className="dish-title-row">
-    <img src={dishIcon} className="panel-icon" alt="" />
-    <h2>Piatto del Giorno</h2>
-  </div>
+          <div className="dish-title-row">
+            <img src={dishIcon} className="panel-icon" alt="" />
+            <h2>Piatto del Giorno</h2>
+          </div>
 
-  <div className="dish-price-box">
-    <span>Prezzo</span>
-    <input
-      value={tavern.dishPrice || "5 ma"}
-      onChange={(e) => onUpdateMerchant("dishPrice", e.target.value)}
-    />
-  </div>
-</div>
+          <div className="dish-price-box">
+            <span>Prezzo</span>
+            <input
+              value={tavern.dishPrice || "2 ma"}
+              onChange={(e) => onUpdateMerchant("dishPrice", e.target.value)}
+            />
+          </div>
+        </div>
 
         <div className="dish-divider">✦</div>
 

@@ -18,23 +18,29 @@ export function Sidebar({
   const isTavern = mode === "tavern";
 
   function generateShop() {
-    onChangeMode("shop");
-    setTimeout(() => onAddGeneratedMerchant(), 0);
+    onAddGeneratedMerchant("shop");
   }
 
   function generateTavern() {
-    onChangeMode("tavern");
-    setTimeout(() => onAddGeneratedMerchant(), 0);
+    onAddGeneratedMerchant("tavern");
   }
 
   function addEmptyShop() {
-    onChangeMode("shop");
-    setTimeout(() => onAddMerchant(), 0);
+    onAddMerchant("shop");
   }
 
   function addEmptyTavern() {
-    onChangeMode("tavern");
-    setTimeout(() => onAddMerchant(), 0);
+    onAddMerchant("tavern");
+  }
+
+  function selectItem(item) {
+    onSelectMerchant(item.id);
+
+    if (item.type === "tavern") {
+      onChangeMode("tavern");
+    } else {
+      onChangeMode("shop");
+    }
   }
 
   const visibleItems = merchants.filter((item) =>
@@ -81,7 +87,10 @@ export function Sidebar({
           🎲 Genera Mercante
         </button>
 
-        <button className="primary-button tavern-button" onClick={generateTavern}>
+        <button
+          className="primary-button tavern-button"
+          onClick={generateTavern}
+        >
           🍺 Genera Locanda
         </button>
 
@@ -101,7 +110,13 @@ export function Sidebar({
       <MerchantList
         merchants={visibleItems}
         selectedMerchantId={selectedMerchantId}
-        onSelectMerchant={onSelectMerchant}
+        onSelectMerchant={(id) => {
+          const selectedItem = merchants.find((item) => item.id === id);
+
+          if (selectedItem) {
+            selectItem(selectedItem);
+          }
+        }}
       />
 
       <div className="sidebar-footer">

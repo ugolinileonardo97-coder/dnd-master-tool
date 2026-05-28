@@ -599,9 +599,9 @@ select:focus {
 .inventory-list-head,
 .inventory-list-row {
   display: grid;
-  grid-template-columns: minmax(190px, 240px) minmax(320px, 1fr) 54px 122px minmax(120px, 140px) 42px;
-  align-items: start;
-  column-gap: 18px;
+  grid-template-columns: 1.15fr 2.7fr 70px 130px 110px 58px;
+  align-items: center;
+  column-gap: 22px;
 }
 
 .inventory-list-head {
@@ -615,9 +615,9 @@ select:focus {
 }
 
 .inventory-list-row {
-  min-height: 92px;
-  padding-top: 18px;
-  padding-bottom: 18px;
+  min-height: 82px;
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(156, 96, 28, 0.18);
 }
 
 .inventory-list-row:last-child {
@@ -627,8 +627,6 @@ select:focus {
 .inventory-list-row input,
 .inventory-list-row select,
 .inventory-list-row textarea {
-  width: 100%;
-  min-width: 0;
   border: none;
   background: transparent;
   box-shadow: none;
@@ -644,18 +642,9 @@ select:focus {
 }
 
 .item-name-input {
-  width: 100%;
-  min-width: 0;
-  min-height: 48px;
-  padding-top: 4px;
-  padding-bottom: 4px;
   font-size: 18px !important;
   font-weight: 800;
-  line-height: 1.25;
   color: #f3dfb2 !important;
-  white-space: normal;
-  overflow: visible;
-  text-overflow: clip;
 }
 
 .item-details-input {
@@ -688,14 +677,9 @@ select:focus {
 }
 
 .item-price-input {
-  width: 100%;
-  min-width: 0;
+  font-size: 17px !important;
   font-weight: 800;
-  color: #f0bd4e !important;
-  text-align: left;
-  overflow: hidden;
-  text-overflow: clip;
-  white-space: nowrap;
+  color: #ffcc66 !important;
 }
 
 .inventory-delete-button {
@@ -1040,7 +1024,7 @@ button:hover {
 }
 
 /* SOLO SMARTPHONE */
-@media (max-width: 1100px) and (min-width: 600px) {
+@media (max-width: 1100px) and (min-width: 601px) {
 
   .large-reading-textarea {
     font-size: 17px;
@@ -1085,18 +1069,15 @@ button:hover {
     font-size: 18px;
   }
 
-.item-details-input {
-  width: 100%;
-  min-width: 0;
-  min-height: 64px;
-  height: auto;
-  padding-top: 2px;
-  padding-bottom: 2px;
-  font-size: 13px;
-  line-height: 1.38;
-  resize: none;
-  overflow: hidden;
-  white-space: pre-wrap;
+  .item-details-input {
+    font-size: 12px !important;
+    line-height: 1.35;
+  }
+
+  .inventory-list-row {
+    min-height: 72px;
+  }
+
 }
 
 @media (max-width: 600px) {
@@ -1227,11 +1208,27 @@ button:hover {
   min-height: 0;
   overflow: visible;
 }
-/* CAMERE LOCANDA */
+/* =========================================================
+   PATCH PULITA - D&D SHOP MASTER
+   Mantiene tablet = desktop. Mobile solo max-width: 600px.
+   ========================================================= */
+
+/* Testi descrittivi dinamici senza textarea scrollbar */
+.display-text {
+  white-space: pre-wrap;
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+}
+
+/* =========================================================
+   CAMERE LOCANDA
+   ========================================================= */
 
 .tavern-rooms-card {
   padding: 36px;
   margin-bottom: 14px;
+  overflow: hidden;
 }
 
 .rooms-title-row {
@@ -1252,13 +1249,15 @@ button:hover {
 }
 
 .room-card {
+  width: 100%;
   min-height: 96px;
   padding: 18px 20px;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  border-radius: 6px;
+  border-radius: 8px;
   background: rgba(22, 17, 14, 0.82);
   border: 1px solid rgba(156, 96, 28, 0.18);
 }
@@ -1267,7 +1266,7 @@ button:hover {
   background:
     linear-gradient(90deg, rgba(48, 10, 10, 0.34), rgba(22, 12, 10, 0.82));
   border-color: rgba(130, 37, 37, 0.22);
-  opacity: 0.66;
+  opacity: 0.68;
 }
 
 .room-left {
@@ -1284,12 +1283,10 @@ button:hover {
   margin-top: 9px;
   border-radius: 999px;
   background: #2ecc71;
-  box-shadow: 0 0 12px rgba(46, 204, 113, 0.24);
 }
 
 .room-card.occupied .room-status-dot {
   background: #b94343;
-  box-shadow: 0 0 12px rgba(185, 67, 67, 0.24);
 }
 
 .room-text {
@@ -1299,27 +1296,27 @@ button:hover {
 .room-name-row {
   display: flex;
   align-items: baseline;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
 .room-name {
   font-family: "Cinzel", serif;
-  font-size: 22px;
+  font-size: 21px;
   font-weight: 800;
   color: #f4e6cc;
   text-transform: uppercase;
 }
 
 .room-tier {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   color: #9f8761;
 }
 
 .room-text p {
   margin: 8px 0 0;
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.45;
   color: #b99a6f;
 }
@@ -1328,12 +1325,12 @@ button:hover {
   flex: 0 0 auto;
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 18px;
   white-space: nowrap;
 }
 
 .room-status {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 800;
   color: #36f07d;
 }
@@ -1344,7 +1341,7 @@ button:hover {
 
 .room-price {
   font-family: "Cinzel", serif;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 800;
   color: #d99a3a;
   text-transform: uppercase;
@@ -1357,103 +1354,66 @@ button:hover {
   color: #8f7a62;
 }
 
-@media (max-width: 1100px) and (min-width: 601px) {
-  .room-name {
-    font-size: 19px;
-  }
+/* =========================================================
+   PIATTO DEL GIORNO - PREZZO COMPATTO E DELICATO
+   ========================================================= */
 
-  .room-tier,
-  .room-status,
-  .room-text p {
-    font-size: 15px;
-  }
-
-  .room-price {
-    font-size: 19px;
-  }
-}
-
-@media (max-width: 600px) {
-  .tavern-rooms-card {
-    padding: 24px 18px;
-  }
-
-  .room-card {
-    min-height: auto;
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 14px;
-    padding: 18px;
-  }
-
-  .room-right {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .room-name {
-    font-size: 18px;
-  }
-
-  .room-tier {
-    font-size: 14px;
-  }
-
-  .room-text p {
-    font-size: 15px;
-  }
-
-  .room-status {
-    font-size: 15px;
-  }
-
-  .room-price {
-    font-size: 18px;
-  }
-}
-/* PREZZO PIATTO DEL GIORNO */
-
-.dish-header-row {
+.daily-dish-card .dish-header-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
+  margin-bottom: 18px;
+}
+
+.daily-dish-card .dish-title-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.daily-dish-card .dish-title-row h2 {
+  margin: 0;
 }
 
 .dish-price-box {
-  min-width: 132px;
-  padding: 10px 16px;
-  border-radius: 999px;
-  border: 1px solid rgba(217, 154, 58, 0.42);
+  flex: 0 0 auto;
+  min-width: 128px;
+  padding: 9px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(217, 154, 58, 0.34);
   background:
-    radial-gradient(circle at top, rgba(217, 154, 58, 0.18), transparent 58%),
-    rgba(18, 11, 7, 0.72);
-  box-shadow:
-    inset 0 0 18px rgba(0, 0, 0, 0.42),
-    0 0 18px rgba(217, 154, 58, 0.08);
+    linear-gradient(180deg, rgba(126, 79, 20, 0.18), rgba(24, 14, 8, 0.68)),
+    rgba(16, 10, 7, 0.78);
+  box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.36);
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
 .dish-price-box span {
+  flex: 0 0 auto;
   font-family: "Cinzel", serif;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #9f8761;
+  color: #a98a58;
 }
 
 .dish-price-box input {
   width: 64px;
+  min-width: 64px;
+  height: auto;
   padding: 0;
   border: none;
   background: transparent;
   box-shadow: none;
   font-family: "Cinzel", serif;
-  font-size: 21px;
+  font-size: 19px;
   font-weight: 900;
+  line-height: 1;
   text-align: right;
   text-transform: uppercase;
   color: #d99a3a;
@@ -1462,89 +1422,12 @@ button:hover {
 .dish-price-box input:focus {
   border: none;
   box-shadow: none;
+  outline: none;
 }
 
-@media (max-width: 600px) {
-  .dish-header-row {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .dish-price-box {
-    align-self: flex-start;
-  }
-}
-/* BADGE RARITÀ INVENTARIO - VERSIONE DELICATA */
-
-.item-rarity-cell {
-  min-width: 0;
-  display: flex;
-  align-items: center;
-}
-
-.item-rarity-badge {
-  max-width: 100%;
-  padding: 7px 12px;
-  border-radius: 8px;
-  font-family: "Cinzel", serif;
-  font-size: 11px;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(18, 13, 10, 0.78);
-  box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.34);
-}
-
-.item-rarity-badge.common {
-  color: #7ee29a;
-  border-color: rgba(83, 210, 120, 0.28);
-  background:
-    linear-gradient(180deg, rgba(41, 108, 63, 0.2), rgba(12, 34, 18, 0.42)),
-    rgba(13, 18, 13, 0.72);
-}
-
-.item-rarity-badge.uncommon {
-  color: #7bd8c9;
-  border-color: rgba(92, 210, 195, 0.28);
-  background:
-    linear-gradient(180deg, rgba(35, 101, 97, 0.18), rgba(8, 31, 31, 0.4)),
-    rgba(11, 18, 18, 0.72);
-}
-
-.item-rarity-badge.rare {
-  color: #c7a2f2;
-  border-color: rgba(176, 124, 238, 0.3);
-  background:
-    linear-gradient(180deg, rgba(91, 50, 130, 0.2), rgba(32, 17, 48, 0.42)),
-    rgba(17, 13, 20, 0.72);
-}
-
-.item-rarity-badge.very-rare {
-  color: #e8a0d8;
-  border-color: rgba(226, 113, 202, 0.3);
-  background:
-    linear-gradient(180deg, rgba(125, 45, 105, 0.2), rgba(48, 14, 40, 0.42)),
-    rgba(20, 12, 18, 0.72);
-}
-
-.item-rarity-badge.legendary {
-  color: #e8bd63;
-  border-color: rgba(218, 154, 58, 0.36);
-  background:
-    linear-gradient(180deg, rgba(126, 79, 20, 0.22), rgba(48, 30, 8, 0.44)),
-    rgba(20, 14, 8, 0.76);
-}
-.inventory-list-row .item-qty-input,
-.inventory-list-row .item-rarity-cell,
-.inventory-list-row .item-price-input,
-.inventory-list-row .inventory-delete-button {
-  align-self: center;
-}
-}
-/* INVENTARIO - FIX DEFINITIVO LAYOUT, TESTI LUNGHI, RARITÀ */
+/* =========================================================
+   INVENTARIO - LAYOUT STABILE, NOMI LUNGHI, RARITÀ COLORATE
+   ========================================================= */
 
 .inventory-card {
   overflow: hidden;
@@ -1569,10 +1452,6 @@ button:hover {
     44px;
   align-items: center;
   column-gap: 14px;
-}
-
-.inventory-list-head {
-  padding-right: 0;
 }
 
 .inventory-list-row {
@@ -1704,7 +1583,53 @@ button:hover {
   align-self: center;
 }
 
+/* =========================================================
+   SOLO SMARTPHONE
+   ========================================================= */
+
 @media (max-width: 600px) {
+  .tavern-rooms-card {
+    padding: 24px 18px;
+  }
+
+  .room-card {
+    min-height: auto;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+    padding: 18px;
+  }
+
+  .room-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .room-name {
+    font-size: 18px;
+  }
+
+  .room-tier {
+    font-size: 14px;
+  }
+
+  .room-text p {
+    font-size: 15px;
+  }
+
+  .room-price {
+    font-size: 18px;
+  }
+
+  .daily-dish-card .dish-header-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .dish-price-box {
+    align-self: flex-start;
+  }
+
   .inventory-list-head {
     display: none;
   }
@@ -1725,12 +1650,6 @@ button:hover {
 
   .item-details-input {
     grid-area: details;
-  }
-
-  .item-qty-input,
-  .item-rarity-cell,
-  .item-price-input {
-    align-self: center;
   }
 
   .inventory-delete-button {

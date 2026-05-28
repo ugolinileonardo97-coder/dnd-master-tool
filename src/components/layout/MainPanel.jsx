@@ -50,7 +50,7 @@ export function MainPanel({
             />
 
             <InventoryTable
-              inventory={selectedMerchant.inventory}
+              inventory={selectedMerchant.inventory || []}
               onAddInventoryItem={onAddInventoryItem}
               onUpdateInventoryItem={onUpdateInventoryItem}
               onDeleteInventoryItem={onDeleteInventoryItem}
