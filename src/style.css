@@ -1664,7 +1664,9 @@ button:hover {
     grid-area: delete;
   }
 }
-/* BESTIARIO */
+/* =========================================================
+   BESTIARIO DEI BIOMI
+   ========================================================= */
 
 .bestiary-hero {
   min-height: 210px;
@@ -1690,7 +1692,7 @@ button:hover {
 }
 
 .bestiary-hero p {
-  max-width: 760px;
+  max-width: 860px;
   margin: 14px 0 0;
   font-size: 17px;
   line-height: 1.65;
@@ -1704,16 +1706,115 @@ button:hover {
   filter: drop-shadow(0 0 24px rgba(217, 154, 58, 0.25));
 }
 
-.bestiary-list-card {
+/* BIOMI */
+
+.biome-card {
   padding: 34px 36px;
   margin-bottom: 14px;
 }
 
-.bestiary-toolbar {
+.biome-grid {
   display: grid;
-  grid-template-columns: minmax(260px, 1fr) 180px 180px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
+}
+
+.biome-tile {
+  min-height: 104px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-align: left;
+  border-radius: 8px;
+  border: 1px solid rgba(156, 96, 28, 0.32);
+  background:
+    radial-gradient(circle at top left, rgba(217, 154, 58, 0.1), transparent 58%),
+    rgba(18, 12, 8, 0.78);
+  color: #e7d2aa;
+}
+
+.biome-tile:hover,
+.biome-tile.active {
+  border-color: rgba(217, 154, 58, 0.78);
+  background:
+    radial-gradient(circle at top left, rgba(217, 154, 58, 0.2), transparent 58%),
+    linear-gradient(180deg, rgba(54, 34, 13, 0.92), rgba(18, 12, 8, 0.94));
+}
+
+.biome-icon {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  border: 1px solid rgba(217, 154, 58, 0.22);
+  background: rgba(8, 5, 3, 0.44);
+  font-size: 28px;
+}
+
+.biome-tile strong {
+  display: block;
+  margin-bottom: 6px;
+  font-family: "Cinzel", serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #f1d7a8;
+}
+
+.biome-tile small {
+  display: block;
+  color: #a98f68;
+  font-size: 13px;
+}
+
+/* INCONTRI BIOMA */
+
+.biome-encounters-card {
+  padding: 34px 36px;
+  margin-bottom: 14px;
+}
+
+.biome-selected-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
   margin-bottom: 24px;
+}
+
+.biome-selected-header h2 {
+  margin-bottom: 8px;
+  font-size: 30px;
+}
+
+.biome-selected-header p {
+  max-width: 820px;
+  margin: 0;
+  color: #b99a6f;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.biome-count-pill {
+  flex: 0 0 auto;
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(217, 154, 58, 0.32);
+  background: rgba(8, 5, 3, 0.54);
+  color: #d99a3a;
+  font-family: "Cinzel", serif;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.biome-toolbar {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 190px 190px;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
 .bestiary-search {
@@ -1732,7 +1833,7 @@ button:hover {
 }
 
 .bestiary-search input,
-.bestiary-toolbar select {
+.biome-toolbar select {
   width: 100%;
   min-width: 0;
   height: 42px;
@@ -1749,94 +1850,168 @@ button:hover {
   padding: 0;
 }
 
-.monster-grid {
+.encounter-list {
   display: grid;
-  grid-template-columns: repeat(5, minmax(120px, 1fr));
-  gap: 12px;
+  grid-template-columns: 1fr;
+  gap: 10px;
 }
 
-.monster-card {
-  min-width: 0;
-  min-height: 150px;
-  padding: 14px 10px;
+.encounter-row {
+  width: 100%;
+  min-height: 82px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  text-align: left;
   border-radius: 8px;
-  border: 1px solid rgba(217, 154, 58, 0.22);
-  background:
-    radial-gradient(circle at top, rgba(217, 154, 58, 0.1), transparent 60%),
-    rgba(18, 12, 8, 0.82);
-  color: #f1d7a8;
-  cursor: pointer;
-  transition:
-    border-color 0.2s ease,
-    transform 0.2s ease,
-    background 0.2s ease;
+  border: 1px solid rgba(156, 96, 28, 0.22);
+  background: rgba(18, 12, 8, 0.78);
+  color: #e7d2aa;
 }
 
-.monster-card:hover,
-.monster-card.active {
-  border-color: rgba(217, 154, 58, 0.7);
+.encounter-row:hover,
+.encounter-row.active {
+  border-color: rgba(217, 154, 58, 0.72);
   background:
-    radial-gradient(circle at top, rgba(217, 154, 58, 0.22), transparent 62%),
+    radial-gradient(circle at left, rgba(217, 154, 58, 0.16), transparent 58%),
     rgba(28, 18, 10, 0.92);
-  transform: translateY(-1px);
 }
 
-.monster-token-wrap {
-  width: 88px;
-  height: 88px;
-  margin: 0 auto 10px;
+.encounter-main {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.encounter-icon-wrap {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
   display: grid;
   place-items: center;
+  border-radius: 12px;
+  border: 1px solid rgba(217, 154, 58, 0.22);
+  background: rgba(8, 5, 3, 0.48);
+  overflow: hidden;
 }
 
-.monster-token {
-  width: 100%;
-  height: 100%;
+.encounter-icon-wrap img {
+  width: 92%;
+  height: 92%;
   object-fit: contain;
-  filter: drop-shadow(0 0 12px rgba(223, 77, 24, 0.3));
+  filter: drop-shadow(0 0 10px rgba(223, 77, 24, 0.3));
 }
 
-.monster-card-text {
-  display: grid;
-  gap: 3px;
-  text-align: center;
+.encounter-icon-wrap span {
+  font-size: 27px;
 }
 
-.monster-card-level {
+.encounter-text {
+  min-width: 0;
+}
+
+.encounter-text strong {
+  display: block;
+  margin-bottom: 5px;
   font-family: "Cinzel", serif;
-  color: #d99a3a;
+  font-size: 18px;
   font-weight: 800;
+  color: #f1d7a8;
 }
 
-.monster-card-name {
-  max-width: 100%;
+.encounter-text span {
+  display: block;
+  color: #b99a6f;
   font-size: 14px;
-  line-height: 1.18;
-  overflow-wrap: anywhere;
+  line-height: 1.35;
 }
+
+.encounter-meta {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.difficulty-badge {
+  padding: 7px 11px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: "Cinzel", serif;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.difficulty-badge.simple {
+  color: #83e6a0;
+  border-color: rgba(83, 210, 120, 0.28);
+  background:
+    linear-gradient(180deg, rgba(41, 108, 63, 0.2), rgba(12, 34, 18, 0.42)),
+    rgba(13, 18, 13, 0.72);
+}
+
+.difficulty-badge.easy {
+  color: #7bd8c9;
+  border-color: rgba(92, 210, 195, 0.28);
+  background:
+    linear-gradient(180deg, rgba(35, 101, 97, 0.18), rgba(8, 31, 31, 0.4)),
+    rgba(11, 18, 18, 0.72);
+}
+
+.difficulty-badge.medium {
+  color: #e8bd63;
+  border-color: rgba(218, 154, 58, 0.32);
+  background:
+    linear-gradient(180deg, rgba(126, 79, 20, 0.2), rgba(48, 30, 8, 0.42)),
+    rgba(20, 14, 8, 0.72);
+}
+
+.difficulty-badge.hard {
+  color: #ef9b72;
+  border-color: rgba(239, 125, 78, 0.34);
+  background:
+    linear-gradient(180deg, rgba(138, 58, 28, 0.24), rgba(58, 22, 12, 0.44)),
+    rgba(24, 12, 8, 0.76);
+}
+
+.difficulty-badge.extreme {
+  color: #e8a0d8;
+  border-color: rgba(226, 113, 202, 0.32);
+  background:
+    linear-gradient(180deg, rgba(125, 45, 105, 0.22), rgba(48, 14, 40, 0.44)),
+    rgba(20, 12, 18, 0.76);
+}
+
+.difficulty-badge.boss {
+  color: #ffcf70;
+  border-color: rgba(255, 194, 77, 0.42);
+  background:
+    radial-gradient(circle at top, rgba(255, 199, 87, 0.18), transparent 62%),
+    linear-gradient(180deg, rgba(122, 37, 24, 0.28), rgba(42, 15, 10, 0.56)),
+    rgba(22, 10, 8, 0.82);
+}
+
+.encounter-cr {
+  min-width: 54px;
+  color: #d99a3a;
+  font-family: "Cinzel", serif;
+  font-size: 13px;
+  font-weight: 800;
+  text-align: right;
+}
+
+/* DETTAGLIO MOSTRO */
 
 .bestiary-detail {
   padding: 34px 36px;
   margin-bottom: 14px;
-}
-
-.bestiary-detail-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-bottom: 22px;
-}
-
-.bestiary-detail-actions button {
-  height: 38px;
-  padding: 0 16px;
-  border-radius: 8px;
-  border: 1px solid rgba(217, 154, 58, 0.32);
-  background: rgba(25, 14, 8, 0.72);
-  color: #d99a3a;
-  font-family: "Cinzel", serif;
-  font-size: 12px;
-  font-weight: 800;
 }
 
 .bestiary-detail-main {
@@ -1850,13 +2025,26 @@ button:hover {
 .monster-big-token-wrap {
   width: 174px;
   height: 174px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  border: 1px solid rgba(217, 154, 58, 0.22);
+  background:
+    radial-gradient(circle at top, rgba(217, 154, 58, 0.12), transparent 62%),
+    rgba(8, 5, 3, 0.46);
+  overflow: hidden;
 }
 
 .monster-big-token {
-  width: 100%;
-  height: 100%;
+  width: 94%;
+  height: 94%;
   object-fit: contain;
   filter: drop-shadow(0 0 18px rgba(223, 77, 24, 0.32));
+}
+
+.monster-big-fallback {
+  font-size: 82px;
+  filter: drop-shadow(0 0 18px rgba(217, 154, 58, 0.22));
 }
 
 .monster-detail-header {
@@ -1925,39 +2113,10 @@ button:hover {
 }
 
 .monster-section p {
-  color: #dec89e;
-  line-height: 1.6;
   margin: 0 0 8px;
+  color: #dec89e;
   font-size: 16px;
-}
-
-.monster-abilities {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 10px;
-}
-
-.monster-ability {
-  min-height: 72px;
-  border-radius: 8px;
-  border: 1px solid rgba(217, 154, 58, 0.2);
-  background: rgba(8, 5, 3, 0.46);
-  display: grid;
-  place-items: center;
-  text-align: center;
-}
-
-.monster-ability span {
-  font-family: "Cinzel", serif;
-  font-size: 12px;
-  color: #d99a3a;
-  font-weight: 800;
-}
-
-.monster-ability strong {
-  display: block;
-  margin-top: 4px;
-  color: #e9d2a8;
+  line-height: 1.6;
 }
 
 .monster-bottom-grid {
@@ -1966,6 +2125,7 @@ button:hover {
   gap: 22px;
 }
 
+/* SOLO SMARTPHONE */
 @media (max-width: 600px) {
   .bestiary-hero {
     min-height: auto;
@@ -1977,24 +2137,39 @@ button:hover {
   }
 
   .bestiary-hero h1 {
-    font-size: 42px;
+    font-size: 40px;
   }
 
   .bestiary-hero-mark {
     display: none;
   }
 
-  .bestiary-list-card,
+  .biome-card,
+  .biome-encounters-card,
   .bestiary-detail {
     padding: 24px 18px;
   }
 
-  .bestiary-toolbar {
+  .biome-grid {
     grid-template-columns: 1fr;
   }
 
-  .monster-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .biome-selected-header {
+    flex-direction: column;
+  }
+
+  .biome-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .encounter-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .encounter-meta {
+    width: 100%;
+    justify-content: space-between;
   }
 
   .bestiary-detail-main {
@@ -2009,10 +2184,6 @@ button:hover {
   .monster-stat-pills,
   .monster-tags {
     justify-content: center;
-  }
-
-  .monster-abilities {
-    grid-template-columns: repeat(3, 1fr);
   }
 
   .monster-bottom-grid {
@@ -2139,5 +2310,31 @@ body {
   .main-inner {
     padding: 12px;
   }
+}
+/* FIX BIOMI - TESTI LUNGHI CHE SBORDANO */
+
+.biome-tile {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.biome-tile > div {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.biome-tile strong {
+  max-width: 100%;
+  line-height: 1.15;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.biome-tile small {
+  max-width: 100%;
+  line-height: 1.25;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
