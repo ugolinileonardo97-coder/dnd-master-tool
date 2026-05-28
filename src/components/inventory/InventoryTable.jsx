@@ -8,6 +8,32 @@ const categories = [
   { key: "Varie", label: "🎒 Varie" },
 ];
 
+function getRarityLabel(item) {
+  return item.rarity || "Comune";
+}
+
+function getRarityClass(rarity) {
+  const normalized = String(rarity || "Comune").toLowerCase();
+
+  if (normalized.includes("leggendaria") || normalized.includes("leggendario")) {
+    return "legendary";
+  }
+
+  if (normalized.includes("molto rara") || normalized.includes("molto raro")) {
+    return "very-rare";
+  }
+
+  if (normalized.includes("rara") || normalized.includes("raro")) {
+    return "rare";
+  }
+
+  if (normalized.includes("non comune")) {
+    return "uncommon";
+  }
+
+  return "common";
+}
+
 export function InventoryTable({
   inventory = [],
   onAddInventoryItem,
@@ -69,7 +95,7 @@ export function InventoryTable({
           <span>Nome</span>
           <span>Dettagli</span>
           <span>Q.tà</span>
-          <span>Tipo</span>
+          <span>Rarità</span>
           <span>Prezzo</span>
           <span></span>
         </div>
@@ -79,63 +105,60 @@ export function InventoryTable({
             Nessun oggetto in questa categoria.
           </div>
         ) : (
-          filteredInventory.map((item) => (
-            <div className="inventory-list-row" key={item.id}>
-              <input
-                className="item-name-input"
-                value={item.name || ""}
-                onChange={(e) =>
-                  onUpdateInventoryItem(item.id, "name", e.target.value)
-                }
-              />
+          filteredInventory.map((item) => {
+            const rarity = getRarityLabel(item);
+            const rarityClass = getRarityClass(rarity);
 
-              <textarea
-                className="item-details-input"
-                value={item.notes || item.description || ""}
-                onChange={(e) =>
-                  onUpdateInventoryItem(item.id, "notes", e.target.value)
-                }
-              />
+            return (
+              <div className="inventory-list-row" key={item.id}>
+                <textarea
+                  className="item-name-input"
+                  value={item.name || ""}
+                  onChange={(e) =>
+                    onUpdateInventoryItem(item.id, "name", e.target.value)
+                  }
+                />
 
-              <input
-                className="item-qty-input"
-                type="number"
-                value={item.qty || 1}
-                onChange={(e) =>
-                  onUpdateInventoryItem(item.id, "qty", e.target.value)
-                }
-              />
+                <textarea
+                  className="item-details-input"
+                  value={item.notes || item.description || ""}
+                  onChange={(e) =>
+                    onUpdateInventoryItem(item.id, "notes", e.target.value)
+                  }
+                />
 
-              <select
-                className="item-type-input"
-                value={item.category || "Varie"}
-                onChange={(e) =>
-                  onUpdateInventoryItem(item.id, "category", e.target.value)
-                }
-              >
-                <option>Armi</option>
-                <option>Armature</option>
-                <option>Pozioni</option>
-                <option>Oggetti</option>
-                <option>Varie</option>
-              </select>
+                <input
+                  className="item-qty-input"
+                  type="number"
+                  value={item.qty || 1}
+                  onChange={(e) =>
+                    onUpdateInventoryItem(item.id, "qty", e.target.value)
+                  }
+                />
 
-              <input
-                className="item-price-input"
-                value={item.price || ""}
-                onChange={(e) =>
-                  onUpdateInventoryItem(item.id, "price", e.target.value)
-                }
-              />
+                <div className="item-rarity-cell">
+                  <span className={`item-rarity-badge ${rarityClass}`}>
+                    {rarity}
+                  </span>
+                </div>
 
-              <button
-                className="icon-button inventory-delete-button"
-                onClick={() => onDeleteInventoryItem(item.id)}
-              >
-                ✕
-              </button>
-            </div>
-          ))
+                <input
+                  className="item-price-input"
+                  value={item.price || ""}
+                  onChange={(e) =>
+                    onUpdateInventoryItem(item.id, "price", e.target.value)
+                  }
+                />
+
+                <button
+                  className="icon-button inventory-delete-button"
+                  onClick={() => onDeleteInventoryItem(item.id)}
+                >
+                  ✕
+                </button>
+              </div>
+            );
+          })
         )}
       </div>
     </section>
