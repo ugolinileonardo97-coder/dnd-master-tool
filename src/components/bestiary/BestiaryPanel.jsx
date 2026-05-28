@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { biomes } from "../../data/biomes";
 import { biomeMonsters } from "../../data/biomeMonsters";
+import { getMonsterCombatProfile } from "../../data/monsterCombatProfiles";
 
 function normalizeText(value) {
   return String(value || "").toLowerCase();
@@ -59,11 +60,15 @@ export function BestiaryPanel() {
     const searchValue = normalizeText(search);
 
     return biomeEncounters.filter((monster) => {
+      const combat = getMonsterCombatProfile(monster);
+
       const matchesSearch =
         normalizeText(monster.name).includes(searchValue) ||
         normalizeText(monster.type).includes(searchValue) ||
         normalizeText(monster.role).includes(searchValue) ||
-        normalizeText(monster.tags?.join(" ")).includes(searchValue);
+        normalizeText(monster.tags?.join(" ")).includes(searchValue) ||
+        normalizeText(combat.damage).includes(searchValue) ||
+        normalizeText(combat.damageType).includes(searchValue);
 
       const matchesDifficulty =
         difficultyFilter === "all" ||
@@ -80,6 +85,10 @@ export function BestiaryPanel() {
     biomeMonsters.find((monster) => monster.id === selectedMonsterId) ||
     filteredEncounters[0] ||
     biomeEncounters[0];
+
+  const selectedCombat = selectedMonster
+    ? getMonsterCombatProfile(selectedMonster)
+    : null;
 
   function selectBiome(biomeId) {
     setSelectedBiomeId(biomeId);
@@ -157,7 +166,7 @@ export function BestiaryPanel() {
             <span>⌕</span>
             <input
               value={search}
-              placeholder="Cerca mostro, ruolo o tag..."
+              placeholder="Cerca mostro, danno, ruolo o tag..."
               onChange={(event) => setSearch(event.target.value)}
             />
           </div>
@@ -191,6 +200,7 @@ export function BestiaryPanel() {
         <div className="encounter-list">
           {filteredEncounters.map((monster) => {
             const difficultyClass = getDifficultyClass(monster.difficulty);
+            const combat = getMonsterCombatProfile(monster);
 
             return (
               <button
@@ -216,12 +226,18 @@ export function BestiaryPanel() {
                     <span>
                       {monster.type} · {monster.role} · CR {monster.cr}
                     </span>
+                    <span className="encounter-damage-line">
+                      Danno: {combat.damage} {combat.damageType}
+                    </span>
                   </div>
                 </div>
 
                 <div className="encounter-meta">
                   <span className={`difficulty-badge ${difficultyClass}`}>
                     {monster.difficulty}
+                  </span>
+                  <span className="damage-pill">
+                    DMG {combat.averageDamage}
                   </span>
                   <span className="encounter-cr">CR {monster.cr}</span>
                 </div>
@@ -231,7 +247,7 @@ export function BestiaryPanel() {
         </div>
       </section>
 
-      {selectedMonster && (
+      {selectedMonster && selectedCombat && (
         <section className="bestiary-detail fantasy-card">
           <div className="bestiary-detail-main">
             <div className="monster-big-token-wrap">
@@ -272,6 +288,34 @@ export function BestiaryPanel() {
                 ))}
               </div>
             </div>
+          </div>
+
+          <div className="monster-damage-panel">
+            <div className="monster-damage-title">Danno</div>
+
+            <div className="monster-damage-grid">
+              <div>
+                <span>Bonus al colpire</span>
+                <strong>{selectedCombat.attackBonus}</strong>
+              </div>
+
+              <div>
+                <span>Dado danno</span>
+                <strong>{selectedCombat.damage}</strong>
+              </div>
+
+              <div>
+                <span>Danno medio</span>
+                <strong>{selectedCombat.averageDamage}</strong>
+              </div>
+
+              <div>
+                <span>Tipo</span>
+                <strong>{selectedCombat.damageType}</strong>
+              </div>
+            </div>
+
+            <p>{selectedCombat.damageNote}</p>
           </div>
 
           <div className="monster-section">

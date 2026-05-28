@@ -2337,4 +2337,97 @@ body {
   white-space: normal;
   overflow-wrap: anywhere;
 }
+/* =========================================================
+   BESTIARIO - DANNO CHIARO MOSTRI
+   ========================================================= */
+
+.encounter-damage-line {
+  margin-top: 4px;
+  color: #d8b982 !important;
+  font-size: 13px !important;
+}
+
+.damage-pill {
+  min-width: 66px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(217, 154, 58, 0.28);
+  background:
+    linear-gradient(180deg, rgba(82, 44, 16, 0.28), rgba(20, 12, 7, 0.52)),
+    rgba(10, 6, 4, 0.72);
+  color: #f0bd4e;
+  font-family: "Cinzel", serif;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.monster-damage-panel {
+  margin: 22px 0 4px;
+  padding: 22px 24px;
+  border-radius: 8px;
+  border: 1px solid rgba(217, 154, 58, 0.28);
+  background:
+    radial-gradient(circle at top left, rgba(217, 154, 58, 0.12), transparent 48%),
+    linear-gradient(180deg, rgba(35, 22, 12, 0.88), rgba(12, 8, 5, 0.96));
+}
+
+.monster-damage-title {
+  margin-bottom: 16px;
+  font-family: "Cinzel", serif;
+  font-size: 20px;
+  font-weight: 900;
+  color: #d99a3a;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.monster-damage-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.monster-damage-grid div {
+  min-height: 76px;
+  padding: 13px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(217, 154, 58, 0.18);
+  background: rgba(8, 5, 3, 0.48);
+}
+
+.monster-damage-grid span {
+  display: block;
+  margin-bottom: 8px;
+  color: #a98f68;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.monster-damage-grid strong {
+  display: block;
+  color: #f0d8aa;
+  font-family: "Cinzel", serif;
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.monster-damage-panel p {
+  margin: 16px 0 0;
+  color: #d8bf96;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .encounter-meta {
+    flex-wrap: wrap;
+  }
+
+  .monster-damage-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
 
