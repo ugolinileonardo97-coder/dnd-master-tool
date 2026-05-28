@@ -30,7 +30,7 @@ export default function App() {
   function addGeneratedMerchant() {
     const newMerchant =
       mode === "tavern"
-       ? generateTavern(Number(partyLevel))
+        ? generateTavern(Number(partyLevel))
         : {
             ...generateMerchant(Number(partyLevel)),
             location: "",
@@ -60,13 +60,13 @@ export default function App() {
       notes: "",
       inventory: [],
 
-      roomsAvailable: mode === "tavern" ? 3 : undefined,
-      roomPrice: mode === "tavern" ? "2 mo a notte" : undefined,
-      reputation: mode === "tavern" ? "Neutrale" : undefined,
       dishName: mode === "tavern" ? "" : undefined,
       dishDescription: mode === "tavern" ? "" : undefined,
       dishBonus: mode === "tavern" ? "" : undefined,
       dishMalus: mode === "tavern" ? "" : undefined,
+      dishPrice: mode === "tavern" ? "2 ma" : undefined,
+      dishTier: mode === "tavern" ? "Modesto" : undefined,
+      rooms: mode === "tavern" ? [] : undefined,
       services: mode === "tavern" ? [] : undefined,
     };
 
@@ -75,47 +75,41 @@ export default function App() {
   }
 
   function regenerateDescriptions() {
-    function regenerateDescriptions() {
-  if (!selectedMerchant) return;
+    if (!selectedMerchant) return;
 
-  const regenerated =
-    selectedMerchant.type === "tavern"
-      ? generateTavern(Number(partyLevel))
-      : {
-          ...selectedMerchant,
-          ...generateMerchantDescriptions(selectedMerchant),
-        };
+    if (selectedMerchant.type === "tavern") {
+      const regeneratedTavern = generateTavern(Number(partyLevel));
 
-  setMerchants((currentMerchants) =>
-    currentMerchants.map((merchant) =>
-      merchant.id === selectedMerchant.id
-        ? {
-            ...merchant,
-            story: regenerated.story,
-            locationDescription: regenerated.locationDescription,
-            sideQuest: regenerated.sideQuest,
-            reward: regenerated.reward,
+      setMerchants((currentMerchants) =>
+        currentMerchants.map((merchant) =>
+          merchant.id === selectedMerchant.id
+            ? {
+                ...merchant,
+                story: regeneratedTavern.story,
+                locationDescription: regeneratedTavern.locationDescription,
+                sideQuest: regeneratedTavern.sideQuest,
+                reward: regeneratedTavern.reward,
+                dishName: regeneratedTavern.dishName,
+                dishDescription: regeneratedTavern.dishDescription,
+                dishBonus: regeneratedTavern.dishBonus,
+                dishMalus: regeneratedTavern.dishMalus,
+                services: regeneratedTavern.services,
+                rooms: regeneratedTavern.rooms,
+                roomsAvailable: regeneratedTavern.roomsAvailable,
+                roomPrice: regeneratedTavern.roomPrice,
+                reputation: regeneratedTavern.reputation,
+                shopTier: regeneratedTavern.shopTier,
+                discount: regeneratedTavern.discount,
+                gold: regeneratedTavern.gold,
+                dishPrice: regeneratedTavern.dishPrice,
+                dishTier: regeneratedTavern.dishTier,
+              }
+            : merchant
+        )
+      );
 
-            ...(selectedMerchant.type === "tavern"
-              ? {
-                  dishName: regenerated.dishName,
-                  dishDescription: regenerated.dishDescription,
-                  dishBonus: regenerated.dishBonus,
-                  dishMalus: regenerated.dishMalus,
-                  services: regenerated.services,
-                  roomsAvailable: regenerated.roomsAvailable,
-                  roomPrice: regenerated.roomPrice,
-                  reputation: regenerated.reputation,
-                  shopTier: regenerated.shopTier,
-                  discount: regenerated.discount,
-                  gold: regenerated.gold,
-                }
-              : {}),
-          }
-        : merchant
-    )
-  );
-}
+      return;
+    }
 
     const descriptions = generateMerchantDescriptions(selectedMerchant);
 

@@ -56,22 +56,18 @@ export function MerchantBehaviorForm({
       <div className="large-description-grid">
         <article className="reading-panel">
           <div className="reading-title">🏬 Descrizione Shop</div>
-          <textarea
-            className="large-reading-textarea"
-            value={merchant.locationDescription || ""}
-            onChange={(e) =>
-              onUpdateMerchant("locationDescription", e.target.value)
-            }
-          />
+
+          <div className="large-reading-textarea display-text">
+            {merchant.locationDescription || ""}
+          </div>
         </article>
 
         <article className="reading-panel">
           <div className="reading-title">🧙 Descrizione Mercante</div>
-          <textarea
-            className="large-reading-textarea"
-            value={merchant.story || ""}
-            onChange={(e) => onUpdateMerchant("story", e.target.value)}
-          />
+
+          <div className="large-reading-textarea display-text">
+            {merchant.story || ""}
+          </div>
         </article>
       </div>
 

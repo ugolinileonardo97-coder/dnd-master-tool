@@ -13,7 +13,15 @@ import {
   dishMaluses,
 } from "../data/generationPools/tavernPools";
 
-import { tavernReputations, tavernServices } from "../data/tavernData";
+import { tavernServices } from "../data/tavernData";
+
+import {
+  getDishPriceByLevel,
+  getDishTierByLevel,
+  getRoomPriceByTier,
+  getRoomTierByLevel,
+  randomNumber,
+} from "../data/pricingRules";
 
 const races = [
   "Umano",
@@ -91,12 +99,28 @@ const sideQuests = [
   },
 ];
 
+const roomDescriptions = [
+  "Minimalista e pulita, perfetta per chi vuole solo dormire in pace.",
+  "Camera con scrivania, scaffale e un candeliere a tre braccia.",
+  "Camera accogliente con un piccolo camino, coperte calde e un tappeto di pelle.",
+  "Letto cigolante, lenzuola pulite ma ruvide, una candela sul comodino.",
+  "Stanza spaziosa con letto a baldacchino e una vasca per lavarsi.",
+  "Camera ordinata, con baule ai piedi del letto e una brocca d’acqua fresca.",
+  "Stanza profumata di cera, legno antico e lavanda secca.",
+  "Una piccola stanza calda, con travi scure e una finestra sulla strada.",
+];
+
+const roomNamesByTier = {
+  Squallida: ["Pagliericcio", "Stanza Umida", "Branda Comune"],
+  Povera: ["Stanza Comune", "Stanza Stretta", "Branda del Viandante"],
+  Modesta: ["Stanza Singola", "Stanza Doppia", "Camera del Viandante"],
+  Confortevole: ["Camera Privata", "Stanza Doppia", "Camera con Camino"],
+  Ricca: ["Suite del Mercante", "Camera Nobile", "Camera Padronale"],
+  Aristocratica: ["Suite Aristocratica", "Appartamento Privato", "Camera del Conte"],
+};
+
 function randomItem(array) {
   return array[Math.floor(Math.random() * array.length)];
-}
-
-function randomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 function buildTavernName() {
@@ -104,12 +128,50 @@ function buildTavernName() {
   return pattern.join(" ");
 }
 
+function getRoomCountByLevel(level) {
+  if (level <= 4) return randomNumber(3, 5);
+  if (level <= 8) return randomNumber(4, 6);
+  if (level <= 12) return randomNumber(5, 7);
+  if (level <= 16) return randomNumber(6, 8);
+  return randomNumber(7, 10);
+}
+
+function getRoomTierPoolByLevel(level) {
+  if (level <= 4) return ["Povera", "Modesta", "Modesta"];
+  if (level <= 8) return ["Modesta", "Confortevole", "Confortevole"];
+  if (level <= 12) return ["Modesta", "Confortevole", "Ricca"];
+  if (level <= 16) return ["Confortevole", "Ricca", "Ricca"];
+  return ["Ricca", "Aristocratica", "Aristocratica"];
+}
+
+function buildRooms(level) {
+  const roomCount = getRoomCountByLevel(level);
+  const tierPool = getRoomTierPoolByLevel(level);
+
+  return Array.from({ length: roomCount }, () => {
+    const tier = randomItem(tierPool);
+    const name = randomItem(roomNamesByTier[tier] || roomNamesByTier.Modesta);
+    const isOccupied = Math.random() < 0.25;
+
+    return {
+      name,
+      tier,
+      description: randomItem(roomDescriptions),
+      status: isOccupied ? "Occupata" : "Disponibile",
+      price: getRoomPriceByTier(tier),
+    };
+  });
+}
+
 function randomServices(level) {
   const serviceCount =
-    level <= 5 ? randomNumber(2, 3) :
-    level <= 10 ? randomNumber(3, 4) :
-    level <= 15 ? randomNumber(4, 5) :
-    randomNumber(5, 6);
+    level <= 5
+      ? randomNumber(2, 3)
+      : level <= 10
+        ? randomNumber(3, 4)
+        : level <= 15
+          ? randomNumber(4, 5)
+          : randomNumber(5, 6);
 
   return [...tavernServices]
     .sort(() => Math.random() - 0.5)
@@ -139,13 +201,6 @@ function getGoldByLevel(level) {
   return randomNumber(1400, 3000);
 }
 
-function getRoomPriceByLevel(level) {
-  if (level <= 5) return `${randomNumber(5, 15)} ma a notte`;
-  if (level <= 10) return `${randomNumber(1, 4)} mo a notte`;
-  if (level <= 15) return `${randomNumber(5, 12)} mo a notte`;
-  return `${randomNumber(15, 40)} mo a notte`;
-}
-
 function buildInnkeeperDescription(name, race, personality) {
   return (
     `${name} è un ${race.toLowerCase()} ${personality}. ` +
@@ -166,12 +221,16 @@ function buildTavernDescription(tavernName, reputation) {
   );
 }
 
-function buildDish() {
+function buildDish(level) {
+  const tier = getDishTierByLevel(level);
+
   return {
     name: randomItem(dishNames),
     description: randomItem(dishDescriptions),
     bonus: randomItem(dishBonuses),
     malus: randomItem(dishMaluses),
+    tier,
+    price: getDishPriceByLevel(level),
   };
 }
 
@@ -182,7 +241,8 @@ export function generateTavern(level = 1) {
   const tavernName = buildTavernName();
   const reputation = getReputationByLevel(numericLevel);
   const personality = randomItem(personalities);
-  const dish = buildDish();
+  const dish = buildDish(numericLevel);
+  const rooms = buildRooms(numericLevel);
 
   const hasSideQuest = Math.random() > 0.35;
   const quest = hasSideQuest ? randomItem(sideQuests) : null;
@@ -203,13 +263,16 @@ export function generateTavern(level = 1) {
     gold: getGoldByLevel(numericLevel),
     shopTier: reputation,
 
-    roomsAvailable: randomNumber(3, 10),
-    roomPrice: getRoomPriceByLevel(numericLevel),
+    roomsAvailable: rooms.filter((room) => room.status === "Disponibile").length,
+    roomPrice: getRoomPriceByTier(getRoomTierByLevel(numericLevel)),
+    rooms,
 
     dishName: dish.name,
     dishDescription: dish.description,
     dishBonus: dish.bonus,
     dishMalus: dish.malus,
+    dishTier: dish.tier,
+    dishPrice: dish.price,
 
     services: randomServices(numericLevel),
 

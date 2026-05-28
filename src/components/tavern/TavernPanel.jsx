@@ -1,10 +1,57 @@
 import dishIcon from "../../assets/dish_icon.png";
 
+const fallbackRooms = [
+  {
+    name: "Stanza Singola",
+    tier: "Modesta",
+    description: "Minimalista e pulita, perfetta per chi vuole solo dormire in pace",
+    status: "Disponibile",
+    price: "4 mo",
+  },
+  {
+    name: "Stanza Singola",
+    tier: "Modesta",
+    description: "Camera con scrivania, scaffale e un candeliere a tre braccia",
+    status: "Disponibile",
+    price: "4 mo",
+  },
+  {
+    name: "Stanza Doppia",
+    tier: "Modesta",
+    description: "Camera accogliente con un piccolo camino, coperte calde e un tappeto di pelle",
+    status: "Disponibile",
+    price: "5 mo",
+  },
+  {
+    name: "Stanza Singola",
+    tier: "Modesta",
+    description: "Letto cigolante, lenzuola pulite ma ruvide, una candela sul comodino",
+    status: "Disponibile",
+    price: "4 mo",
+  },
+  {
+    name: "Stanza Doppia",
+    tier: "Modesta",
+    description: "Stanza spaziosa con letto a baldacchino e una vasca per lavarsi",
+    status: "Occupata",
+    price: "5 mo",
+  },
+  {
+    name: "Stanza Singola",
+    tier: "Modesta",
+    description: "Camera accogliente con un piccolo camino, coperte calde e un tappeto di pelle",
+    status: "Disponibile",
+    price: "4 mo",
+  },
+];
+
 export function TavernPanel({
   tavern,
   onUpdateMerchant,
   onRegenerateDescriptions,
 }) {
+  const rooms = tavern.rooms?.length ? tavern.rooms : fallbackRooms;
+
   return (
     <>
       <section className="merchant-sheet-card fantasy-card">
@@ -77,11 +124,61 @@ export function TavernPanel({
         </div>
       </section>
 
-      <section className="daily-dish-card fantasy-card">
-        <div className="dish-title-row">
-          <img src={dishIcon} className="panel-icon" alt="" />
-          <h2>Piatto del Giorno</h2>
+      <section className="tavern-rooms-card fantasy-card">
+        <div className="rooms-title-row">
+          <div className="card-icon">🛏️</div>
+          <h2>Camere Disponibili</h2>
         </div>
+
+        <div className="dish-divider">✦</div>
+
+        <div className="rooms-list">
+          {rooms.map((room, index) => {
+            const isOccupied = room.status === "Occupata";
+
+            return (
+              <article
+                className={`room-card ${isOccupied ? "occupied" : "available"}`}
+                key={`${room.name}-${room.description}-${index}`}
+              >
+                <div className="room-left">
+                  <span className="room-status-dot" />
+
+                  <div className="room-text">
+                    <div className="room-name-row">
+                      <span className="room-name">{room.name}</span>
+                      <span className="room-tier">({room.tier})</span>
+                    </div>
+
+                    <p>{room.description}</p>
+                  </div>
+                </div>
+
+                <div className="room-right">
+                  <span className="room-status">{room.status}</span>
+                  <span className="room-price">{room.price}</span>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="daily-dish-card fantasy-card">
+        <div className="dish-header-row">
+  <div className="dish-title-row">
+    <img src={dishIcon} className="panel-icon" alt="" />
+    <h2>Piatto del Giorno</h2>
+  </div>
+
+  <div className="dish-price-box">
+    <span>Prezzo</span>
+    <input
+      value={tavern.dishPrice || "5 ma"}
+      onChange={(e) => onUpdateMerchant("dishPrice", e.target.value)}
+    />
+  </div>
+</div>
 
         <div className="dish-divider">✦</div>
 

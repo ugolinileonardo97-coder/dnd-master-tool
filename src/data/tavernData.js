@@ -47,33 +47,51 @@ export const dishes = [
 export const tavernServices = [
   {
     name: "Bagno caldo privato",
-    price: "3 mo",
+    price: "3 ma",
     description:
-      "Una tinozza di acqua calda, oli profumati e un’ora di privacy.",
+      "Una tinozza di acqua calda, sapone ruvido, oli semplici e un’ora di privacy.",
   },
   {
     name: "Massaggio rilassante",
-    price: "5 mo",
+    price: "8 ma",
     description:
-      "Scioglie la tensione del viaggio e aiuta il recupero fisico.",
+      "Scioglie la tensione del viaggio e aiuta il recupero fisico dopo una lunga marcia.",
   },
   {
     name: "Compagnia riservata",
-    price: "15 mo",
+    price: "2 mo",
     description:
       "Intrattenimento elegante e discreto per chi cerca conversazione, musica o compagnia privata.",
   },
   {
     name: "Stalla e cura cavalcatura",
-    price: "2 mo",
+    price: "5 ma",
     description:
-      "Foraggio, pulizia e custodia sicura per una cavalcatura.",
+      "Foraggio, pulizia e custodia sicura per una cavalcatura per una notte.",
   },
   {
     name: "Sala privata",
-    price: "10 mo",
+    price: "1 mo",
     description:
       "Una stanza isolata per accordi, incontri segreti o discussioni lontane da orecchie indiscrete.",
+  },
+  {
+    name: "Lavaggio abiti",
+    price: "2 ma",
+    description:
+      "Abiti lavati, asciugati vicino al fuoco e ripiegati entro la mattina seguente.",
+  },
+  {
+    name: "Curatore locale",
+    price: "5 mo",
+    description:
+      "Un cerusico, speziale o chierico minore viene chiamato alla locanda per trattare ferite leggere.",
+  },
+  {
+    name: "Informazioni discrete",
+    price: "3 mo",
+    description:
+      "Il locandiere fa qualche domanda alle persone giuste senza attirare troppa attenzione.",
   },
 ];
 
