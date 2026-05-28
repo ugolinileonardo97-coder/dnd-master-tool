@@ -23,6 +23,14 @@ export const swampMonsters = [
       "Attacca dalle fessure, circonda, fugge nella melma e ritorna quando sente odore di sangue.",
     resistances: "Nessuna",
     vulnerabilities: "Danni ad area",
+    combat: {
+      attackBonus: "+4",
+      damage: "1d4 + 2",
+      averageDamage: 4,
+      damageType: "perforanti",
+      damageNote:
+        "Morso rapido. In branco diventa pericoloso contro bersagli caduti o separati.",
+    },
   },
   {
     id: "swamp-002",
@@ -47,9 +55,49 @@ export const swampMonsters = [
       "Attacca chi entra in acqua, si attacca al bersaglio più pesante e cerca di trascinarlo sotto.",
     resistances: "Veleno naturale",
     vulnerabilities: "Sale, fuoco",
+    combat: {
+      attackBonus: "+4",
+      damage: "1d6 + 2",
+      averageDamage: 5,
+      damageType: "perforanti",
+      damageNote:
+        "Morso aderente. Se resta attaccata, può infliggere danno continuato e disturbare il movimento.",
+    },
   },
   {
     id: "swamp-003",
+    name: "Sciame di Zanzare Cremisi",
+    biomes: ["swamp"],
+    difficulty: "Semplice",
+    cr: "1/2",
+    type: "Bestia",
+    role: "Sciame",
+    icon: "🦟",
+    armorClass: 13,
+    hitPoints: 30,
+    speed: "10 ft., volo 30 ft.",
+    tags: ["Sciame", "Sangue", "Malattia"],
+    description:
+      "Nuvola ronzante di insetti rossi, attratta dal calore del sangue e dall’odore della paura.",
+    story:
+      "Le tribù della palude bruciano erbe amare per tenerle lontane, ma quando la nube è grande abbastanza il fumo non basta.",
+    actions:
+      "Punture multiple. Può infliggere danni continui se il bersaglio rimane nello sciame.",
+    tactics:
+      "Circonda il gruppo, disturba incantatori e costringe a usare fuoco o aree di danno.",
+    resistances: "Perforante, tagliente non magico",
+    vulnerabilities: "Fuoco, vento forte, danni ad area",
+    combat: {
+      attackBonus: "+4",
+      damage: "2d4",
+      averageDamage: 5,
+      damageType: "perforanti",
+      damageNote:
+        "Punture multiple. Più fastidioso che letale, ma ottimo per consumare risorse.",
+    },
+  },
+  {
+    id: "swamp-004",
     name: "Cultista della Melma",
     biomes: ["swamp", "urban", "ruins"],
     difficulty: "Facile",
@@ -71,9 +119,81 @@ export const swampMonsters = [
       "Resta dietro creature più robuste e usa il terreno difficile per tenere lontani i nemici.",
     resistances: "Veleno",
     vulnerabilities: "Radiante, fuoco",
+    combat: {
+      attackBonus: "+4",
+      damage: "1d6 + 2 + 1d6 veleno",
+      averageDamage: 9,
+      damageType: "perforanti e veleno",
+      damageNote:
+        "Pugnale rituale e maledizione fangosa. Pensato per infastidire e rallentare.",
+    },
   },
   {
-    id: "swamp-004",
+    id: "swamp-005",
+    name: "Coccodrillo delle Acque Nere",
+    biomes: ["swamp", "aquatic"],
+    difficulty: "Facile",
+    cr: "2",
+    type: "Bestia",
+    role: "Agguato",
+    icon: "🐊",
+    armorClass: 14,
+    hitPoints: 62,
+    speed: "20 ft., nuoto 40 ft.",
+    tags: ["Acqua", "Agguato", "Stritolamento"],
+    description:
+      "Predatore massiccio, quasi invisibile sotto il pelo dell’acqua. I suoi occhi sembrano due pietre bagnate.",
+    story:
+      "Gli abitanti della palude non attraversano mai acque ferme senza lanciare prima un pezzo di carne.",
+    actions:
+      "Morso serrato. Se colpisce, può afferrare il bersaglio e trascinarlo sott’acqua.",
+    tactics:
+      "Attacca dal fango, afferra il bersaglio più vicino e tenta di separarlo dal gruppo.",
+    resistances: "Nessuna",
+    vulnerabilities: "Freddo improvviso, fulmine in acqua",
+    combat: {
+      attackBonus: "+6",
+      damage: "2d8 + 4",
+      averageDamage: 13,
+      damageType: "perforanti",
+      damageNote:
+        "Morso serrato. Può afferrare e trascinare una creatura in acqua.",
+    },
+  },
+  {
+    id: "swamp-006",
+    name: "Fuoco Fatuo della Torbiera",
+    biomes: ["swamp", "ruins"],
+    difficulty: "Facile",
+    cr: "2",
+    type: "Non morto",
+    role: "Ingannatore",
+    icon: "🟢",
+    armorClass: 15,
+    hitPoints: 40,
+    speed: "0 ft., volo 50 ft.",
+    tags: ["Spirito", "Luce", "Inganno"],
+    description:
+      "Piccola luce verdastra che danza sopra pozze profonde e sentieri instabili. Sembra guidare, ma conduce dove la palude vuole.",
+    story:
+      "Alcuni sono anime perdute. Altri sono soltanto fame travestita da lanterna.",
+    actions:
+      "Scossa spettrale. Può diventare quasi invisibile e attirare creature verso zone pericolose.",
+    tactics:
+      "Non affronta frontalmente. Attira, divide e colpisce chi cade o resta solo.",
+    resistances: "Necrotico, veleno, armi non magiche",
+    vulnerabilities: "Radiante",
+    combat: {
+      attackBonus: "+6",
+      damage: "2d8",
+      averageDamage: 9,
+      damageType: "fulmine o necrotici",
+      damageNote:
+        "Scossa spettrale. La vera minaccia è attirare il gruppo in trappole naturali.",
+    },
+  },
+  {
+    id: "swamp-007",
     name: "Troll di Palude",
     biomes: ["swamp"],
     difficulty: "Medio",
@@ -96,9 +216,81 @@ export const swampMonsters = [
       "Combatte in acqua bassa, trascina i bersagli nel fango e si ritira per rigenerare.",
     resistances: "Veleno, freddo",
     vulnerabilities: "Fuoco, acido",
+    combat: {
+      attackBonus: "+7",
+      damage: "2d6 + 4",
+      averageDamage: 11,
+      damageType: "taglienti",
+      damageNote:
+        "Artigli putridi e morso. Rigenera se non viene contrastato con fuoco o acido.",
+    },
   },
   {
-    id: "swamp-005",
+    id: "swamp-008",
+    name: "Melma Sepolcrale",
+    biomes: ["swamp", "ruins", "underdark"],
+    difficulty: "Medio",
+    cr: "4",
+    type: "Melma",
+    role: "Corrosione",
+    icon: "🫧",
+    armorClass: 9,
+    hitPoints: 118,
+    speed: "20 ft., scalata 20 ft.",
+    tags: ["Melma", "Acido", "Corrosione"],
+    description:
+      "Massa gelatinosa grigio-verde, piena di frammenti d’ossa, monete e piccoli oggetti corrosi.",
+    story:
+      "Si forma dove cadaveri, acqua stagnante e magie necrotiche rimangono insieme per troppo tempo.",
+    actions:
+      "Pseudopodo acido. Può corrodere metallo, cuoio e legno se rimane a contatto.",
+    tactics:
+      "Blocca corridoi e pontili, forza il gruppo a muoversi e punisce chi resta in mischia.",
+    resistances: "Acido, contundente",
+    vulnerabilities: "Freddo, fulmine",
+    combat: {
+      attackBonus: "+6",
+      damage: "2d8 + 4",
+      averageDamage: 13,
+      damageType: "acido",
+      damageNote:
+        "Pseudopodo acido. Ottima per logorare equipaggiamento e bloccare passaggi.",
+    },
+  },
+  {
+    id: "swamp-009",
+    name: "Strega del Pantano Verde",
+    biomes: ["swamp", "forest"],
+    difficulty: "Medio",
+    cr: "5",
+    type: "Folletto",
+    role: "Inganno",
+    icon: "🧙",
+    armorClass: 15,
+    hitPoints: 110,
+    speed: "30 ft., nuoto 20 ft.",
+    tags: ["Strega", "Illusione", "Patto"],
+    description:
+      "Vecchia creatura dalla pelle verdastra, con capelli come alghe secche e occhi troppo lucidi per essere umani.",
+    story:
+      "Offre cure, profezie e favori. Ogni dono però lascia una piccola radice dentro il destino di chi accetta.",
+    actions:
+      "Artigli. Malocchio. Illusione della palude. Può creare duplicati o confondere i sensi.",
+    tactics:
+      "Non combatte mai in campo aperto. Usa illusioni, ostaggi e terreno infido.",
+    resistances: "Charme, veleno",
+    vulnerabilities: "Ferro freddo, radiante",
+    combat: {
+      attackBonus: "+7",
+      damage: "2d8 + 4",
+      averageDamage: 13,
+      damageType: "psichici o taglienti",
+      damageNote:
+        "Malocchio e artigli. Più pericolosa per controllo e inganno che per danno diretto.",
+    },
+  },
+  {
+    id: "swamp-010",
     name: "Idra Nera Minore",
     biomes: ["swamp", "aquatic"],
     difficulty: "Difficile",
@@ -121,9 +313,49 @@ export const swampMonsters = [
       "Occupa passaggi stretti, attacca più bersagli e costringe il gruppo a dividersi.",
     resistances: "Acido",
     vulnerabilities: "Fuoco concentrato",
+    combat: {
+      attackBonus: "+8",
+      damage: "1d10 + 5",
+      averageDamage: 10,
+      damageType: "perforanti",
+      damageNote:
+        "Morsi multipli e sputo acido. Il danno si moltiplica quando può colpire più volte.",
+    },
   },
   {
-    id: "swamp-006",
+    id: "swamp-011",
+    name: "Troll Radiceamara",
+    biomes: ["swamp", "forest"],
+    difficulty: "Difficile",
+    cr: "7",
+    type: "Gigante",
+    role: "Rigeneratore",
+    icon: "🧌",
+    armorClass: 16,
+    hitPoints: 168,
+    speed: "30 ft.",
+    tags: ["Rigenerazione", "Radici", "Bruto"],
+    description:
+      "Troll coperto di radici, funghi e muschio nero. Quando sanguina, il sangue sembra linfa scura.",
+    story:
+      "I druidi lo considerano un errore della natura: qualcosa che il bosco prova continuamente a guarire senza riuscirci.",
+    actions:
+      "Artigli radicati. Morso. Può rigenerare e creare terreno difficile intorno a sé.",
+    tactics:
+      "Blocca il gruppo nel sottobosco e nel fango, rigenera, e costringe i personaggi a usare fuoco o acido.",
+    resistances: "Veleno, freddo",
+    vulnerabilities: "Fuoco, acido",
+    combat: {
+      attackBonus: "+8",
+      damage: "2d8 + 6",
+      averageDamage: 15,
+      damageType: "taglienti",
+      damageNote:
+        "Artigli radicati e morso. Rigenera se non viene contrastato con fuoco o acido.",
+    },
+  },
+  {
+    id: "swamp-012",
     name: "Strega del Sangue",
     biomes: ["swamp", "urban", "ruins"],
     difficulty: "Difficile",
@@ -146,5 +378,109 @@ export const swampMonsters = [
       "Resta lontana, indebolisce il tank, maledice il guaritore e usa servitori come barriera.",
     resistances: "Necrotico, veleno",
     vulnerabilities: "Radiante",
+    combat: {
+      attackBonus: "+8",
+      damage: "4d8",
+      averageDamage: 18,
+      damageType: "necrotici",
+      damageNote:
+        "Dardo ematico e maledizioni. Molto pericolosa contro guaritori e incantatori.",
+    },
+  },
+  {
+    id: "swamp-013",
+    name: "Signore delle Zanne Sommerse",
+    biomes: ["swamp", "aquatic"],
+    difficulty: "Estremo",
+    cr: "10",
+    type: "Mostruosità",
+    role: "Boss predatore",
+    icon: "🐊",
+    armorClass: 18,
+    hitPoints: 230,
+    speed: "30 ft., nuoto 50 ft.",
+    tags: ["Boss", "Acqua", "Stritolamento"],
+    description:
+      "Enorme predatore rettiliano, più antico delle mappe della regione. Ha corna basse, cicatrici rituali e denti grossi come pugnali.",
+    story:
+      "Interi villaggi gli hanno offerto bestiame per generazioni. Quando le offerte cessano, il Signore delle Zanne sceglie da solo cosa prendere.",
+    actions:
+      "Morso devastante. Colpo di coda. Stritolamento. Può trascinare creature sott’acqua.",
+    tactics:
+      "Usa acqua profonda, fango e vegetazione. Afferra il bersaglio più pericoloso e lo porta dove gli altri non possono aiutarlo.",
+    resistances: "Freddo, perforante non magico",
+    vulnerabilities: "Fulmine, esche rituali ben preparate",
+    combat: {
+      attackBonus: "+10",
+      damage: "3d10 + 6",
+      averageDamage: 22,
+      damageType: "perforanti",
+      damageNote:
+        "Morso devastante e stritolamento. Boss perfetto per uno scontro in acqua o su passerelle fragili.",
+    },
+  },
+  {
+    id: "swamp-014",
+    name: "Regina delle Nebbie Marce",
+    biomes: ["swamp", "planar"],
+    difficulty: "Estremo",
+    cr: "12",
+    type: "Folletto",
+    role: "Boss incantatore",
+    icon: "👑",
+    armorClass: 18,
+    hitPoints: 240,
+    speed: "30 ft., volo 30 ft.",
+    tags: ["Nebbia", "Charme", "Maledizione"],
+    description:
+      "Sovrana antica di una corte sommersa. Indossa una corona di canne nere e parla con la voce di chi è annegato nella palude.",
+    story:
+      "La sua corte appare solo quando la nebbia copre ogni sentiero. Chi accetta il suo invito può tornare dopo un’ora, o dopo cent’anni.",
+    actions:
+      "Tocco della nebbia. Comando fatato. Può evocare nebbia, confondere e imprigionare una creatura in un ricordo.",
+    tactics:
+      "Divide il gruppo con visibilità ridotta, usa charme e costringe i personaggi a sprecare turni inseguendo illusioni.",
+    resistances: "Charme, psichico, veleno",
+    vulnerabilities: "Ferro freddo, radiante",
+    combat: {
+      attackBonus: "+11",
+      damage: "4d10 + 6",
+      averageDamage: 28,
+      damageType: "psichici o necrotici",
+      damageNote:
+        "Tocco della nebbia e magie di controllo. Boss narrativo per paludi fatate o maledette.",
+    },
+  },
+  {
+    id: "swamp-015",
+    name: "Antico Drago della Torbiera",
+    biomes: ["swamp"],
+    difficulty: "Boss",
+    cr: "17",
+    type: "Drago",
+    role: "Boss territoriale",
+    icon: "🐉",
+    armorClass: 21,
+    hitPoints: 360,
+    speed: "40 ft., nuoto 40 ft., volo 80 ft.",
+    tags: ["Drago", "Veleno", "Palude"],
+    description:
+      "Drago antico dalle scaglie verdi e nere, incrostate di torba, alghe e ossa. Il suo respiro sa di morte vegetale.",
+    story:
+      "Non vive nella palude: la palude vive intorno a lui. Ogni sentiero sembra piegarsi per proteggere la sua tana.",
+    actions:
+      "Multiattacco. Morso, artigli e coda. Soffio tossico. Presenza terrificante.",
+    tactics:
+      "Parla, minaccia e avvelena prima dello scontro. Usa acqua, nebbia e terreno difficile per rendere ogni movimento costoso.",
+    resistances: "Veleno, acido",
+    vulnerabilities: "Freddo, terra consacrata",
+    combat: {
+      attackBonus: "+13",
+      damage: "2d10 + 8 + 2d8 veleno",
+      averageDamage: 28,
+      damageType: "perforanti e veleno",
+      damageNote:
+        "Multiattacco e soffio tossico. Boss da fine arco per campagne in palude.",
+    },
   },
 ];

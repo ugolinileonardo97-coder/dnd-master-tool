@@ -457,6 +457,10 @@ export function getMonsterCombatProfile(monster) {
     return profile;
   }
 
+  if (monster?.combat) {
+    return monster.combat;
+  }
+
   return {
     attackBonus: "—",
     damage: "Variabile",
