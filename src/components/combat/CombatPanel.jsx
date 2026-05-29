@@ -1,6 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import { biomeMonsters } from "../../data/biomeMonsters";
 import { combatConditions } from "../../data/combatConditions";
+import { combatItems } from "../../data/combatItems";
+import { mergeCombatItemsWithInventory } from "../../utils/combatItemMapper";
+import { rollDamageExpression, splitDamageOptions } from "../../utils/diceRoller";
+import {
+  formatAbilityModifier,
+  getAbilityLabel,
+  getAbilityModifier,
+  getMonsterAbilityScores,
+} from "../../utils/monsterStats";
 import {
   getEncounterDifficulty,
   getPartyXpThresholds,
@@ -43,7 +52,7 @@ function clampHp(value, max) {
   return Math.max(0, Math.min(numericValue, numericMax));
 }
 
-export function CombatPanel() {
+export function CombatPanel({ selectedMerchant }) {
   const savedCombatState = useMemo(() => loadSavedCombatState(), []);
 
   const [round, setRound] = useState(savedCombatState?.round || 1);
@@ -72,6 +81,16 @@ export function CombatPanel() {
   const [damageAmount, setDamageAmount] = useState(
     savedCombatState?.damageAmount || 5
   );
+  const [selectedCombatItemId, setSelectedCombatItemId] = useState(
+    savedCombatState?.selectedCombatItemId || combatItems[0]?.id || ""
+  );
+  const [combatItemSearch, setCombatItemSearch] = useState(
+    savedCombatState?.combatItemSearch || ""
+  );
+  const [combatItemManualValue, setCombatItemManualValue] = useState(
+    savedCombatState?.combatItemManualValue || ""
+  );
+  const [combatItemSaveSucceeded, setCombatItemSaveSucceeded] = useState(false);
   const [combatLog, setCombatLog] = useState(
     savedCombatState?.combatLog || []
   );
@@ -187,6 +206,9 @@ export function CombatPanel() {
       activeActorId,
       selectedTargetId,
       damageAmount,
+      selectedCombatItemId,
+      combatItemSearch,
+      combatItemManualValue,
       combatLog,
     };
 
@@ -199,6 +221,9 @@ export function CombatPanel() {
     activeActorId,
     selectedTargetId,
     damageAmount,
+    selectedCombatItemId,
+    combatItemSearch,
+    combatItemManualValue,
     combatLog,
   ]);
 
@@ -332,6 +357,8 @@ export function CombatPanel() {
       difficulty: baseMonster.difficulty,
       icon: baseMonster.icon,
       image: baseMonster.image,
+      combat: baseMonster.combat || null,
+      abilityScores: getMonsterAbilityScores(baseMonster),
       conditions: [],
       notes: "",
     };
@@ -559,15 +586,280 @@ export function CombatPanel() {
     setActiveActorId("");
     setSelectedTargetId("");
     setDamageAmount(5);
+    setSelectedCombatItemId(combatItems[0]?.id || "");
+    setCombatItemSearch("");
+    setCombatItemManualValue("");
+    setCombatItemSaveSucceeded(false);
     setCombatLog([]);
 
     localStorage.removeItem(COMBAT_STORAGE_KEY);
+  }
+
+  function applyMonsterQuickDamage(damageFormula) {
+    if (!activeMonster || !selectedTarget) return;
+
+    const roll = rollDamageExpression(damageFormula);
+    const nextHp = clampHp(
+      selectedTarget.currentHp - roll.total,
+      selectedTarget.maxHp
+    );
+
+    setParty((current) =>
+      current.map((character) =>
+        character.id === selectedTarget.id
+          ? { ...character, currentHp: nextHp }
+          : character
+      )
+    );
+
+    setEncounterMonsters((current) =>
+      current.map((monster) =>
+        monster.id === selectedTarget.id
+          ? { ...monster, currentHp: nextHp }
+          : monster
+      )
+    );
+
+    const damageType = activeMonster.combat?.damageType
+      ? ` ${activeMonster.combat.damageType}`
+      : "";
+
+    addLogEntry(
+      `${activeMonster.name} colpisce ${selectedTarget.name}: ${roll.total} danni${damageType} (${roll.detail}).`
+    );
+  }
+
+  function getTargetSavingThrowModifier(target, ability) {
+    const scores = target?.abilityScores || {};
+    return getAbilityModifier(scores[ability] ?? 10);
+  }
+
+  function rollSavingThrow(target, savingThrow) {
+    if (!savingThrow) return null;
+
+    const d20 = Math.floor(Math.random() * 20) + 1;
+    const modifier = getTargetSavingThrowModifier(target, savingThrow.ability);
+    const total = d20 + modifier;
+
+    return {
+      d20,
+      modifier,
+      total,
+      success: total >= savingThrow.dc,
+    };
+  }
+
+  function applyCombatItem() {
+    const item = availableCombatItems.find((entry) => entry.id === selectedCombatItemId);
+
+    if (!item || !selectedTarget) return;
+
+    const manualValue = Number(combatItemManualValue);
+    const actorName = findActorName(activeActorId);
+    const targetName = selectedTarget.name;
+
+    const needsManualValue = item.type === "heal" || item.type === "damage";
+
+    if (needsManualValue && (!Number.isFinite(manualValue) || manualValue <= 0)) {
+      addLogEntry(
+        `${actorName} prova a usare ${item.name}, ma manca il risultato dei dadi.`
+      );
+      return;
+    }
+
+    if (item.type === "note") {
+      addLogEntry(
+        `${actorName} usa ${item.name}${selectedTarget ? ` su ${targetName}` : ""}: ${item.description || "oggetto usato in scena"}.`
+      );
+      return;
+    }
+
+    if (item.type === "heal") {
+      const nextHp = clampHp(
+        selectedTarget.currentHp + manualValue,
+        selectedTarget.maxHp
+      );
+
+      setParty((current) =>
+        current.map((character) =>
+          character.id === selectedTarget.id
+            ? { ...character, currentHp: nextHp }
+            : character
+        )
+      );
+
+      setEncounterMonsters((current) =>
+        current.map((monster) =>
+          monster.id === selectedTarget.id
+            ? { ...monster, currentHp: nextHp }
+            : monster
+        )
+      );
+
+      addLogEntry(
+        `${actorName} usa ${item.name} su ${targetName}: cura ${manualValue} PF.`
+      );
+      setCombatItemManualValue("");
+      return;
+    }
+
+    if (item.type === "condition") {
+      const saveText = item.savingThrow
+        ? ` TS ${getAbilityLabel(item.savingThrow.ability)} CD ${item.savingThrow.dc}${combatItemSaveSucceeded ? ": riuscito, effetto evitato" : ": fallito"}`
+        : "";
+
+      if (item.savingThrow && combatItemSaveSucceeded) {
+        addLogEntry(
+          `${actorName} usa ${item.name} su ${targetName}.${saveText}.`
+        );
+        setCombatItemSaveSucceeded(false);
+        return;
+      }
+
+      if (item.condition) {
+        toggleCondition(selectedTarget.id, item.condition);
+      }
+
+      addLogEntry(
+        `${actorName} usa ${item.name} su ${targetName}: ${item.condition || "effetto applicato"}.${saveText}.`
+      );
+      setCombatItemSaveSucceeded(false);
+      return;
+    }
+
+    if (item.type === "damage") {
+      let finalDamage = manualValue;
+      let saveText = "";
+
+      if (item.savingThrow) {
+        const abilityLabel = getAbilityLabel(item.savingThrow.ability);
+        saveText = ` TS ${abilityLabel} CD ${item.savingThrow.dc}`;
+
+        if (combatItemSaveSucceeded && item.savingThrow.success === "half") {
+          finalDamage = Math.floor(finalDamage / 2);
+          saveText += ": riuscito, danno dimezzato";
+        } else if (combatItemSaveSucceeded && item.savingThrow.success === "none") {
+          finalDamage = 0;
+          saveText += ": riuscito, nessun danno";
+        } else {
+          saveText += ": fallito";
+        }
+      }
+
+      const nextHp = clampHp(
+        selectedTarget.currentHp - finalDamage,
+        selectedTarget.maxHp
+      );
+
+      setParty((current) =>
+        current.map((character) =>
+          character.id === selectedTarget.id
+            ? { ...character, currentHp: nextHp }
+            : character
+        )
+      );
+
+      setEncounterMonsters((current) =>
+        current.map((monster) =>
+          monster.id === selectedTarget.id
+            ? { ...monster, currentHp: nextHp }
+            : monster
+        )
+      );
+
+      const damageType = item.damageType ? ` ${item.damageType}` : "";
+      const conditionText = item.condition && finalDamage > 0 && !combatItemSaveSucceeded
+        ? ` Condizione applicata: ${item.condition}.`
+        : "";
+
+      if (item.condition && finalDamage > 0 && !combatItemSaveSucceeded) {
+        toggleCondition(selectedTarget.id, item.condition);
+      }
+
+      addLogEntry(
+        `${actorName} usa ${item.name} su ${targetName}: ${finalDamage} danni${damageType}.${saveText}${conditionText}`
+      );
+      setCombatItemManualValue("");
+      setCombatItemSaveSucceeded(false);
+    }
   }
 
   function selectInitiativeActor(actorId, index) {
     setCurrentTurnIndex(index);
     setActiveActorId(actorId);
   }
+
+  const availableCombatItems = useMemo(() => {
+    return mergeCombatItemsWithInventory(
+      combatItems,
+      selectedMerchant?.type === "shop" ? selectedMerchant.inventory || [] : []
+    );
+  }, [selectedMerchant]);
+
+  const filteredCombatItems = useMemo(() => {
+    const search = combatItemSearch.trim().toLowerCase();
+
+    if (!search) return availableCombatItems;
+
+    return availableCombatItems.filter((item) => {
+      return [
+        item.name,
+        item.category,
+        item.type,
+        item.damageType,
+        item.condition,
+        item.formula,
+        item.description,
+        item.rarity,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase()
+        .includes(search);
+    });
+  }, [availableCombatItems, combatItemSearch]);
+
+  useEffect(() => {
+    if (availableCombatItems.length === 0) {
+      setSelectedCombatItemId("");
+      return;
+    }
+
+    const selectedStillExists = availableCombatItems.some(
+      (item) => item.id === selectedCombatItemId
+    );
+
+    if (!selectedStillExists) {
+      setSelectedCombatItemId(availableCombatItems[0].id);
+    }
+  }, [availableCombatItems, selectedCombatItemId]);
+
+  useEffect(() => {
+    if (filteredCombatItems.length === 0) return;
+
+    const selectedStillVisible = filteredCombatItems.some(
+      (item) => item.id === selectedCombatItemId
+    );
+
+    if (!selectedStillVisible) {
+      setSelectedCombatItemId(filteredCombatItems[0].id);
+    }
+  }, [filteredCombatItems, selectedCombatItemId]);
+
+  const selectedCombatItem =
+    availableCombatItems.find((item) => item.id === selectedCombatItemId) ||
+    availableCombatItems[0];
+
+  const activeActor = initiativeOrder.find((actor) => actor.id === activeActorId);
+
+  const activeMonster =
+    activeActor?.actorType === "monster"
+      ? encounterMonsters.find((monster) => monster.id === activeActor.id)
+      : null;
+
+  const activeMonsterDamageOptions = splitDamageOptions(
+    activeMonster?.combat?.damage
+  );
 
   return (
     <>
@@ -830,51 +1122,63 @@ export function CombatPanel() {
                   )}
                 </div>
 
-                <div className="combat-monster-mini-grid">
-                  <label>
-                    PF
-                    <input
-                      type="number"
-                      value={monster.currentHp}
-                      onChange={(event) =>
-                        updateEncounterMonster(
-                          monster.id,
-                          "currentHp",
-                          event.target.value
-                        )
-                      }
-                    />
-                  </label>
+                <div className="combat-monster-side">
+                  <div className="combat-monster-mini-grid">
+                    <label>
+                      PF
+                      <input
+                        type="number"
+                        value={monster.currentHp}
+                        onChange={(event) =>
+                          updateEncounterMonster(
+                            monster.id,
+                            "currentHp",
+                            event.target.value
+                          )
+                        }
+                      />
+                    </label>
 
-                  <label>
-                    XP
-                    <input
-                      type="number"
-                      value={monster.xp}
-                      onChange={(event) =>
-                        updateEncounterMonster(
-                          monster.id,
-                          "xp",
-                          event.target.value
-                        )
-                      }
-                    />
-                  </label>
+                    <label>
+                      XP
+                      <input
+                        type="number"
+                        value={monster.xp}
+                        onChange={(event) =>
+                          updateEncounterMonster(
+                            monster.id,
+                            "xp",
+                            event.target.value
+                          )
+                        }
+                      />
+                    </label>
 
-                  <label>
-                    Iniz.
-                    <input
-                      type="number"
-                      value={monster.initiative}
-                      onChange={(event) =>
-                        updateEncounterMonster(
-                          monster.id,
-                          "initiative",
-                          event.target.value
-                        )
-                      }
-                    />
-                  </label>
+                    <label>
+                      Iniz.
+                      <input
+                        type="number"
+                        value={monster.initiative}
+                        onChange={(event) =>
+                          updateEncounterMonster(
+                            monster.id,
+                            "initiative",
+                            event.target.value
+                          )
+                        }
+                      />
+                    </label>
+                  </div>
+
+                  {monster.abilityScores && (
+                    <div className="monster-ability-row">
+                      {Object.entries(monster.abilityScores).map(([ability, score]) => (
+                        <span key={`${monster.id}-${ability}`}>
+                          {getAbilityLabel(ability)} {formatAbilityModifier(score)}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <button
@@ -1018,6 +1322,149 @@ export function CombatPanel() {
 
             <button className="secondary-button" onClick={resetEverything}>
               Reset totale
+            </button>
+          </div>
+
+          {activeMonster && activeMonsterDamageOptions.length > 0 && (
+            <div className="monster-quick-attack-panel">
+              <div className="monster-quick-attack-header">
+                <span>Attacchi rapidi mostro</span>
+                <strong>{activeMonster.name}</strong>
+              </div>
+
+              <div className="monster-quick-attack-grid">
+                {activeMonsterDamageOptions.map((damageFormula, index) => (
+                  <button
+                    key={`${activeMonster.id}-${damageFormula}-${index}`}
+                    className="monster-quick-attack-button"
+                    onClick={() => applyMonsterQuickDamage(damageFormula)}
+                    disabled={!selectedTarget}
+                  >
+                    <span>Attacco {index + 1}</span>
+                    <strong>{damageFormula}</strong>
+                    {activeMonster.combat?.damageType && (
+                      <small>{activeMonster.combat.damageType}</small>
+                    )}
+                  </button>
+                ))}
+              </div>
+
+              {activeMonster.combat?.damageNote && (
+                <p>{activeMonster.combat.damageNote}</p>
+              )}
+            </div>
+          )}
+
+          <div className="combat-item-panel manual-item-panel">
+            <div className="combat-item-header">
+              <span>Oggetto rapido</span>
+              <strong>{selectedCombatItem?.name || "Nessun oggetto"}</strong>
+            </div>
+
+            <div className="combat-item-form inventory-item-form">
+              <label className="combat-item-search-field">
+                Cerca oggetto inventario
+                <input
+                  value={combatItemSearch}
+                  onChange={(event) => setCombatItemSearch(event.target.value)}
+                  placeholder="Cerca pozione, arma, veleno, bomba..."
+                />
+              </label>
+
+              <label>
+                Oggetto
+                <select
+                  value={selectedCombatItemId}
+                  onChange={(event) => {
+                    setSelectedCombatItemId(event.target.value);
+                    setCombatItemManualValue("");
+                    setCombatItemSaveSucceeded(false);
+                  }}
+                  disabled={filteredCombatItems.length === 0}
+                >
+                  {filteredCombatItems.length === 0 ? (
+                    <option value="">Nessun oggetto trovato</option>
+                  ) : (
+                    filteredCombatItems.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.source === "inventory" ? "🧾 " : "⚡ "}{item.name}
+                        {item.qty ? ` ×${item.qty}` : ""}
+                      </option>
+                    ))
+                  )}
+                </select>
+              </label>
+
+              <div className="combat-item-preview manual-preview">
+                <span>
+                  {selectedCombatItem?.type === "heal"
+                    ? "Cura"
+                    : selectedCombatItem?.type === "condition"
+                      ? "Condizione"
+                      : selectedCombatItem?.type === "note"
+                        ? "Narrativo"
+                        : "Danno"}
+                </span>
+                <strong>
+                  {selectedCombatItem?.formula || selectedCombatItem?.condition || selectedCombatItem?.category || "—"}
+                </strong>
+                {selectedCombatItem?.savingThrow && (
+                  <small>
+                    TS {getAbilityLabel(selectedCombatItem.savingThrow.ability)} CD {selectedCombatItem.savingThrow.dc}
+                  </small>
+                )}
+              </div>
+
+              <label>
+                Bersaglio
+                <select
+                  value={selectedTargetId}
+                  onChange={(event) => setSelectedTargetId(event.target.value)}
+                >
+                  <option value="">Seleziona bersaglio</option>
+                  {allTargets.map((target) => (
+                    <option key={target.id} value={target.id}>
+                      {target.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              {(selectedCombatItem?.type === "heal" || selectedCombatItem?.type === "damage") && (
+                <label>
+                  Risultato dadi
+                  <input
+                    type="number"
+                    min="0"
+                    value={combatItemManualValue}
+                    onChange={(event) => setCombatItemManualValue(event.target.value)}
+                    placeholder="Es. 16"
+                  />
+                </label>
+              )}
+            </div>
+
+            {selectedCombatItem?.savingThrow && (
+              <label className="combat-item-save-toggle">
+                <input
+                  type="checkbox"
+                  checked={combatItemSaveSucceeded}
+                  onChange={(event) => setCombatItemSaveSucceeded(event.target.checked)}
+                />
+                <span>
+                  Il bersaglio ha superato il TS {getAbilityLabel(selectedCombatItem.savingThrow.ability)} CD {selectedCombatItem.savingThrow.dc}
+                </span>
+              </label>
+            )}
+
+            {selectedCombatItem?.description && <p>{selectedCombatItem.description}</p>}
+
+            <button
+              className="primary-button combat-item-apply-button"
+              onClick={applyCombatItem}
+              disabled={!selectedTarget || ((selectedCombatItem?.type === "heal" || selectedCombatItem?.type === "damage") && !combatItemManualValue)}
+            >
+              Applica oggetto
             </button>
           </div>
 

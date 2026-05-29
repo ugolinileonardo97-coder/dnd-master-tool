@@ -30,7 +30,7 @@ export function MainPanel({
     return (
       <main className="main combat-main">
         <div className="main-inner combat-main-inner">
-          <CombatPanel />
+          <CombatPanel selectedMerchant={selectedMerchant} />
         </div>
       </main>
     );

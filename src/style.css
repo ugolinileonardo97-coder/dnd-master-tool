@@ -3114,3 +3114,395 @@ body {
     text-align: left;
   }
 }
+
+
+/* =========================================================
+   COMBATTIMENTO - ATTACCHI RAPIDI MOSTRI
+   ========================================================= */
+
+.monster-quick-attack-panel {
+  margin: 18px 0;
+  padding: 18px;
+  border-radius: 8px;
+  border: 1px solid rgba(217, 154, 58, 0.26);
+  background:
+    radial-gradient(circle at top left, rgba(217, 154, 58, 0.1), transparent 48%),
+    rgba(8, 5, 3, 0.48);
+}
+
+.monster-quick-attack-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.monster-quick-attack-header span {
+  font-family: "Cinzel", serif;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #a98f68;
+}
+
+.monster-quick-attack-header strong {
+  font-family: "Cinzel", serif;
+  font-size: 17px;
+  color: #e5bd74;
+  text-align: right;
+}
+
+.monster-quick-attack-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.monster-quick-attack-button {
+  min-height: 78px;
+  padding: 12px 14px;
+  text-align: left;
+  border-radius: 8px;
+  border: 1px solid rgba(156, 96, 28, 0.34);
+  background:
+    linear-gradient(180deg, rgba(54, 31, 14, 0.86), rgba(16, 9, 5, 0.92));
+  color: #e7d2aa;
+}
+
+.monster-quick-attack-button span {
+  display: block;
+  margin-bottom: 7px;
+  font-family: "Cinzel", serif;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a98f68;
+}
+
+.monster-quick-attack-button strong {
+  display: block;
+  font-family: "Cinzel", serif;
+  font-size: 18px;
+  color: #f0bd4e;
+}
+
+.monster-quick-attack-button small {
+  display: block;
+  margin-top: 6px;
+  color: #b99a6f;
+  font-size: 12px;
+}
+
+.monster-quick-attack-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.monster-quick-attack-panel p {
+  margin: 14px 0 0;
+  color: #c8a979;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .monster-quick-attack-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .monster-quick-attack-header strong {
+    text-align: left;
+  }
+
+  .monster-quick-attack-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   COMBATTIMENTO - STATISTICHE MOSTRI E OGGETTI RAPIDI
+   ========================================================= */
+
+.monster-ability-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 9px;
+}
+
+.monster-ability-row span {
+  padding: 4px 7px;
+  border-radius: 999px;
+  border: 1px solid rgba(217, 154, 58, 0.2);
+  background: rgba(8, 5, 3, 0.42);
+  color: #d8b982;
+  font-family: "Cinzel", serif;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.combat-item-panel {
+  margin: 18px 0;
+  padding: 18px;
+  border-radius: 8px;
+  border: 1px solid rgba(217, 154, 58, 0.26);
+  background:
+    radial-gradient(circle at top left, rgba(92, 151, 217, 0.1), transparent 48%),
+    rgba(8, 5, 3, 0.48);
+}
+
+.combat-item-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.combat-item-header span {
+  font-family: "Cinzel", serif;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #a98f68;
+}
+
+.combat-item-header strong {
+  font-family: "Cinzel", serif;
+  font-size: 17px;
+  color: #e5bd74;
+  text-align: right;
+}
+
+.combat-item-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(145px, 0.55fr) 140px;
+  gap: 12px;
+  align-items: end;
+}
+
+.combat-item-grid label {
+  margin: 0;
+}
+
+.combat-item-grid select {
+  width: 100%;
+  min-height: 46px;
+}
+
+.combat-item-preview {
+  min-height: 64px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(156, 96, 28, 0.24);
+  background: rgba(8, 5, 3, 0.42);
+}
+
+.combat-item-preview span {
+  display: block;
+  margin-bottom: 5px;
+  color: #a98f68;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.combat-item-preview strong {
+  display: block;
+  font-family: "Cinzel", serif;
+  color: #f0bd4e;
+  font-size: 17px;
+}
+
+.combat-item-preview small {
+  display: block;
+  margin-top: 5px;
+  color: #b99a6f;
+  font-size: 12px;
+}
+
+.combat-item-grid .primary-button {
+  min-height: 64px;
+}
+
+.combat-item-panel p {
+  margin: 14px 0 0;
+  color: #c8a979;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .combat-item-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .combat-item-header strong {
+    text-align: left;
+  }
+
+  .combat-item-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   COMBATTIMENTO - OGGETTI RAPIDI MANUALI
+   ========================================================= */
+
+.manual-item-panel {
+  overflow: visible;
+}
+
+.combat-item-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(140px, 0.65fr);
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 12px;
+}
+
+.combat-item-form label {
+  min-width: 0;
+  margin: 0;
+}
+
+.combat-item-form select,
+.combat-item-form input {
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+}
+
+.manual-preview {
+  min-height: 48px;
+  align-self: end;
+}
+
+.combat-item-save-toggle {
+  min-height: 42px;
+  margin: 10px 0 12px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(217, 154, 58, 0.24);
+  background: rgba(8, 5, 3, 0.46);
+  color: #d8bf96;
+  line-height: 1.35;
+}
+
+.combat-item-save-toggle input {
+  width: 16px;
+  min-width: 16px;
+  height: 16px;
+  min-height: 16px;
+  accent-color: #d99a3a;
+}
+
+.combat-item-save-toggle span {
+  min-width: 0;
+}
+
+.combat-item-apply-button {
+  width: 100%;
+  min-height: 52px;
+  margin-top: 12px;
+}
+
+.combat-item-apply-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+  .combat-item-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   COMBATTIMENTO - OGGETTI DA INVENTARIO MERCANTE
+   ========================================================= */
+
+.inventory-item-form {
+  grid-template-columns: 1fr 1fr;
+}
+
+.combat-item-search-field {
+  grid-column: 1 / -1;
+}
+
+.combat-item-preview.manual-preview {
+  min-height: 78px;
+}
+
+.combat-item-preview.manual-preview strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.combat-item-preview.manual-preview small {
+  line-height: 1.35;
+}
+
+@media (max-width: 900px) {
+  .inventory-item-form,
+  .combat-item-search-field {
+    grid-column: auto;
+  }
+}
+/* =========================================================
+   COMBATTIMENTO - STATISTICHE MOSTRO SOTTO PF / XP / INIZ
+   ========================================================= */
+
+.combat-monster-side {
+  min-width: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.monster-ability-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.monster-ability-row span {
+  min-height: 24px;
+  padding: 5px 7px;
+  border-radius: 999px;
+  border: 1px solid rgba(217, 154, 58, 0.24);
+  background: rgba(8, 5, 3, 0.48);
+  color: #e5bd74;
+  font-family: "Cinzel", serif;
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.combat-row.monster {
+  align-items: start;
+}
+
+.combat-row.monster .combat-row-main {
+  padding-top: 4px;
+}
+
+@media (max-width: 600px) {
+  .monster-ability-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
