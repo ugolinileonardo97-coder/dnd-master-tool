@@ -57,6 +57,7 @@ export function CombatPanel() {
   const [selectedMonsterId, setSelectedMonsterId] = useState(
     biomeMonsters[0]?.id || ""
   );
+  const [monsterSearch, setMonsterSearch] = useState("");
 
   const [encounterMonsters, setEncounterMonsters] = useState(
     savedCombatState?.encounterMonsters || []
@@ -142,6 +143,40 @@ export function CombatPanel() {
   const selectedTarget =
     party.find((character) => character.id === selectedTargetId) ||
     encounterMonsters.find((monster) => monster.id === selectedTargetId);
+
+  const filteredMonsters = useMemo(() => {
+    const search = monsterSearch.trim().toLowerCase();
+
+    if (!search) {
+      return biomeMonsters;
+    }
+
+    return biomeMonsters.filter((monster) => {
+      return (
+        monster.name.toLowerCase().includes(search) ||
+        String(monster.cr).toLowerCase().includes(search) ||
+        String(monster.type || "").toLowerCase().includes(search) ||
+        String(monster.role || "").toLowerCase().includes(search) ||
+        String(monster.difficulty || "").toLowerCase().includes(search) ||
+        (monster.tags || []).join(" ").toLowerCase().includes(search)
+      );
+    });
+  }, [monsterSearch]);
+
+  useEffect(() => {
+    if (filteredMonsters.length === 0) {
+      setSelectedMonsterId("");
+      return;
+    }
+
+    const selectedStillExists = filteredMonsters.some(
+      (monster) => monster.id === selectedMonsterId
+    );
+
+    if (!selectedStillExists) {
+      setSelectedMonsterId(filteredMonsters[0].id);
+    }
+  }, [filteredMonsters, selectedMonsterId]);
 
   useEffect(() => {
     const combatState = {
@@ -742,19 +777,39 @@ export function CombatPanel() {
             </div>
           </div>
 
+          <div className="combat-monster-search-row">
+            <label>
+              Cerca mostro
+              <input
+                value={monsterSearch}
+                onChange={(event) => setMonsterSearch(event.target.value)}
+                placeholder="Cerca per nome, CR, tipo, ruolo..."
+              />
+            </label>
+          </div>
+
           <div className="combat-add-monster">
             <select
               value={selectedMonsterId}
               onChange={(event) => setSelectedMonsterId(event.target.value)}
+              disabled={filteredMonsters.length === 0}
             >
-              {biomeMonsters.map((monster) => (
-                <option key={monster.id} value={monster.id}>
-                  {monster.name} · CR {monster.cr}
-                </option>
-              ))}
+              {filteredMonsters.length === 0 ? (
+                <option value="">Nessun mostro trovato</option>
+              ) : (
+                filteredMonsters.map((monster) => (
+                  <option key={monster.id} value={monster.id}>
+                    {monster.name} · CR {monster.cr}
+                  </option>
+                ))
+              )}
             </select>
 
-            <button className="primary-button" onClick={addMonsterToEncounter}>
+            <button
+              className="primary-button"
+              onClick={addMonsterToEncounter}
+              disabled={filteredMonsters.length === 0}
+            >
               Aggiungi
             </button>
           </div>
