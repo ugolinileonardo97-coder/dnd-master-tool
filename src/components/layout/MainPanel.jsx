@@ -4,6 +4,7 @@ import { MerchantQuestPanel } from "../merchants/MerchantQuestPanel";
 import { InventoryTable } from "../inventory/InventoryTable";
 import { TavernPanel } from "../tavern/TavernPanel";
 import { BestiaryPanel } from "../bestiary/BestiaryPanel";
+import { CombatPanel } from "../combat/CombatPanel";
 
 export function MainPanel({
   mode,
@@ -20,6 +21,16 @@ export function MainPanel({
       <main className="main">
         <div className="main-inner">
           <BestiaryPanel />
+        </div>
+      </main>
+    );
+  }
+
+  if (mode === "combat") {
+    return (
+      <main className="main">
+        <div className="main-inner">
+          <CombatPanel />
         </div>
       </main>
     );

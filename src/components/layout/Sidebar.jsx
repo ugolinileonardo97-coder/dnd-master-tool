@@ -17,6 +17,8 @@ export function Sidebar({
 }) {
   const isTavern = mode === "tavern";
   const isBestiary = mode === "bestiary";
+  const isCombat = mode === "combat";
+  const isUtilityMode = isBestiary || isCombat;
 
   function generateShop() {
     onAddGeneratedMerchant("shop");
@@ -55,7 +57,7 @@ export function Sidebar({
         <p>Assistente Master</p>
       </div>
 
-      <div className="mode-switch three-modes">
+      <div className="mode-switch four-modes">
         <button
           className={mode === "shop" ? "mode-button active" : "mode-button"}
           onClick={() => onChangeMode("shop")}
@@ -76,9 +78,16 @@ export function Sidebar({
         >
           🐉 Bestiario
         </button>
+
+        <button
+          className={mode === "combat" ? "mode-button active" : "mode-button"}
+          onClick={() => onChangeMode("combat")}
+        >
+          ⚔️ Combattimento
+        </button>
       </div>
 
-      {!isBestiary && (
+      {!isUtilityMode && (
         <div className="panel level-panel">
           <label>{isTavern ? "Livello Locanda" : "Livello Party"}</label>
 
@@ -113,7 +122,7 @@ export function Sidebar({
         </div>
       )}
 
-      {!isBestiary && (
+      {!isUtilityMode && (
         <>
           <div className="merchant-list-title">
             {isTavern ? "Locande" : "Commercianti"}
@@ -131,6 +140,25 @@ export function Sidebar({
             }}
           />
         </>
+      )}
+
+      {isBestiary && (
+        <div className="panel level-panel">
+          <div className="merchant-list-title">Archivio Mostri</div>
+          <p className="sidebar-helper-text">
+            Consulta i mostri divisi per bioma, difficoltà, ruolo e danno.
+          </p>
+        </div>
+      )}
+
+      {isCombat && (
+        <div className="panel level-panel">
+          <div className="merchant-list-title">Tracker Combattimento</div>
+          <p className="sidebar-helper-text">
+            Crea il party, aggiungi mostri, assegna XP, iniziativa, PF e
+            bersagli.
+          </p>
+        </div>
       )}
 
       <div className="sidebar-footer">
