@@ -1,37 +1,13 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { biomeMonsters } from "../../data/biomeMonsters";
+import { combatConditions } from "../../data/combatConditions";
+import {
+  getEncounterDifficulty,
+  getPartyXpThresholds,
+  getSuggestedXpByCr,
+} from "../../data/combatXpRules";
 
-const crXpTable = {
-  "0": 10,
-  "1/8": 25,
-  "1/4": 50,
-  "1/2": 100,
-  "1": 200,
-  "2": 450,
-  "3": 700,
-  "4": 1100,
-  "5": 1800,
-  "6": 2300,
-  "7": 2900,
-  "8": 3900,
-  "9": 5000,
-  "10": 5900,
-  "11": 7200,
-  "12": 8400,
-  "13": 10000,
-  "14": 11500,
-  "15": 13000,
-  "16": 15000,
-  "17": 18000,
-  "18": 20000,
-  "19": 22000,
-  "20": 25000,
-  "21": 33000,
-  "22": 41000,
-  "23": 50000,
-  "24": 62000,
-  "25": 75000,
-};
+const COMBAT_STORAGE_KEY = "dnd-shop-combat-state-v1";
 
 const emptyCharacter = {
   name: "",
@@ -42,12 +18,22 @@ const emptyCharacter = {
   initiative: 0,
 };
 
-function createId(prefix) {
-  return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+function loadSavedCombatState() {
+  try {
+    const savedState = localStorage.getItem(COMBAT_STORAGE_KEY);
+
+    if (!savedState) {
+      return null;
+    }
+
+    return JSON.parse(savedState);
+  } catch {
+    return null;
+  }
 }
 
-function getSuggestedXp(monster) {
-  return crXpTable[String(monster?.cr)] || 0;
+function createId(prefix) {
+  return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
 function clampHp(value, max) {
@@ -58,18 +44,36 @@ function clampHp(value, max) {
 }
 
 export function CombatPanel() {
-  const [party, setParty] = useState([]);
+  const savedCombatState = useMemo(() => loadSavedCombatState(), []);
+
+  const [round, setRound] = useState(savedCombatState?.round || 1);
+  const [currentTurnIndex, setCurrentTurnIndex] = useState(
+    savedCombatState?.currentTurnIndex || 0
+  );
+
+  const [party, setParty] = useState(savedCombatState?.party || []);
   const [characterDraft, setCharacterDraft] = useState(emptyCharacter);
 
   const [selectedMonsterId, setSelectedMonsterId] = useState(
     biomeMonsters[0]?.id || ""
   );
-  const [encounterMonsters, setEncounterMonsters] = useState([]);
 
-  const [activeActorId, setActiveActorId] = useState("");
-  const [selectedTargetId, setSelectedTargetId] = useState("");
-  const [damageAmount, setDamageAmount] = useState(5);
-  const [combatLog, setCombatLog] = useState([]);
+  const [encounterMonsters, setEncounterMonsters] = useState(
+    savedCombatState?.encounterMonsters || []
+  );
+
+  const [activeActorId, setActiveActorId] = useState(
+    savedCombatState?.activeActorId || ""
+  );
+  const [selectedTargetId, setSelectedTargetId] = useState(
+    savedCombatState?.selectedTargetId || ""
+  );
+  const [damageAmount, setDamageAmount] = useState(
+    savedCombatState?.damageAmount || 5
+  );
+  const [combatLog, setCombatLog] = useState(
+    savedCombatState?.combatLog || []
+  );
 
   const totalMonsterXp = useMemo(() => {
     return encounterMonsters.reduce(
@@ -94,6 +98,14 @@ export function CombatPanel() {
     return Math.round(totalMonsterXp / party.length);
   }, [party.length, totalMonsterXp]);
 
+  const partyThresholds = useMemo(() => {
+    return getPartyXpThresholds(party);
+  }, [party]);
+
+  const encounterDifficulty = useMemo(() => {
+    return getEncounterDifficulty(totalMonsterXp, party);
+  }, [totalMonsterXp, party]);
+
   const initiativeOrder = useMemo(() => {
     const partyActors = party.map((character) => ({
       ...character,
@@ -110,6 +122,8 @@ export function CombatPanel() {
     );
   }, [party, encounterMonsters]);
 
+  const currentTurnActor = initiativeOrder[currentTurnIndex] || null;
+
   const allTargets = useMemo(() => {
     return [
       ...party.map((character) => ({
@@ -124,6 +138,63 @@ export function CombatPanel() {
       })),
     ];
   }, [party, encounterMonsters]);
+
+  const selectedTarget =
+    party.find((character) => character.id === selectedTargetId) ||
+    encounterMonsters.find((monster) => monster.id === selectedTargetId);
+
+  useEffect(() => {
+    const combatState = {
+      round,
+      currentTurnIndex,
+      party,
+      encounterMonsters,
+      activeActorId,
+      selectedTargetId,
+      damageAmount,
+      combatLog,
+    };
+
+    localStorage.setItem(COMBAT_STORAGE_KEY, JSON.stringify(combatState));
+  }, [
+    round,
+    currentTurnIndex,
+    party,
+    encounterMonsters,
+    activeActorId,
+    selectedTargetId,
+    damageAmount,
+    combatLog,
+  ]);
+
+  useEffect(() => {
+    if (initiativeOrder.length === 0) {
+      setCurrentTurnIndex(0);
+      setActiveActorId("");
+      return;
+    }
+
+    if (currentTurnIndex >= initiativeOrder.length) {
+      setCurrentTurnIndex(0);
+      return;
+    }
+
+    const currentActor = initiativeOrder[currentTurnIndex];
+
+    if (currentActor) {
+      setActiveActorId(currentActor.id);
+    }
+  }, [initiativeOrder, currentTurnIndex]);
+
+  function addLogEntry(text) {
+    setCombatLog((current) => [
+      {
+        id: createId("log"),
+        text: `Round ${round} · ${text}`,
+      },
+      ...current,
+    ]);
+  }
 
   function updateCharacterDraft(field, value) {
     setCharacterDraft((current) => ({
@@ -208,7 +279,7 @@ export function CombatPanel() {
 
     if (!baseMonster) return;
 
-    const suggestedXp = getSuggestedXp(baseMonster);
+    const suggestedXp = getSuggestedXpByCr(baseMonster.cr);
     const maxHp = Number(baseMonster.hitPoints) || 1;
 
     const encounterMonster = {
@@ -281,7 +352,7 @@ export function CombatPanel() {
 
   function findActorName(actorId) {
     const actor = initiativeOrder.find((item) => item.id === actorId);
-    return actor?.name || "Sconosciuto";
+    return actor?.name || "DM";
   }
 
   function applyHpChange(mode) {
@@ -314,27 +385,153 @@ export function CombatPanel() {
       )
     );
 
-    const actorName = activeActorId ? findActorName(activeActorId) : "DM";
+    const actorName = findActorName(activeActorId);
     const targetName = target.name;
+
     const logText =
       mode === "heal"
         ? `${actorName} cura ${targetName} di ${amount} PF.`
         : `${actorName} infligge ${amount} danni a ${targetName}.`;
 
+    addLogEntry(logText);
+  }
+
+  function toggleCondition(targetId, condition) {
+    setParty((current) =>
+      current.map((character) => {
+        if (character.id !== targetId) return character;
+
+        const currentConditions = character.conditions || [];
+        const hasCondition = currentConditions.includes(condition);
+
+        return {
+          ...character,
+          conditions: hasCondition
+            ? currentConditions.filter((item) => item !== condition)
+            : [...currentConditions, condition],
+        };
+      })
+    );
+
+    setEncounterMonsters((current) =>
+      current.map((monster) => {
+        if (monster.id !== targetId) return monster;
+
+        const currentConditions = monster.conditions || [];
+        const hasCondition = currentConditions.includes(condition);
+
+        return {
+          ...monster,
+          conditions: hasCondition
+            ? currentConditions.filter((item) => item !== condition)
+            : [...currentConditions, condition],
+        };
+      })
+    );
+
+    const target =
+      party.find((character) => character.id === targetId) ||
+      encounterMonsters.find((monster) => monster.id === targetId);
+
+    if (target) {
+      addLogEntry(`Condizione aggiornata su ${target.name}: ${condition}.`);
+    }
+  }
+
+  function updateActorNotes(targetId, value) {
+    setParty((current) =>
+      current.map((character) =>
+        character.id === targetId ? { ...character, notes: value } : character
+      )
+    );
+
+    setEncounterMonsters((current) =>
+      current.map((monster) =>
+        monster.id === targetId ? { ...monster, notes: value } : monster
+      )
+    );
+  }
+
+  function nextTurn() {
+    if (initiativeOrder.length === 0) return;
+
+    const isLastTurn = currentTurnIndex >= initiativeOrder.length - 1;
+
+    if (isLastTurn) {
+      setCurrentTurnIndex(0);
+      setRound((current) => current + 1);
+
+      setCombatLog((current) => [
+        {
+          id: createId("log"),
+          text: `Round ${round + 1} · Inizia un nuovo round.`,
+        },
+        ...current,
+      ]);
+
+      return;
+    }
+
+    setCurrentTurnIndex((current) => current + 1);
+  }
+
+  function previousTurn() {
+    if (initiativeOrder.length === 0) return;
+
+    if (currentTurnIndex <= 0) {
+      setCurrentTurnIndex(initiativeOrder.length - 1);
+      setRound((current) => Math.max(1, current - 1));
+      return;
+    }
+
+    setCurrentTurnIndex((current) => current - 1);
+  }
+
+  function nextRound() {
+    setRound((current) => current + 1);
+    setCurrentTurnIndex(0);
+
     setCombatLog((current) => [
       {
         id: createId("log"),
-        text: logText,
+        text: `Round ${round + 1} · Inizia un nuovo round.`,
       },
       ...current,
     ]);
   }
 
+  function previousRound() {
+    setRound((current) => Math.max(1, current - 1));
+    setCurrentTurnIndex(0);
+  }
+
   function resetCombat() {
+    setRound(1);
+    setCurrentTurnIndex(0);
     setEncounterMonsters([]);
     setActiveActorId("");
     setSelectedTargetId("");
     setCombatLog([]);
+
+    localStorage.removeItem(COMBAT_STORAGE_KEY);
+  }
+
+  function resetEverything() {
+    setRound(1);
+    setCurrentTurnIndex(0);
+    setParty([]);
+    setEncounterMonsters([]);
+    setActiveActorId("");
+    setSelectedTargetId("");
+    setDamageAmount(5);
+    setCombatLog([]);
+
+    localStorage.removeItem(COMBAT_STORAGE_KEY);
+  }
+
+  function selectInitiativeActor(actorId, index) {
+    setCurrentTurnIndex(index);
+    setActiveActorId(actorId);
   }
 
   return (
@@ -345,7 +542,8 @@ export function CombatPanel() {
           <h1>Combattimento</h1>
           <p>
             Prepara il party, scegli i mostri dal bestiario, assegna XP,
-            iniziativa, PF e gestisci rapidamente danni, cure e bersagli.
+            iniziativa, PF e gestisci rapidamente danni, cure, condizioni,
+            round e bersagli.
           </p>
         </div>
 
@@ -354,21 +552,54 @@ export function CombatPanel() {
 
       <section className="combat-summary-grid">
         <div className="combat-summary-card fantasy-card">
+          <span>Round</span>
+          <strong>{round}</strong>
+          <small>
+            {currentTurnActor
+              ? `Turno: ${currentTurnActor.name}`
+              : "Nessun turno attivo"}
+          </small>
+        </div>
+
+        <div className="combat-summary-card fantasy-card">
           <span>Party</span>
           <strong>{party.length}</strong>
           <small>Livello medio {averagePartyLevel || "—"}</small>
         </div>
 
         <div className="combat-summary-card fantasy-card">
-          <span>Mostri</span>
-          <strong>{encounterMonsters.length}</strong>
-          <small>Creature nell’incontro</small>
-        </div>
-
-        <div className="combat-summary-card fantasy-card">
           <span>XP Totali</span>
           <strong>{totalMonsterXp}</strong>
           <small>{xpPerCharacter} XP per personaggio</small>
+        </div>
+      </section>
+
+      <section className="combat-difficulty-card fantasy-card">
+        <div>
+          <div className="section-kicker">Analisi incontro</div>
+          <h2 className={`combat-difficulty-title ${encounterDifficulty.tone}`}>
+            {encounterDifficulty.label}
+          </h2>
+          <p>{encounterDifficulty.description}</p>
+        </div>
+
+        <div className="combat-threshold-grid">
+          <div>
+            <span>Facile</span>
+            <strong>{partyThresholds.easy}</strong>
+          </div>
+          <div>
+            <span>Medio</span>
+            <strong>{partyThresholds.medium}</strong>
+          </div>
+          <div>
+            <span>Difficile</span>
+            <strong>{partyThresholds.hard}</strong>
+          </div>
+          <div>
+            <span>Mortale</span>
+            <strong>{partyThresholds.deadly}</strong>
+          </div>
         </div>
       </section>
 
@@ -453,7 +684,10 @@ export function CombatPanel() {
             </label>
           </div>
 
-          <button className="primary-button combat-full-button" onClick={addCharacter}>
+          <button
+            className="primary-button combat-full-button"
+            onClick={addCharacter}
+          >
             Aggiungi personaggio
           </button>
 
@@ -466,6 +700,12 @@ export function CombatPanel() {
                     Liv. {character.level} · CA {character.armorClass} · Iniz.{" "}
                     {character.initiative}
                   </span>
+
+                  {character.conditions?.length > 0 && (
+                    <small className="combat-row-conditions">
+                      {character.conditions.join(", ")}
+                    </small>
+                  )}
                 </div>
 
                 <div className="combat-hp-box">
@@ -527,6 +767,12 @@ export function CombatPanel() {
                   <span>
                     CR {monster.cr} · CA {monster.armorClass} · {monster.role}
                   </span>
+
+                  {monster.conditions?.length > 0 && (
+                    <small className="combat-row-conditions">
+                      {monster.conditions.join(", ")}
+                    </small>
+                  )}
                 </div>
 
                 <div className="combat-monster-mini-grid">
@@ -597,16 +843,45 @@ export function CombatPanel() {
             </div>
           </div>
 
+          <div className="round-controls enhanced">
+            <button className="secondary-button" onClick={previousRound}>
+              − Round
+            </button>
+
+            <div className="round-center-box">
+              <strong>Round {round}</strong>
+              <span>
+                {currentTurnActor
+                  ? `Turno: ${currentTurnActor.name}`
+                  : "Nessun turno attivo"}
+              </span>
+            </div>
+
+            <button className="primary-button" onClick={nextRound}>
+              + Round
+            </button>
+          </div>
+
+          <div className="turn-controls">
+            <button className="secondary-button" onClick={previousTurn}>
+              ← Turno precedente
+            </button>
+
+            <button className="primary-button" onClick={nextTurn}>
+              Prossimo turno →
+            </button>
+          </div>
+
           <div className="initiative-list">
             {initiativeOrder.map((actor, index) => (
               <button
                 key={actor.id}
                 className={
                   activeActorId === actor.id
-                    ? "initiative-row active"
+                    ? "initiative-row active current-turn"
                     : "initiative-row"
                 }
-                onClick={() => setActiveActorId(actor.id)}
+                onClick={() => selectInitiativeActor(actor.id, index)}
               >
                 <span>{index + 1}</span>
                 <strong>{actor.name}</strong>
@@ -667,19 +942,72 @@ export function CombatPanel() {
             </label>
           </div>
 
-          <div className="combat-action-buttons">
-            <button className="danger-button" onClick={() => applyHpChange("damage")}>
+          <div className="combat-action-buttons combat-action-buttons-extended">
+            <button
+              className="danger-button"
+              onClick={() => applyHpChange("damage")}
+            >
               Infliggi danno
             </button>
 
-            <button className="secondary-button" onClick={() => applyHpChange("heal")}>
+            <button
+              className="secondary-button"
+              onClick={() => applyHpChange("heal")}
+            >
               Cura
             </button>
 
             <button className="secondary-button" onClick={resetCombat}>
               Reset incontro
             </button>
+
+            <button className="secondary-button" onClick={resetEverything}>
+              Reset totale
+            </button>
           </div>
+
+          {selectedTargetId && selectedTarget && (
+            <div className="combat-condition-panel">
+              <div className="combat-condition-header">
+                <span>Condizioni bersaglio</span>
+                <strong>{selectedTarget.name}</strong>
+              </div>
+
+              <div className="combat-condition-grid">
+                {combatConditions.map((condition) => {
+                  const isActive =
+                    selectedTarget.conditions?.includes(condition) || false;
+
+                  return (
+                    <button
+                      key={condition}
+                      className={
+                        isActive
+                          ? "combat-condition-chip active"
+                          : "combat-condition-chip"
+                      }
+                      onClick={() =>
+                        toggleCondition(selectedTargetId, condition)
+                      }
+                    >
+                      {condition}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <label className="combat-notes-field">
+                Note rapide
+                <textarea
+                  value={selectedTarget.notes || ""}
+                  onChange={(event) =>
+                    updateActorNotes(selectedTargetId, event.target.value)
+                  }
+                  placeholder="Es. concentrato su incantesimo, nascosto dietro copertura, vulnerabile al fuoco..."
+                />
+              </label>
+            </div>
+          )}
 
           <div className="combat-log">
             {combatLog.length === 0 ? (
