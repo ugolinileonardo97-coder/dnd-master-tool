@@ -4,6 +4,7 @@ import {
   mapLevelOptions,
   zoneTypeMeta,
 } from "../data/maps/mapData";
+import { pickSeeded } from "./mapMonsterPicker";
 
 const environmentWeights = {
   dungeon: ["entrance", "corridor", "monster", "trap", "event", "treasure", "secret", "hazard"],
@@ -197,16 +198,33 @@ export function getZoneIcon(type) {
   return zoneTypeMeta[type]?.icon || "✦";
 }
 
-export function generateZoneContent(zoneType, biomeId, environment = "dungeon", level = "mid") {
+export function generateZoneContent(
+  zoneType,
+  biomeId,
+  environment = "dungeon",
+  level = "mid",
+  generationContext = {}
+) {
   const biome = mapBiomes[biomeId] || mapBiomes.forest;
-  const bossRoom = randomItem(biome.bossRooms);
-  const encounter = randomItem(biome.monsterEncounters);
-  const trap = randomItem(biome.traps);
-  const treasure = randomItem(biome.treasures);
-  const event = randomItem(biome.events);
-  const environmentalDetail = randomItem(biome.environmentalDetails);
-  const entranceVisual = randomItem(biome.entranceVisuals);
-  const roomName = zoneType === "boss" ? bossRoom.name : randomItem(biome.roomNames);
+  const seedBase = `${generationContext.mapSeed || "legacy"}-${biomeId}-${environment}-${level}-${generationContext.zoneIndex || 0}`;
+  const bossRoom = pickSeeded(biome.bossRooms, `${seedBase}-boss-room`) || randomItem(biome.bossRooms);
+  const encounter =
+    pickSeeded(biome.monsterEncounters, `${seedBase}-encounter`) ||
+    randomItem(biome.monsterEncounters);
+  const trap = pickSeeded(biome.traps, `${seedBase}-trap`) || randomItem(biome.traps);
+  const treasure =
+    pickSeeded(biome.treasures, `${seedBase}-treasure`) || randomItem(biome.treasures);
+  const event = pickSeeded(biome.events, `${seedBase}-event`) || randomItem(biome.events);
+  const environmentalDetail =
+    pickSeeded(biome.environmentalDetails, `${seedBase}-detail`) ||
+    randomItem(biome.environmentalDetails);
+  const entranceVisual =
+    pickSeeded(biome.entranceVisuals, `${seedBase}-entrance`) ||
+    randomItem(biome.entranceVisuals);
+  const roomName =
+    zoneType === "boss"
+      ? bossRoom.name
+      : pickSeeded(biome.roomNames, `${seedBase}-room`) || randomItem(biome.roomNames);
 
   return {
     name: roomName,

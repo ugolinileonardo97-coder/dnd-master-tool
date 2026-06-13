@@ -26,7 +26,7 @@ class MobileLazyErrorBoundary extends Component {
 
     return (
       <div className="mobile-native-screen mobile-load-error">
-        <h1>D&D Shop</h1>
+        <h1>Master&rsquo;s Grimoire</h1>
         <p>Non riesco a caricare la versione mobile.</p>
         <small>{this.state.message}</small>
         <button type="button" onClick={() => window.location.reload()}>

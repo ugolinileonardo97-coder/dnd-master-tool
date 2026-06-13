@@ -864,8 +864,8 @@ export function MobileBase44App(props) {
     return (
       <div className="b44-page">
         <div className="b44-home-title">
-          <h1>D&amp;D Shop</h1>
-          <p>Strumenti per Dungeon Master</p>
+          <h1>Master&rsquo;s Grimoire</h1>
+          <p>Strumento per Dungeon Master</p>
         </div>
         <section className="b44-card b44-campaign-card">
           <p>Partita Attiva</p>

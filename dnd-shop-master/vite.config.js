@@ -20,8 +20,8 @@ export default defineConfig({
       },
 
       manifest: {
-        name: "D&D Shop Master",
-        short_name: "D&D Shop",
+        name: "Master’s Grimoire",
+        short_name: "Grimoire",
         description: "Strumento fantasy per Dungeon Master",
         start_url: "/",
         scope: "/",

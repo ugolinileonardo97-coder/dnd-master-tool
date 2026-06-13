@@ -97,9 +97,12 @@ body {
 .sidebar-header h1 {
   margin: 0;
   font-family: "Cinzel", serif;
-  font-size: 43px;
+  font-size: 31px;
+  line-height: 1.08;
   font-weight: 800;
   color: #d99a3a;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .sidebar-header p {
@@ -366,10 +369,11 @@ body {
 }
 
 .sidebar-footer {
-  display: grid;
-  grid-template-columns: 1fr 52px;
+  display: flex;
+  align-items: center;
   gap: 14px;
   margin-top: 24px;
+  margin-bottom: 0;
 }
 
 .sidebar-footer-button {
@@ -381,6 +385,24 @@ body {
   font-family: "Cinzel", serif;
   font-size: 12px;
   font-weight: 700;
+}
+
+.sidebar-footer-button:not(.sidebar-book-button) {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.sidebar-book-button {
+  flex: 0 0 52px;
+  width: 52px;
+  min-width: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-family: inherit;
+  font-size: 20px;
+  line-height: 1;
 }
 
 /* MAIN */
@@ -2948,6 +2970,12 @@ body {
   overflow: visible;
   box-sizing: border-box;
   z-index: 5;
+}
+
+.desktop-app-shell > .sidebar {
+  min-height: 0;
+  height: fit-content;
+  padding-bottom: 18px;
 }
 
 .main {

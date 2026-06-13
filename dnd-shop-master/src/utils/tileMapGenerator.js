@@ -1,5 +1,6 @@
 import { mapBiomes, mapEnvironmentOptions, mapLevelOptions } from "../data/maps/mapData";
 import { generateZoneContent, getZoneIcon } from "./mapGenerator";
+import { pickMapMonster } from "./mapMonsterPicker";
 
 const MAP_SIZE = 16;
 
@@ -75,54 +76,6 @@ const markerLabels = {
   safe: "Rifugio",
   corridor: "Passaggio",
 };
-
-const biomeEncounterProfiles = {
-  forest: {
-    monster: ["Predone del sottobosco", 13, 18, "+4 lama corta", "1d6+2 perforanti", "Usa copertura tra radici e prova a spingere i PG verso rovi o trappole."],
-    boss: ["Custode delle Radici Marce", 15, 72, "+6 artiglio di legno vivo", "2d8+4 contundenti", "Non insegue: chiude passaggi con radici e costringe il gruppo ad avvicinarsi."],
-  },
-  coastal: {
-    monster: ["Contrabbandiere del molo", 13, 22, "+4 arpione corto", "1d8+2 perforanti", "Combatte da passerelle strette e prova a buttare i bersagli in acqua."],
-    boss: ["Capitano della Stiva Allagata", 16, 84, "+7 sciabola salmastra", "2d8+4 taglienti", "Ordina ai minion di tagliare corde e separare il gruppo sulle passerelle."],
-  },
-  swamp: {
-    monster: ["Cacciatore del pantano", 12, 24, "+4 lancia uncinata", "1d8+2 perforanti", "Resta nel fango alto e trascina i feriti verso acqua torbida."],
-    boss: ["Matriarca delle Acque Nere", 15, 78, "+6 artiglio fangoso", "2d8+3 contundenti", "Fa avanzare nubi tossiche lente e protegge le vie di fuga sommerse."],
-  },
-  mountain: {
-    monster: ["Predone del valico", 14, 26, "+5 piccozza", "1d8+3 perforanti", "Tiene le alture e forza prove rischiose vicino a crepacci o ponti sospesi."],
-    boss: ["Guardiano della Cengia Spezzata", 17, 92, "+7 martello di roccia", "2d10+4 contundenti", "Spinge i nemici verso bordi esposti e rompe coperture con colpi pesanti."],
-  },
-  desert: {
-    monster: ["Predone delle dune", 13, 20, "+4 lama curva", "1d6+2 taglienti", "Si muove dietro colonne e usa sabbia sollevata per coprire la ritirata."],
-    boss: ["Custode della Tomba Calda", 16, 86, "+7 falce cerimoniale", "2d8+4 taglienti", "Attiva sigilli sul pavimento e costringe i PG a cambiare posizione."],
-  },
-  infernal: {
-    monster: ["Armigero di brace", 14, 28, "+5 catena rovente", "1d8+3 fuoco", "Blocca corridoi stretti e punisce chi resta fermo vicino alla lava."],
-    boss: ["Giudice delle Catene Rosse", 17, 96, "+8 maglio infernale", "2d10+5 fuoco", "Marca un bersaglio e lo costringe a scegliere tra danno e movimento."],
-  },
-  underdark: {
-    monster: ["Sentinella cieca", 13, 24, "+4 artiglio pallido", "1d8+2 taglienti", "Reagisce al rumore e tende imboscate dove la luce non arriva."],
-    boss: ["Voce del Lago Cieco", 16, 88, "+7 tentacolo d'ombra", "2d8+4 necrotici", "Spegne luci e usa eco false per dividere il gruppo."],
-  },
-};
-
-function getEncounterProfile(biome, level, zoneType) {
-  const profiles = biomeEncounterProfiles[biome] || biomeEncounterProfiles.forest;
-  const source = zoneType === "boss" ? profiles.boss : profiles.monster;
-  const levelBonus = level === "low" ? -4 : level === "high" ? 12 : level === "boss" ? 24 : 0;
-  return {
-    name: source[0],
-    armorClass: source[1] + (zoneType === "boss" && level === "boss" ? 1 : 0),
-    hitPoints: Math.max(8, source[2] + levelBonus),
-    speed: biome === "coastal" || biome === "swamp" ? "9 m, nuoto 6 m" : "9 m",
-    attack: source[3],
-    damage: source[4],
-    special: zoneType === "boss" ? "Tratto speciale: controlla il terreno una volta per round." : "Tratto speciale: vantaggio se attacca da copertura o terreno favorevole.",
-    tactics: source[5],
-    difficulty: zoneType === "boss" ? "Boss" : level === "low" ? "Facile" : level === "high" ? "Difficile" : "Media",
-  };
-}
 
 function createTreasurePlayDetail(content, biome) {
   const locationByBiome = {
@@ -285,12 +238,9 @@ function makeTilesForZone(zone) {
   return tiles;
 }
 
-function createMarker(zone, content, biome, level) {
+function createMarker(zone, content, biome) {
   const markerType = getMarkerType(zone.type);
-  const encounterProfile =
-    markerType === "monster" || markerType === "boss"
-      ? getEncounterProfile(biome, level, zone.type)
-      : null;
+  const encounterProfile = zone.encounterProfile || null;
   const treasureDetail = markerType === "treasure" || markerType === "boss"
     ? createTreasurePlayDetail(content, biome)
     : null;
@@ -472,14 +422,26 @@ function makeConnection(from, to, index, biome) {
   };
 }
 
-function buildZones(zoneCount, biomeId, environment, level) {
+function buildZones(
+  zoneCount,
+  biomeId,
+  environment,
+  level,
+  mapSeed,
+  partyLevel,
+  avoidRecentMonsters
+) {
   const slotOrder = shortSlotOrders[zoneCount] || shortSlotOrders[8];
   const types = zoneTypePlans[zoneCount] || zoneTypePlans[8];
+  const usedMonsterNames = new Set();
 
   return slotOrder.map((slotIndex, index) => {
     const slot = zoneSlots[slotIndex];
     const type = types[index] || "event";
-    const content = generateZoneContent(type, biomeId, environment, level);
+    const content = generateZoneContent(type, biomeId, environment, level, {
+      mapSeed,
+      zoneIndex: index,
+    });
     const name = biomeId === "coastal"
       ? coastalZoneNames[index % coastalZoneNames.length]
       : content.name;
@@ -510,7 +472,17 @@ function buildZones(zoneCount, biomeId, environment, level) {
     zone.tiles = makeTilesForZone(zone);
     zone.encounterProfile =
       type === "monster" || type === "boss"
-        ? getEncounterProfile(biomeId, level, type)
+        ? pickMapMonster({
+          biome: biomeId,
+          environment,
+          difficulty: level,
+          partyLevel,
+          zoneIndex: index,
+          mapSeed,
+          role: type === "boss" ? "boss" : "random",
+          usedNames: usedMonsterNames,
+          avoidRecent: avoidRecentMonsters,
+        })
         : null;
     zone.treasureDetail =
       type === "treasure" || type === "boss"
@@ -520,7 +492,7 @@ function buildZones(zoneCount, biomeId, environment, level) {
       type === "trap" || type === "hazard"
         ? createHazardPlayDetail(content, biomeId)
         : null;
-    zone.markers = [createMarker(zone, content, biomeId, level)];
+    zone.markers = [createMarker(zone, content, biomeId)];
     return zone;
   });
 }
@@ -580,9 +552,22 @@ export function generateTileAdventureMap(options = {}) {
   const environment = normalizeOption(options.environment, mapEnvironmentOptions, "dungeon");
   const level = normalizeOption(options.level, mapLevelOptions, "mid");
   const zoneCount = normalizeZoneCount(options.zoneCount);
+  const mapSeed =
+    options.mapSeed ||
+    `${Date.now()}-${Math.random().toString(16).slice(2)}-${biomeId}-${environment}-${level}-${zoneCount}`;
+  const avoidRecentMonsters = !options.mapSeed;
+  const partyLevel = Math.max(1, Number(options.partyLevel) || 1);
   const biome = mapBiomes[biomeId] || { ...mapBiomes.forest, label: "Generica" };
   const tiles = createEmptyTiles();
-  const zones = buildZones(zoneCount, biomeId, environment, level);
+  const zones = buildZones(
+    zoneCount,
+    biomeId,
+    environment,
+    level,
+    mapSeed,
+    partyLevel,
+    avoidRecentMonsters
+  );
 
   paintBiomeBackground(tiles, biomeId, environment);
   zones.forEach((zone) => paintZone(tiles, zone, biomeId, environment));
@@ -590,6 +575,7 @@ export function generateTileAdventureMap(options = {}) {
 
   return {
     id: `tile-map-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    mapSeed,
     title: `${environment === "cave" ? "Caverna" : environment === "camp" ? "Accampamento" : "Mappa"} di ${biome.label}`,
     width: MAP_SIZE,
     height: MAP_SIZE,

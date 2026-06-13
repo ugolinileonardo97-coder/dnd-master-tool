@@ -43,8 +43,8 @@ export function Sidebar({
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
-        <h1>D&amp;D Shop</h1>
-        <p>Assistente Master</p>
+        <h1>Master&rsquo;s Grimoire</h1>
+        <p>Strumento per Dungeon Master</p>
       </div>
 
       <div className="active-session-card">
@@ -214,8 +214,13 @@ export function Sidebar({
         >
           ⚙️ Impostazioni
         </button>
-        <button className="sidebar-footer-button icon-only" type="button">
-          Menu
+        <button
+          className="sidebar-footer-button sidebar-book-button"
+          type="button"
+          aria-label="Apri grimorio"
+          title="Grimorio"
+        >
+          📖
         </button>
       </div>
     </aside>

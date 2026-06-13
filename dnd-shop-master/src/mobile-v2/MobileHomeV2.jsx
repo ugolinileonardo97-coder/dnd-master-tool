@@ -15,8 +15,8 @@ export function MobileHomeV2({
   return (
     <main className="mobile-v2-screen mobile-v2-home">
       <header className="mobile-v2-hero">
-        <span>Assistente Master</span>
-        <h1>D&amp;D Shop</h1>
+        <span>Strumento per Dungeon Master</span>
+        <h1>Master&rsquo;s Grimoire</h1>
         <p>Una schermata alla volta. Pulita, rapida, pronta per il tavolo.</p>
       </header>
 

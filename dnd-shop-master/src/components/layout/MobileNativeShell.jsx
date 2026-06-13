@@ -268,8 +268,8 @@ export function MobileNativeShell(props) {
 
     return (
       <MobileScreen
-        title="D&D Shop"
-        kicker="Assistente Master"
+        title="Master’s Grimoire"
+        kicker="Strumento per Dungeon Master"
         testId="mobile-home"
       >
         <section className="mobile-session-strip fantasy-card">
