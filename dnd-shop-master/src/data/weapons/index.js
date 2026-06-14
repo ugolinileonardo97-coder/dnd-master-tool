@@ -81,7 +81,9 @@ async function loadWeaponCatalogFromFetch({ signal, timeoutMs }) {
     return weapons;
   } catch (error) {
     if (controller.signal.aborted && !signal?.aborted) {
-      throw new Error("Timeout nel caricamento del catalogo armi.");
+      throw new Error("Timeout nel caricamento del catalogo armi.", {
+        cause: error,
+      });
     }
     throw error;
   } finally {
@@ -105,7 +107,8 @@ export async function loadWeaponCatalog({ signal, timeoutMs = 8000 } = {}) {
       return await loadWeaponCatalogFromShards();
     } catch (shardError) {
       throw new Error(
-        `Fetch armi fallito (${fetchError?.message || "errore sconosciuto"}). Fallback shard fallito (${shardError?.message || "errore sconosciuto"}).`
+        `Fetch armi fallito (${fetchError?.message || "errore sconosciuto"}). Fallback shard fallito (${shardError?.message || "errore sconosciuto"}).`,
+        { cause: shardError }
       );
     }
   }

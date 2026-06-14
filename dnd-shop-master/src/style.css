@@ -1,3 +1,9 @@
+/*
+ * LEGACY / GLOBAL FREEZE
+ * Non aggiungere nuovi override qui salvo fix critici.
+ * I nuovi stili devono vivere nei CSS della feature o del componente.
+ */
+
 @import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap");
 
 * {

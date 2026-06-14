@@ -17,6 +17,15 @@ export default defineConfig({
         clientsClaim: true,
         skipWaiting: true,
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+        globIgnores: [
+          "data/**/*.json",
+          "**/assets/*-cr-*.js",
+          "**/assets/*-comune-*.js",
+          "**/assets/*-non-comune-*.js",
+          "**/assets/*-rara-*.js",
+          "**/assets/*-molto-rara-*.js",
+          "**/assets/*-leggendaria-*.js",
+        ],
       },
 
       manifest: {

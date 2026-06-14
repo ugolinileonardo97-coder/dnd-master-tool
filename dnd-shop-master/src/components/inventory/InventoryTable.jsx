@@ -112,7 +112,10 @@ export function InventoryTable({
     [inventory, selectedItemId]
   );
 
-  const safeWeaponCatalog = Array.isArray(weaponCatalog) ? weaponCatalog : [];
+  const safeWeaponCatalog = useMemo(
+    () => (Array.isArray(weaponCatalog) ? weaponCatalog : []),
+    [weaponCatalog]
+  );
 
   const weaponFilterOptions = useMemo(
     () => getWeaponFilterOptions(safeWeaponCatalog),
@@ -173,7 +176,7 @@ export function InventoryTable({
       isMounted = false;
       controller.abort();
     };
-  }, [showWeaponCatalog, weaponCatalogRetryKey]);
+  }, [showWeaponCatalog, weaponCatalog.length, weaponCatalogRetryKey]);
 
   function retryWeaponCatalogLoad() {
     setWeaponCatalog([]);

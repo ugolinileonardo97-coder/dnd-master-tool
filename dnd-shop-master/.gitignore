@@ -29,6 +29,9 @@ node_modules/
 
 dist/
 
+# Local nested project copy. Keep it outside the repository when possible.
+/dnd-shop-master/
+
 # Codex local configuration
 .codex/
 

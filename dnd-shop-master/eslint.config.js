@@ -5,9 +5,21 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores([
+    '**/node_modules/**',
+    '**/dist/**',
+    '**/build/**',
+    '**/coverage/**',
+    'dnd-shop-master/**',
+    '**/generated/**',
+    '**/backup/**',
+    '**/backups/**',
+    '**/*.bak',
+    '**/*.backup.*',
+    'public/data/**',
+  ]),
   {
-    files: ['**/*.{js,jsx}'],
+    files: ['src/**/*.{js,jsx}'],
     extends: [
       js.configs.recommended,
       reactHooks.configs.flat.recommended,
@@ -15,6 +27,24 @@ export default defineConfig([
     ],
     languageOptions: {
       globals: globals.browser,
+      parserOptions: { ecmaFeatures: { jsx: true } },
+    },
+  },
+  {
+    files: ['src/data/narrativePacks/createNarrativePack.js'],
+    rules: {
+      // All narrative template callbacks intentionally accept the same context.
+      'no-unused-vars': ['error', { args: 'none' }],
+    },
+  },
+  {
+    files: ['tests/**/*.{js,jsx}', 'playwright.config.js'],
+    extends: [js.configs.recommended],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
   },

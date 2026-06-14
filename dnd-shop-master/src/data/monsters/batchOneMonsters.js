@@ -1,19 +1,3 @@
-const BIOMES = [
-  "forest",
-  "swamp",
-  "mountain",
-  "desert",
-  "arctic",
-  "coastal",
-  "aquatic",
-  "grassland",
-  "hill",
-  "underdark",
-  "urban",
-  "ruins",
-  "planar",
-];
-
 const CR_POOL = [
   ...Array(8).fill("0"),
   ...Array(10).fill("1/8"),
