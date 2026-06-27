@@ -1,0 +1,1688 @@
+.map-generator {
+  display: grid;
+  gap: 18px;
+}
+
+.map-generator.compact {
+  gap: 12px;
+}
+
+.map-generator-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 22px;
+}
+
+.map-generator-hero h1 {
+  margin: 0 0 8px;
+}
+
+.map-generator-hero p {
+  margin: 0;
+  max-width: 760px;
+}
+
+.map-generator-mark {
+  flex: 0 0 auto;
+  font-size: 42px;
+}
+
+.map-controls {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
+  align-items: end;
+  gap: 12px;
+  padding: 16px;
+}
+
+.map-controls.compact {
+  grid-template-columns: 1fr 1fr;
+  padding: 0;
+}
+
+.map-controls label {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  color: var(--text-muted, #bfae93);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.map-controls select,
+.map-controls input {
+  width: 100%;
+  min-height: 44px;
+  box-sizing: border-box;
+  border: 1px solid rgba(212, 167, 91, 0.32);
+  border-radius: 12px;
+  background: rgba(18, 10, 6, 0.72);
+  color: inherit;
+  padding: 9px 11px;
+}
+
+.map-zone-stepper {
+  display: grid;
+  grid-template-columns: 38px minmax(54px, 1fr) 38px;
+  align-items: center;
+  gap: 6px;
+}
+
+.map-zone-stepper input {
+  text-align: center;
+}
+
+.map-zone-stepper button {
+  min-height: 44px;
+  padding: 0;
+  border: 1px solid rgba(212, 167, 91, 0.28);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #f0c987;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.map-controls button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #d99a3a, #9f5d20);
+  color: #160d08;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.map-generate-button {
+  align-self: end;
+  min-height: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.map-controls .map-zone-stepper button {
+  min-height: 44px;
+  padding: 0;
+  border: 1px solid rgba(212, 167, 91, 0.28);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #f0c987;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.map-controls.compact > button {
+  grid-column: 1 / -1;
+}
+
+.map-generator-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.75fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.adventure-map-canvas,
+.adventure-map-detail {
+  padding: 18px;
+}
+
+.adventure-map-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.adventure-map-title h2,
+.adventure-map-detail h2 {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.adventure-map-title strong {
+  align-self: start;
+  flex: 0 0 auto;
+  color: #e4b15f;
+}
+
+.adventure-map-board {
+  position: relative;
+  min-height: 420px;
+  overflow: hidden;
+  border: 1px solid rgba(212, 167, 91, 0.22);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(217, 154, 58, 0.18), transparent 25%),
+    radial-gradient(circle at 80% 70%, rgba(80, 130, 105, 0.13), transparent 30%),
+    linear-gradient(135deg, rgba(31, 21, 14, 0.98), rgba(15, 10, 7, 0.98));
+}
+
+.map-tile-board {
+  overflow: auto;
+  padding: 12px;
+  border: 1px solid rgba(212, 167, 91, 0.22);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(217, 154, 58, 0.14), transparent 24%),
+    linear-gradient(135deg, rgba(31, 21, 14, 0.98), rgba(15, 10, 7, 0.98));
+}
+
+.tile-map-viewport {
+  overflow: auto;
+  padding: 14px;
+  border: 1px solid rgba(212, 167, 91, 0.22);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 24% 16%, rgba(217, 154, 58, 0.12), transparent 24%),
+    linear-gradient(135deg, rgba(31, 21, 14, 0.98), rgba(15, 10, 7, 0.98));
+}
+
+.tile-map-grid {
+  --tile-size: calc(54px * var(--tile-map-zoom, 1));
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--tile-map-width, 12), var(--tile-size));
+  grid-template-rows: repeat(var(--tile-map-height, 12), var(--tile-size));
+  width: max-content;
+  margin: 0 auto;
+  border: 2px solid rgba(212, 167, 91, 0.28);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #100a07;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.36);
+}
+
+.tile-map-cell {
+  position: relative;
+  width: var(--tile-size);
+  height: var(--tile-size);
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.025), transparent),
+    #21150e;
+  overflow: hidden;
+}
+
+.tile-map-cell:disabled {
+  cursor: default;
+}
+
+.tile-map-cell.selectable {
+  cursor: pointer;
+}
+
+.tile-map-cell img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  image-rendering: auto;
+  pointer-events: none;
+}
+
+.tile-map-cell.empty {
+  background: #0b0705;
+}
+
+.tile-map-cell.wall {
+  background: linear-gradient(135deg, #211810, #100a07);
+}
+
+.tile-map-cell.corridor,
+.tile-map-cell.bridge,
+.tile-map-cell.floor,
+.tile-map-cell.entrance,
+.tile-map-cell.boss,
+.tile-map-cell.treasure,
+.tile-map-cell.trap {
+  outline: 1px solid rgba(226, 176, 91, 0.045);
+  outline-offset: -1px;
+}
+
+.tile-map-cell.selected {
+  box-shadow: none;
+}
+
+.tile-map-connections {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: calc(var(--tile-size) * var(--tile-map-width, 16));
+  height: calc(var(--tile-size) * var(--tile-map-height, 16));
+  pointer-events: none;
+}
+
+.tile-map-connection-line {
+  stroke: rgba(212, 167, 91, 0.6);
+  stroke-width: 0.09;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 4px rgba(217, 154, 58, 0.4));
+}
+
+.tile-map-connection-line.main {
+  stroke: rgba(255, 211, 128, 0.9);
+  stroke-width: 0.12;
+}
+
+.tile-map-connection-line.branch {
+  stroke: rgba(160, 119, 68, 0.48);
+  stroke-width: 0.075;
+}
+
+.tile-map-connection-line.secret {
+  stroke-dasharray: 0.24 0.18;
+}
+
+.tile-map-connection-line.bridge,
+.tile-map-connection-line.passerella {
+  stroke: rgba(127, 201, 211, 0.82);
+}
+
+.tile-map-connection-icon {
+  z-index: 3;
+  align-self: center;
+  justify-self: center;
+  width: calc(var(--tile-size) * 0.42);
+  height: calc(var(--tile-size) * 0.42);
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 216, 142, 0.42);
+  border-radius: 999px;
+  background: rgba(12, 7, 4, 0.78);
+  pointer-events: none;
+}
+
+.tile-map-connection-icon img {
+  width: 75%;
+  height: 75%;
+  object-fit: contain;
+}
+
+.tile-map-zone-overlay {
+  z-index: 4;
+  align-self: stretch;
+  justify-self: stretch;
+  display: grid;
+  align-content: center;
+  gap: 2px;
+  min-width: 0;
+  min-height: 0;
+  padding: 5px;
+  border: 1px solid rgba(217, 154, 58, 0.58);
+  border-radius: 10px;
+  background:
+    linear-gradient(135deg, rgba(255, 218, 145, 0.08), rgba(23, 12, 6, 0.08));
+  color: #f4c978;
+  cursor: pointer;
+  overflow: hidden;
+  text-align: center;
+  text-shadow: 0 1px 2px #000;
+}
+
+.tile-map-zone-overlay strong,
+.tile-map-zone-overlay em,
+.tile-map-zone-kicker {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tile-map-zone-kicker {
+  font-size: calc(var(--tile-size) * 0.17);
+  font-weight: 900;
+  color: #ffe0a3;
+}
+
+.tile-map-zone-overlay strong {
+  font-size: calc(var(--tile-size) * 0.18);
+  line-height: 1.1;
+}
+
+.tile-map-zone-overlay em {
+  color: #d6bd91;
+  font-size: calc(var(--tile-size) * 0.15);
+  font-style: normal;
+  font-weight: 800;
+}
+
+.tile-map-zone-overlay.selected {
+  border-color: #ffe1a1;
+  background: rgba(217, 154, 58, 0.16);
+  color: #fff1ca;
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 225, 161, 0.58),
+    0 0 20px rgba(217, 154, 58, 0.34);
+}
+
+.tile-map-zone-overlay.muted-selected {
+  border-color: rgba(255, 225, 161, 0.48);
+  background: rgba(217, 154, 58, 0.08);
+}
+
+.tile-map-marker {
+  z-index: 6;
+  align-self: center;
+  justify-self: center;
+  width: calc(var(--tile-size) * 0.62);
+  height: calc(var(--tile-size) * 0.62);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(255, 216, 142, 0.64);
+  border-radius: 999px;
+  background: rgba(18, 10, 6, 0.78);
+  color: #ffe2a7;
+  font-size: calc(var(--tile-size) * 0.34);
+  line-height: 1;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.38);
+  cursor: pointer;
+}
+
+.tile-map-marker.selected,
+.tile-map-marker:focus-visible {
+  outline: 2px solid #ffe1a1;
+  outline-offset: 2px;
+  box-shadow:
+    0 0 0 4px rgba(217, 154, 58, 0.18),
+    0 8px 22px rgba(0, 0, 0, 0.5);
+}
+
+.tile-map-marker img {
+  width: 78%;
+  height: 78%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.tile-map-marker span {
+  display: none;
+}
+
+.tile-map-marker img[hidden] + span {
+  display: block;
+}
+
+.tile-map-marker.boss {
+  border-color: rgba(255, 111, 74, 0.88);
+  background: rgba(82, 22, 15, 0.82);
+}
+
+.tile-map-marker.treasure {
+  border-color: rgba(255, 224, 121, 0.88);
+}
+
+.tile-map-marker.trap,
+.tile-map-marker.hazard {
+  border-color: rgba(255, 170, 77, 0.88);
+}
+
+.adventure-map-detail.marker-detail {
+  border-color: rgba(255, 216, 142, 0.32);
+}
+
+.narrative-map-canvas {
+  overflow: hidden;
+}
+
+.narrative-map-board {
+  padding: 8px;
+  border: 1px solid rgba(212, 167, 91, 0.18);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 18% 10%, rgba(217, 154, 58, 0.12), transparent 24%),
+    linear-gradient(135deg, rgba(31, 21, 14, 0.96), rgba(12, 8, 6, 0.98));
+}
+
+.narrative-main-path {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(190px, 1fr));
+  gap: 8px;
+  align-items: start;
+}
+
+.narrative-path-step {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.narrative-zone-card {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  min-height: 106px;
+  max-height: 142px;
+  padding: 9px;
+  border: 1px solid rgba(217, 154, 58, 0.42);
+  border-radius: 16px;
+  background:
+    linear-gradient(145deg, rgba(80, 47, 20, 0.22), rgba(18, 10, 6, 0.95)),
+    rgba(16, 10, 7, 0.96);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.26);
+}
+
+.narrative-zone-card.selected {
+  border-color: #ffe1a1;
+  box-shadow:
+    0 0 0 2px rgba(255, 225, 161, 0.16),
+    0 16px 34px rgba(0, 0, 0, 0.38),
+    0 0 26px rgba(217, 154, 58, 0.24);
+}
+
+.narrative-zone-main {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
+
+.narrative-zone-main strong {
+  display: -webkit-box;
+  min-width: 0;
+  overflow: hidden;
+  color: #f4c978;
+  font-size: 16px;
+  line-height: 1.15;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.narrative-zone-topline,
+.narrative-zone-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.narrative-zone-number,
+.narrative-zone-meta {
+  color: #c9a66e;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.narrative-zone-icon {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(217, 154, 58, 0.28);
+  border-radius: 12px;
+  background: rgba(217, 154, 58, 0.12);
+  font-size: 18px;
+}
+
+.narrative-zone-summary {
+  display: none;
+}
+
+.narrative-zone-markers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.narrative-zone-markers button {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(255, 216, 142, 0.34);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.narrative-zone-markers button.selected,
+.narrative-zone-markers button:focus-visible {
+  border-color: #ffe1a1;
+  box-shadow: 0 0 0 3px rgba(217, 154, 58, 0.2);
+}
+
+.narrative-zone-markers img {
+  width: 19px;
+  height: 19px;
+  object-fit: contain;
+}
+
+.narrative-connection-card {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  align-items: center;
+  gap: 6px;
+  width: min(100%, 88%);
+  min-width: 0;
+  justify-self: center;
+  min-height: 38px;
+  padding: 4px 7px;
+  border: 1px solid rgba(212, 167, 91, 0.22);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.035);
+  color: #ead7b2;
+  text-align: left;
+}
+
+.narrative-connection-card.main {
+  border-color: rgba(217, 154, 58, 0.38);
+  background: rgba(217, 154, 58, 0.08);
+}
+
+.narrative-connection-card.branch {
+  border-style: dashed;
+  opacity: 0.92;
+}
+
+.narrative-connection-card.selected {
+  border-color: #ffe1a1;
+  box-shadow: 0 0 18px rgba(217, 154, 58, 0.24);
+}
+
+.narrative-connection-arrow {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: rgba(217, 154, 58, 0.16);
+  color: #f4c978;
+  font-weight: 900;
+}
+
+.narrative-connection-body {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.narrative-connection-body span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+.narrative-connection-body img {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.narrative-connection-body strong {
+  min-width: 0;
+  overflow: hidden;
+  color: #f4c978;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.narrative-connection-body small {
+  color: #c8aa7b;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.narrative-side-branch {
+  display: grid;
+  gap: 5px;
+  margin-left: 6px;
+  padding-left: 8px;
+  border-left: 1px dashed rgba(217, 154, 58, 0.35);
+}
+
+.narrative-side-branch .narrative-zone-card {
+  min-height: 92px;
+  max-height: 122px;
+  padding: 8px;
+}
+
+.narrative-side-branch .narrative-zone-main strong {
+  font-size: 14px;
+}
+
+.adventure-map-detail.connection-detail {
+  border-color: rgba(127, 201, 211, 0.32);
+}
+
+.map-detail-icon img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.map-play-block {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(212, 167, 91, 0.22);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.map-play-block.encounter {
+  border-color: rgba(255, 137, 92, 0.32);
+  background:
+    radial-gradient(circle at 10% 0%, rgba(155, 48, 30, 0.16), transparent 28%),
+    rgba(255, 255, 255, 0.045);
+}
+
+.map-play-block.treasure {
+  border-color: rgba(255, 217, 112, 0.34);
+}
+
+.map-play-block.hazard {
+  border-color: rgba(255, 163, 84, 0.34);
+}
+
+.map-play-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.map-play-heading img {
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  padding: 7px;
+  border: 1px solid rgba(217, 154, 58, 0.28);
+  border-radius: 14px;
+  background: rgba(10, 7, 5, 0.58);
+}
+
+.map-play-heading div {
+  min-width: 0;
+}
+
+.map-play-heading strong {
+  display: block;
+  margin: 0 0 2px;
+  color: #d8b06e;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.map-play-heading h3 {
+  margin: 0;
+  color: #f4c978;
+  font-size: 18px;
+  line-height: 1.15;
+}
+
+.map-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.map-stat-grid span {
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid rgba(212, 167, 91, 0.16);
+  border-radius: 10px;
+  background: rgba(10, 7, 5, 0.44);
+  color: #f2dfbd;
+  font-weight: 900;
+}
+
+.map-stat-grid b {
+  display: block;
+  margin-bottom: 2px;
+  color: #c8aa7b;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.map-creature-section-title {
+  margin: 2px 0 0;
+  color: #e4b15f;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.map-creature-primary-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.map-creature-ability-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.map-creature-primary-grid span,
+.map-creature-ability-grid span {
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.map-play-row {
+  display: grid;
+  gap: 3px;
+}
+
+.map-play-row b {
+  color: #e4b15f;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.map-play-row p {
+  margin: 0;
+}
+
+.map-tile-grid {
+  --tile-gap: calc(14px * var(--map-zoom, 1));
+  display: grid;
+  grid-template-columns: repeat(var(--map-columns, 3), minmax(calc(138px * var(--map-zoom, 1)), 1fr));
+  gap: var(--tile-gap);
+  min-width: min-content;
+}
+
+.map-room-empty {
+  min-height: calc(132px * var(--map-zoom, 1));
+  border: 1px dashed rgba(212, 167, 91, 0.12);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.map-room-tile {
+  position: relative;
+  min-height: calc(132px * var(--map-zoom, 1));
+  display: grid;
+  align-content: start;
+  gap: calc(6px * var(--map-zoom, 1));
+  padding: calc(12px * var(--map-zoom, 1));
+  border: 1px solid rgba(214, 163, 81, 0.42);
+  border-radius: 16px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.035), transparent),
+    rgba(35, 24, 17, 0.95);
+  color: #ead8b8;
+  text-align: left;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+}
+
+.map-room-tile::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.035);
+  pointer-events: none;
+}
+
+.map-room-tile.entrance {
+  border-color: rgba(185, 240, 178, 0.58);
+}
+
+.map-room-tile.monster {
+  border-color: rgba(255, 143, 112, 0.58);
+}
+
+.map-room-tile.treasure {
+  border-color: rgba(255, 224, 121, 0.68);
+}
+
+.map-room-tile.trap,
+.map-room-tile.hazard {
+  border-color: rgba(255, 207, 107, 0.65);
+}
+
+.map-room-tile.secret {
+  border-style: dashed;
+  background: linear-gradient(135deg, rgba(30, 25, 24, 0.98), rgba(15, 10, 8, 0.98));
+}
+
+.map-room-tile.boss {
+  min-height: calc(150px * var(--map-zoom, 1));
+  border-width: 2px;
+  border-color: rgba(255, 127, 77, 0.9);
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255, 92, 55, 0.18), transparent 36%),
+    rgba(48, 18, 13, 0.96);
+}
+
+.map-room-tile.selected {
+  border-color: #ffd98e;
+  box-shadow: 0 0 0 2px rgba(217, 154, 58, 0.24), 0 18px 42px rgba(0, 0, 0, 0.32);
+}
+
+.map-room-topline {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.map-room-icon {
+  font-size: calc(24px * var(--map-zoom, 1));
+  line-height: 1;
+}
+
+.map-room-topline small {
+  color: #d5b879;
+  font-size: calc(11px * var(--map-zoom, 1));
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.map-room-title {
+  display: -webkit-box;
+  overflow: hidden;
+  color: #f2ddba;
+  font-family: "Cinzel", serif;
+  font-size: calc(14px * var(--map-zoom, 1));
+  line-height: 1.15;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow-wrap: anywhere;
+}
+
+.map-room-meta,
+.map-room-flavour {
+  color: #bfa985;
+  font-size: calc(11px * var(--map-zoom, 1));
+  line-height: 1.25;
+}
+
+.map-room-flavour {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.map-room-markers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: auto;
+}
+
+.map-room-markers em {
+  display: grid;
+  place-items: center;
+  width: calc(24px * var(--map-zoom, 1));
+  height: calc(24px * var(--map-zoom, 1));
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: calc(12px * var(--map-zoom, 1));
+  font-style: normal;
+}
+
+.map-connector {
+  position: absolute;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  color: #f2c979;
+  font-weight: 900;
+  pointer-events: none;
+}
+
+.map-connector.horizontal {
+  top: 50%;
+  right: calc(var(--tile-gap) * -1);
+  width: var(--tile-gap);
+  transform: translateY(-50%);
+}
+
+.map-connector.vertical {
+  left: 50%;
+  bottom: calc(var(--tile-gap) * -1);
+  height: var(--tile-gap);
+  transform: translateX(-50%);
+}
+
+.map-connector.secret {
+  color: #d9c8ff;
+  opacity: 0.92;
+}
+
+.adventure-map-svg {
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  display: block;
+}
+
+.adventure-map-texture {
+  fill: url("#map-grid-texture");
+}
+
+.adventure-map-connection line {
+  stroke: rgba(230, 188, 112, 0.55);
+  stroke-linecap: round;
+}
+
+.adventure-map-connection.path line {
+  stroke-width: 1.1;
+}
+
+.adventure-map-connection.door line {
+  stroke-width: 1.2;
+}
+
+.adventure-map-connection.corridor line {
+  stroke-width: 2.2;
+  stroke: rgba(180, 142, 83, 0.6);
+}
+
+.adventure-map-connection.bridge line {
+  stroke-width: 2.5;
+  stroke: rgba(218, 174, 92, 0.76);
+}
+
+.adventure-map-connection.secret line {
+  stroke-width: 1.1;
+  stroke-dasharray: 2 2;
+  stroke: rgba(214, 198, 151, 0.54);
+}
+
+.adventure-map-bridge-planks line {
+  stroke: rgba(255, 224, 151, 0.82);
+  stroke-width: 0.45;
+}
+
+.adventure-map-door-symbol {
+  fill: rgba(40, 20, 10, 0.95);
+  stroke: rgba(239, 199, 124, 0.92);
+  stroke-width: 0.4;
+}
+
+.adventure-map-secret-symbol {
+  fill: rgba(10, 8, 7, 0.8);
+  stroke: rgba(238, 219, 162, 0.78);
+  stroke-dasharray: 0.8 0.8;
+  stroke-width: 0.35;
+}
+
+.adventure-map-room {
+  cursor: pointer;
+  outline: none;
+}
+
+.adventure-map-room path {
+  fill: color-mix(in srgb, var(--map-fill) 82%, #1b0f08);
+  stroke: color-mix(in srgb, var(--map-stroke) 76%, #f4d38a);
+  stroke-width: 0.85;
+  filter: url("#map-room-shadow");
+  transition: fill 0.16s ease, stroke 0.16s ease, stroke-width 0.16s ease;
+}
+
+.adventure-map-room.corridor path,
+.adventure-map-room.bridge path {
+  fill: rgba(75, 48, 28, 0.82);
+}
+
+.adventure-map-room.secret path {
+  fill: rgba(12, 10, 9, 0.82);
+  stroke-dasharray: 1.4 1.1;
+}
+
+.adventure-map-room.boss path {
+  fill: color-mix(in srgb, var(--map-fill) 65%, #5a1711);
+  stroke: rgba(255, 144, 90, 0.95);
+  stroke-width: 1.35;
+}
+
+.adventure-map-room.treasure path {
+  stroke: rgba(248, 210, 95, 0.86);
+}
+
+.adventure-map-room.safe path {
+  stroke: rgba(140, 208, 141, 0.78);
+}
+
+.adventure-map-room.active path,
+.adventure-map-room:focus-visible path {
+  fill: color-mix(in srgb, var(--map-fill) 62%, #d99a3a);
+  stroke: #ffe1a1;
+  stroke-width: 1.55;
+}
+
+.adventure-map-room-icon,
+.adventure-map-room-number {
+  pointer-events: none;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  fill: #fff1ce;
+  font-size: 4px;
+  font-weight: 800;
+}
+
+.adventure-map-room-number {
+  fill: #f1c779;
+  font-size: 3.3px;
+}
+
+.adventure-map-marker {
+  pointer-events: none;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  font-size: 2.8px;
+  font-weight: 900;
+}
+
+.adventure-map-marker.monster,
+.adventure-map-marker.boss {
+  fill: #ff8f70;
+}
+
+.adventure-map-marker.trap,
+.adventure-map-marker.hazard {
+  fill: #ffcf6b;
+}
+
+.adventure-map-marker.treasure {
+  fill: #ffe079;
+}
+
+.adventure-map-marker.event,
+.adventure-map-marker.secret {
+  fill: #d9c8ff;
+}
+
+.adventure-map-marker.safe,
+.adventure-map-marker.entrance {
+  fill: #b9f0b2;
+}
+
+.adventure-map-boss-core {
+  fill: rgba(255, 84, 54, 0.26);
+  stroke: rgba(255, 196, 111, 0.8);
+  stroke-width: 0.35;
+}
+
+.adventure-map-entrance-gate {
+  fill: rgba(14, 8, 5, 0.9);
+  stroke: rgba(231, 194, 123, 0.9);
+  stroke-width: 0.4;
+}
+
+.adventure-map-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  gap: 0;
+  border: 1px solid rgba(235, 190, 105, 0.45);
+  border-radius: 18px;
+  background: rgba(26, 15, 9, 0.92);
+  color: #f2d6a5;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.32);
+  cursor: pointer;
+}
+
+.adventure-map-node span {
+  font-size: 19px;
+  line-height: 1;
+}
+
+.adventure-map-node strong {
+  font-size: 12px;
+  line-height: 1;
+}
+
+.adventure-map-node.active {
+  border-color: #f0bd5d;
+  background: radial-gradient(circle, rgba(217, 154, 58, 0.34), rgba(26, 15, 9, 0.96));
+  color: #fff2d5;
+}
+
+.adventure-map-node.boss {
+  border-color: rgba(255, 102, 74, 0.78);
+}
+
+.adventure-map-node.treasure {
+  border-color: rgba(248, 210, 95, 0.76);
+}
+
+.adventure-map-node.safe {
+  border-color: rgba(140, 208, 141, 0.68);
+}
+
+.adventure-map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.adventure-map-legend span,
+.adventure-map-detail-badges span {
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #dbc7a6;
+  font-size: 12px;
+}
+
+.adventure-map-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.adventure-map-legend img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.adventure-map-detail {
+  display: grid;
+  gap: 13px;
+}
+
+.adventure-map-detail-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.adventure-map-detail-header > span {
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(217, 154, 58, 0.34);
+  border-radius: 14px;
+  background: rgba(217, 154, 58, 0.13);
+  font-size: 24px;
+}
+
+.adventure-map-detail-header div {
+  min-width: 0;
+}
+
+.adventure-map-detail-header small {
+  color: #c8aa7b;
+  font-weight: 800;
+}
+
+.adventure-map-detail-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.adventure-map-detail p {
+  margin: 0;
+  color: #d8c7aa;
+  line-height: 1.5;
+  overflow-wrap: break-word;
+}
+
+.adventure-map-detail-notes {
+  display: grid;
+  gap: 9px;
+}
+
+.adventure-map-detail-notes article,
+.adventure-map-dm-note {
+  padding: 10px;
+  border: 1px solid rgba(212, 167, 91, 0.18);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.adventure-map-detail-notes strong,
+.adventure-map-dm-note strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #e4b15f;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.adventure-map-detail-notes .map-play-block {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 14px;
+}
+
+.adventure-map-detail-notes .map-play-block strong {
+  margin-bottom: 0;
+}
+
+.adventure-map-detail-notes .map-play-heading strong,
+.adventure-map-detail-notes .map-play-row b {
+  color: #e4b15f;
+}
+
+.campaign-map-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.campaign-map-tabs button {
+  min-height: 42px;
+  padding: 9px 16px;
+  border: 1px solid rgba(212, 167, 91, 0.26);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: inherit;
+  font-weight: 800;
+}
+
+.campaign-map-tabs button.active {
+  border-color: rgba(217, 154, 58, 0.74);
+  background: rgba(217, 154, 58, 0.18);
+  color: #f2c579;
+}
+
+@media (max-width: 640px) {
+  .map-generator {
+    gap: 12px;
+  }
+
+  .map-generator-hero {
+    display: none;
+  }
+
+  .map-controls,
+  .map-controls.compact {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 0;
+  }
+
+  .map-controls label {
+    font-size: 11px;
+  }
+
+  .map-controls select,
+  .map-controls input,
+  .map-controls > button {
+    min-height: 48px;
+    font-size: 14px;
+  }
+
+  .map-zone-stepper {
+    grid-template-columns: 48px minmax(70px, 1fr) 48px;
+  }
+
+  .map-zone-stepper button {
+    min-height: 48px;
+  }
+
+  .map-tile-board {
+    padding: 10px;
+    overflow-x: auto;
+  }
+
+  .tile-map-viewport {
+    padding: 8px;
+    overflow: auto;
+  }
+
+  .tile-map-grid {
+    --tile-size: calc(38px * var(--tile-map-zoom, 1));
+    margin: 0;
+  }
+
+  .tile-map-marker {
+    width: calc(var(--tile-size) * 0.78);
+    height: calc(var(--tile-size) * 0.78);
+  }
+
+  .tile-map-zone-overlay {
+    padding: 3px;
+  }
+
+  .tile-map-zone-overlay strong,
+  .tile-map-zone-overlay em {
+    display: none;
+  }
+
+  .tile-map-zone-kicker {
+    font-size: calc(var(--tile-size) * 0.21);
+  }
+
+  .map-tile-grid {
+    grid-template-columns: repeat(2, minmax(calc(132px * var(--map-zoom, 1)), 1fr));
+  }
+
+  .narrative-map-board {
+    padding: 8px;
+  }
+
+  .narrative-main-path {
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+
+  .narrative-zone-card {
+    padding: 10px;
+    border-radius: 15px;
+    min-height: 92px;
+    max-height: 120px;
+  }
+
+  .narrative-zone-main strong {
+    font-size: 16px;
+  }
+
+  .narrative-connection-card {
+    min-height: 44px;
+    width: 100%;
+    grid-template-columns: 30px 1fr;
+  }
+
+  .narrative-connection-arrow {
+    width: 30px;
+    height: 30px;
+  }
+
+  .narrative-side-branch {
+    margin-left: 8px;
+    padding-left: 10px;
+  }
+
+  .narrative-zone-markers button {
+    width: 34px;
+    height: 34px;
+  }
+
+  .map-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .map-creature-primary-grid,
+  .map-creature-ability-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .map-play-heading h3 {
+    font-size: 16px;
+  }
+
+  .map-play-heading img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .map-room-empty {
+    display: none;
+  }
+
+  .map-generator-layout {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .adventure-map-canvas,
+  .adventure-map-detail {
+    padding: 13px;
+  }
+
+  .adventure-map-title {
+    align-items: flex-start;
+  }
+
+  .adventure-map-title h2 {
+    font-size: 17px;
+    line-height: 1.2;
+  }
+
+  .adventure-map-title strong {
+    font-size: 12px;
+  }
+
+  .adventure-map-board {
+    min-height: 330px;
+    border-radius: 16px;
+  }
+
+  .adventure-map-svg {
+    min-height: 330px;
+  }
+
+  .adventure-map-room-icon {
+    font-size: 4.6px;
+  }
+
+  .adventure-map-room-number {
+    font-size: 3.7px;
+  }
+
+  .adventure-map-marker {
+    font-size: 3.2px;
+  }
+
+  .adventure-map-legend {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .adventure-map-legend span {
+    flex: 0 0 auto;
+    font-size: 11px;
+  }
+
+  .adventure-map-detail-header {
+    gap: 10px;
+  }
+
+  .adventure-map-detail h2 {
+    font-size: 17px;
+    line-height: 1.2;
+  }
+
+  .campaign-map-tabs {
+    gap: 8px;
+    margin: 0 0 12px;
+  }
+
+  .campaign-map-tabs button {
+    flex: 1 1 120px;
+    min-height: 44px;
+  }
+}
+
+/* Rifinitura mappa narrativa a carte: più compatta e leggibile */
+.narrative-map-board {
+  padding: 7px;
+}
+
+.narrative-main-path {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.narrative-path-step {
+  flex: 1 1 218px;
+  max-width: 310px;
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.narrative-zone-card {
+  min-height: 94px;
+  max-height: 124px;
+  padding: 8px;
+}
+
+.narrative-zone-main strong {
+  font-size: 15px;
+  line-height: 1.12;
+}
+
+.narrative-zone-number,
+.narrative-zone-meta {
+  font-size: 10px;
+}
+
+.narrative-zone-icon {
+  width: 26px;
+  height: 26px;
+  font-size: 17px;
+}
+
+.narrative-zone-markers {
+  gap: 4px;
+}
+
+.narrative-zone-markers button {
+  width: 25px;
+  height: 25px;
+}
+
+.narrative-zone-markers img {
+  width: 17px;
+  height: 17px;
+}
+
+.narrative-connection-card {
+  min-height: 34px;
+  padding: 3px 6px;
+  gap: 5px;
+  width: min(100%, 82%);
+}
+
+.narrative-connection-arrow {
+  width: 22px;
+  height: 22px;
+  font-size: 11px;
+}
+
+.narrative-connection-body strong {
+  font-size: 11px;
+}
+
+.narrative-connection-body small {
+  font-size: 9px;
+}
+
+.narrative-side-branch {
+  gap: 5px;
+  margin-left: 4px;
+  padding-left: 7px;
+}
+
+.narrative-side-branch .narrative-zone-card {
+  min-height: 86px;
+  max-height: 112px;
+}
+
+.adventure-map-detail-header h2,
+.map-play-heading h3 {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+@media (max-width: 640px) {
+  .narrative-main-path {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .narrative-path-step {
+    max-width: none;
+  }
+
+  .narrative-zone-card {
+    min-height: 84px;
+    max-height: 112px;
+    padding: 9px;
+  }
+
+  .narrative-zone-main strong {
+    font-size: 14px;
+  }
+
+  .narrative-connection-card {
+    width: 100%;
+    min-height: 38px;
+  }
+}
+
+/* Dettagli narrativi: mai tagliare testo utile su mappa mobile/tablet. */
+.adventure-map-detail,
+.adventure-map-detail-notes article,
+.adventure-map-dm-note,
+.adventure-map-detail .map-play-block,
+.adventure-map-detail .map-play-row,
+.adventure-map-detail .map-play-heading {
+  min-width: 0;
+  height: auto;
+  max-height: none;
+  overflow: visible;
+}
+
+.adventure-map-detail h2,
+.adventure-map-detail p,
+.adventure-map-detail .map-play-heading h3,
+.adventure-map-detail .map-play-row p {
+  display: block;
+  max-height: none;
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: normal;
+  -webkit-line-clamp: unset;
+  -webkit-box-orient: initial;
+}
+
+@media (max-width: 1100px) and (min-width: 641px), (max-width: 640px) {
+  .narrative-zone-card,
+  .narrative-side-branch .narrative-zone-card {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .narrative-zone-main strong,
+  .narrative-connection-body strong {
+    display: block;
+    max-height: none;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+    overflow-wrap: break-word;
+    -webkit-line-clamp: unset;
+    -webkit-box-orient: initial;
+  }
+}

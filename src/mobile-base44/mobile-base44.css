@@ -1117,7 +1117,7 @@
   .mobile-premium-bottom-nav::before {
     content: "";
     position: absolute;
-    top: -7px;
+    top: -14px;
     left: 50%;
     width: 11px;
     height: 11px;
@@ -1137,6 +1137,7 @@
     background: transparent;
     color: rgba(179, 158, 135, 0.72);
     cursor: pointer;
+    transform: translateY(-7px);
   }
 
   .mobile-premium-bottom-nav .fantasy-icon {

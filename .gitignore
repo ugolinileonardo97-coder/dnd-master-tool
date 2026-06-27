@@ -29,9 +29,12 @@ node_modules/
 
 dist/
 
+<<<<<<< HEAD
 # Local nested project copy. Keep it outside the repository when possible.
 /dnd-shop-master/
 
+=======
+>>>>>>> 4e1632c9631b4ff6fc799e232595fb5d01aac915
 # Codex local configuration
 .codex/
 
@@ -43,6 +46,7 @@ dist/
 .env
 .env.local
 .env.*.local
+<<<<<<< HEAD
 
 # Playwright
 /test-results/
@@ -50,3 +54,5 @@ dist/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+=======
+>>>>>>> 4e1632c9631b4ff6fc799e232595fb5d01aac915
