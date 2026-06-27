@@ -1,0 +1,614 @@
+.mobile-premium-theme {
+  --mg-bg: #070403;
+  --mg-leather: #130b07;
+  --mg-panel: rgba(32, 21, 14, 0.92);
+  --mg-panel-2: rgba(21, 13, 9, 0.96);
+  --mg-gold: #d8a45e;
+  --mg-gold-bright: #f0c377;
+  --mg-bronze: rgba(164, 99, 55, 0.62);
+  --mg-border: rgba(204, 130, 70, 0.58);
+  --mg-text: #ead9bf;
+  --mg-muted: rgba(221, 192, 158, 0.78);
+  --mg-serif: Georgia, 'Times New Roman', serif;
+  --mg-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ============================================================
+   MASTER'S GRIMOIRE — MOBILE HOME V2
+   Layout compatto 390 × 844, costruito sulle proporzioni Figma.
+   ============================================================ */
+
+.mobile-premium-home {
+  --mg-bg: #070403;
+  --mg-leather: #130b07;
+  --mg-panel: rgba(32, 21, 14, 0.92);
+  --mg-panel-2: rgba(21, 13, 9, 0.96);
+  --mg-gold: #d8a45e;
+  --mg-gold-bright: #f0c377;
+  --mg-bronze: rgba(164, 99, 55, 0.62);
+  --mg-border: rgba(204, 130, 70, 0.58);
+  --mg-text: #ead9bf;
+  --mg-muted: rgba(221, 192, 158, 0.78);
+  --mg-serif: Georgia, 'Times New Roman', serif;
+  --mg-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  display: block;
+  width: 100%;
+  max-width: 390px;
+  min-height: 844px;
+  margin: 0 auto;
+  padding: 0 15px 76px;
+  overflow-x: hidden;
+  color: var(--mg-text);
+  font-family: var(--mg-sans);
+  background:
+  linear-gradient(
+    rgba(0, 0, 0, .18),
+    rgba(0, 0, 0, .45)
+  ),
+  url('/images/home/home-background.webp');
+
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+}
+
+.mobile-premium-home *,
+.mobile-premium-home *::before,
+.mobile-premium-home *::after { box-sizing: border-box; }
+.mobile-premium-home button { -webkit-tap-highlight-color: transparent; }
+.mobile-premium-home__scroll { width: 100%; }
+
+.mobile-home-reference-overlay {
+  position: fixed;
+  inset: 0 auto auto 50%;
+  z-index: 1000;
+  width: 390px;
+  height: 844px;
+  pointer-events: none;
+  opacity: .35;
+  background: url('/reference/home-reference.jpg') center / 100% 100% no-repeat;
+  transform: translateX(-50%);
+}
+
+/* Debug opzionale */
+.mobile-premium-home.debug-boxes .premium-logo,
+.mobile-premium-home.debug-boxes .session-hero-card,
+.mobile-premium-home.debug-boxes .home-feature-grid,
+.mobile-premium-home.debug-boxes .home-map-card,
+.mobile-premium-home.debug-boxes .mobile-premium-bottom-nav { outline: 1px solid rgba(255,0,255,.65); }
+
+/* ============================================================
+   HERO / LOGO — reference: 390×844, logo x≈105 y≈33 w≈180 h≈48
+   ============================================================ */
+.premium-logo {
+  width: 100%;
+  height: 130px;
+  padding-top: 31px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.premium-logo p,
+.premium-logo h1 {
+  margin: 0;
+  color: var(--mg-gold);
+  font-family: var(--mg-serif);
+  font-weight: 600;
+  line-height: .9;
+  text-shadow: 0 2px 12px rgba(226, 154, 74, .38), 0 10px 22px rgba(0,0,0,.72);
+}
+
+.premium-logo p { font-size: 14px; letter-spacing: .12em; }
+.premium-logo h1 { font-size: 36px; letter-spacing: .015em; }
+
+.premium-logo__divider {
+  display: grid;
+  grid-template-columns: 60px 12px 60px;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 9px;
+}
+.premium-logo__divider span { height: 1px; background: linear-gradient(90deg, transparent, rgba(216,164,94,.7)); }
+.premium-logo__divider span:last-child { background: linear-gradient(90deg, rgba(216,164,94,.7), transparent); }
+.premium-logo__divider i {
+  width: 12px; height: 12px;
+  border: 1px solid rgba(236,185,103,.9);
+  background: linear-gradient(135deg, #4ac1c7, #0d3b45);
+  box-shadow: 0 0 14px rgba(73, 206, 215, .35);
+  transform: rotate(45deg);
+}
+
+/* ============================================================
+   CARD PARTITA — x16 y≈165 w≈371 h≈169 in Figma.
+   Dentro il flusso: larghezza 100%, h 169.
+   ============================================================ */
+.session-hero-card {
+  position: relative;
+  width: 100%;
+  height: 169px;
+  margin-top: 17px;
+  padding: 12px 13px;
+  border: 1px solid var(--mg-border);
+  border-radius: 13px;
+  background:
+    radial-gradient(circle at 16% 16%, rgba(214,151,80,.26), transparent 38%),
+    linear-gradient(180deg, rgba(56, 35, 22, .95), rgba(13, 8, 5, .98));
+  box-shadow: 0 12px 28px rgba(0,0,0,.56), inset 0 1px 0 rgba(255,221,166,.12);
+}
+.session-hero-card::after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(230,162,87,.08);
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+.session-hero-card__portrait {
+  position: absolute;
+  left: 15px;
+  top: 15px;
+  width: 76px;
+  height: 76px;
+  overflow: hidden;
+  border: 2px solid rgba(218,153,82,.58);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(236,189,105,.34), transparent 25%),
+    linear-gradient(rgba(12, 8, 5,.25), rgba(12, 8, 5,.56)),
+    var(--session-image),
+    linear-gradient(135deg, #3d2515, #09100d 68%);
+  background-size: cover;
+  background-position: center;
+  box-shadow: inset 0 0 14px rgba(0,0,0,.74), 0 0 0 3px rgba(58,36,22,.5);
+}
+
+.session-hero-card__content {
+  position: absolute;
+  left: 104px;
+  top: 16px;
+  width: 215px;
+  z-index: 1;
+}
+.session-hero-card__label,
+.premium-field-label {
+  display: block;
+  margin: 0;
+  color: var(--mg-gold);
+  font-family: var(--mg-serif);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.session-hero-card__label { font-size: 10px; line-height: 1; letter-spacing: .06em; margin-bottom: 3px; }
+.session-hero-card__content h2 {
+  margin: 0;
+  max-width: 190px;
+  color: #fff1d8;
+  font-family: var(--mg-serif);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: .94;
+  text-transform: uppercase;
+  letter-spacing: .01em;
+}
+
+.session-hero-card__controls {
+  position: absolute;
+  left: 13px;
+  right: 13px;
+  bottom: 10px;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 111px;
+  column-gap: 12px;
+  align-items: end;
+}
+
+.premium-field-label { font-size: 9px; line-height: 1; letter-spacing: .06em; margin-bottom: 4px; }
+
+.prestige-selector,
+.level-stepper { min-width: 0; }
+.prestige-selector__control {
+  display: grid;
+  grid-template-columns: 25px 1fr 25px;
+  align-items: center;
+  height: 26px;
+  border: 1px solid rgba(209,137,72,.26);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(49,29,18,.7), rgba(13,8,5,.8));
+}
+.prestige-selector button,
+.level-stepper button {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid rgba(184,111,61,.55);
+  border-radius: 6px;
+  color: var(--mg-gold-bright);
+  background: linear-gradient(180deg, rgba(83,51,31,.82), rgba(35,22,15,.92));
+  cursor: pointer;
+}
+.prestige-selector strong {
+  min-width: 0;
+  color: var(--mg-gold-bright);
+  font-family: var(--mg-serif);
+  font-size: 12px;
+  line-height: 1;
+  text-align: center;
+}
+.level-stepper__control {
+  display: grid;
+  grid-template-columns: 24px 1fr 24px;
+  align-items: center;
+  height: 26px;
+  gap: 7px;
+}
+.level-stepper strong {
+  color: var(--mg-gold-bright);
+  font-family: var(--mg-serif);
+  font-size: 13px;
+  line-height: 1;
+  text-align: center;
+}
+.level-stepper button:disabled { opacity: .45; }
+
+.fantasy-icon { width: 1rem; height: 1rem; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+
+/* ============================================================
+   FEATURE GRID — Figma: cards ≈174×122, 2 colonne.
+   ============================================================ */
+.home-feature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 8px;
+  width: 100%;
+  margin-top: 10px;
+}
+.home-feature-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 122px;
+  padding: 7px;
+  border: 1px solid var(--mg-border);
+  border-radius: 13px;
+  color: var(--mg-text);
+  text-align: center;
+  cursor: pointer;
+  background:
+    linear-gradient(180deg, rgba(8,5,3,.08), rgba(8,5,3,.86)),
+    var(--feature-image),
+    radial-gradient(circle at 50% 18%, rgba(166,99,45,.55), transparent 46%),
+    linear-gradient(135deg, #352013, #090605 76%);
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 10px 22px rgba(0,0,0,.52), inset 0 1px 0 rgba(255,221,166,.1);
+  transition: transform .14s ease, border-color .14s ease, box-shadow .14s ease;
+}
+.home-feature-card::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  background: radial-gradient(circle at 50% 30%, rgba(236,176,94,.22), transparent 34%), linear-gradient(180deg, transparent, rgba(0,0,0,.55));
+}
+.home-feature-card:active { transform: scale(.98); border-color: rgba(240,195,119,.82); box-shadow: 0 0 18px rgba(240,195,119,.16), 0 10px 22px rgba(0,0,0,.52); }
+.home-feature-card:focus-visible,
+.home-map-card:focus-visible,
+.mobile-premium-bottom-nav button:focus-visible,
+.prestige-selector button:focus-visible,
+.level-stepper button:focus-visible { outline: 2px solid var(--mg-gold-bright); outline-offset: 2px; }
+
+.home-feature-card__icon-ring,
+.home-map-card__icon-ring {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  margin-bottom: 5px;
+  border: 1px solid rgba(221,157,85,.62);
+  border-radius: 50%;
+  color: var(--mg-gold-bright);
+  background: radial-gradient(circle, rgba(86,52,30,.9), rgba(18,12,8,.95));
+  box-shadow: inset 0 0 15px rgba(0,0,0,.55), 0 7px 16px rgba(0,0,0,.42);
+}
+.home-feature-card__icon-ring .fantasy-icon,
+.home-map-card__icon-ring .fantasy-icon { width: 27px; height: 27px; }
+
+.home-feature-card__title {
+  display: block;
+  max-width: 100%;
+  color: #f3ddbb;
+  font-family: var(--mg-serif);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: .95;
+  letter-spacing: .01em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 11px rgba(0,0,0,.7);
+}
+.home-feature-card__description {
+  display: block;
+  margin-top: 2px;
+  color: rgba(232,212,183,.84);
+  font-size: 9px;
+  line-height: 1.1;
+}
+.home-feature-card:nth-child(4) .home-feature-card__title { font-size: 12.5px; line-height: .92; }
+
+/* ============================================================
+   MAP CARD — Figma ≈371×115.
+   ============================================================ */
+.home-map-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 115px;
+  margin-top: 9px;
+  padding: 12px;
+  gap: 11px;
+  border: 1px solid var(--mg-border);
+  border-radius: 13px;
+  color: var(--mg-text);
+  text-align: left;
+  cursor: pointer;
+  background:
+    linear-gradient(90deg, rgba(7,4,3,.78), rgba(7,4,3,.20)),
+    radial-gradient(circle at 70% 28%, rgba(210,163,77,.23), transparent 44%),
+    var(--map-image),
+    linear-gradient(135deg, #273018, #59491e 48%, #13251f);
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 10px 22px rgba(0,0,0,.52), inset 0 1px 0 rgba(255,221,166,.1);
+  transition: transform .14s ease, border-color .14s ease, box-shadow .14s ease;
+}
+.home-map-card:active { transform: scale(.985); border-color: rgba(240,195,119,.82); }
+.home-map-card__icon-ring { flex: 0 0 58px; margin: 0; }
+.home-map-card__title {
+  display: block;
+  color: #f3ddbb;
+  font-family: var(--mg-serif);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: .95;
+  text-transform: uppercase;
+}
+.home-map-card__description {
+  display: block;
+  margin-top: 2px;
+  color: rgba(232,212,183,.84);
+  font-size: 9px;
+  line-height: 1.1;
+}
+
+/* ============================================================
+   BOTTOM NAV — solo icone.
+   ============================================================ */
+.mobile-premium-bottom-nav {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  width: min(100%, 390px);
+  height: calc(58px + env(safe-area-inset-bottom));
+  padding: 8px 12px calc(4px + env(safe-area-inset-bottom));
+  border-top: 1px solid rgba(173,108,65,.48);
+  background: linear-gradient(180deg, rgba(46,29,18,.96), rgba(11,7,5,.99));
+  box-shadow: 0 -12px 26px rgba(0,0,0,.58), inset 0 1px 0 rgba(255,222,165,.1);
+  transform: translateX(-50%);
+}
+.mobile-premium-bottom-nav::before {
+  content:'';
+  position:absolute;
+  top:-7px;
+  left:50%;
+  width:11px;
+  height:11px;
+  border:1px solid rgba(240,195,119,.85);
+  background: var(--mg-gold-bright);
+  box-shadow: 0 0 14px rgba(240,195,119,.55);
+  transform: translateX(-50%) rotate(45deg);
+}
+.mobile-premium-bottom-nav button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  color: rgba(179,158,135,.72);
+  background: transparent;
+  cursor: pointer;
+}
+.mobile-premium-bottom-nav .fantasy-icon { width: 25px; height: 25px; }
+.mobile-premium-bottom-nav button.is-active { color: var(--mg-gold-bright); filter: drop-shadow(0 0 8px rgba(240,195,119,.45)); }
+.mobile-premium-bottom-nav button.is-active::after {
+  content:'';
+  position:absolute;
+  bottom:1px;
+  width:20px;
+  height:2px;
+  border-radius:999px;
+  background: rgba(240,195,119,.9);
+  box-shadow: 0 0 12px rgba(240,195,119,.75);
+}
+
+@media (min-width: 768px) {
+  .mobile-premium-home {
+    max-width: 390px;
+  }
+}
+.home-feature-card__icon-img,
+.home-map-card__icon-img {
+  width: 60px;
+  height: 50px;
+  object-fit: contain;
+  display: block;
+
+  transform: translate(-1px, 2.1px) scale(1.5);
+
+}
+.home-feature-card__icon-ring,
+.home-map-card__icon-ring {
+  overflow: hidden;
+}
+.session-hero-image {
+  width: 60px;
+  height: 73px;
+  object-fit: cover;
+  display: block;
+  transform: translate(6px, 2px) scale(1.2);
+
+}
+
+/* ============================================================
+   MERCANTI — mobile artboard 390px, misure Figma fisse.
+   ============================================================ */
+.mobile-merchants-page {
+  position: relative;
+  width: 390px;
+  height: 844px;
+  margin: 0 auto;
+  overflow: hidden;
+  background: #0c0704;
+}
+
+.mobile-merchants-page__title {
+  position: absolute;
+  left: 94px;
+  top: 38px;
+  width: 203px;
+  height: 52px;
+  margin: 0;
+  color: var(--mg-gold);
+  font-family: var(--mg-serif);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 52px;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 0 2px 12px rgba(226, 154, 74, .38), 0 10px 22px rgba(0,0,0,.72);
+}
+
+.mobile-merchants-page__generate {
+  position: absolute;
+  left: 22px;
+  top: 107px;
+  width: 362px;
+  height: 56px;
+  padding: 0;
+  border: 0;
+  border-radius: 21px;
+  color: #2a170d;
+  font-family: Roboto, Inter, system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  background: #d5983f;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.mobile-merchants-page__filters {
+  position: absolute;
+  left: 22px;
+  top: 174px;
+  width: 150px;
+  height: 52px;
+}
+
+.mobile-merchants-page__filter {
+  position: absolute;
+  top: 0;
+  height: 52px;
+  padding: 0;
+  border: 0;
+  border-radius: 11px;
+  color: #938779;
+  font-family: Roboto, Inter, system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  background: #15120b;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.mobile-merchants-page__filter:first-child {
+  left: 0;
+  width: 53px;
+  color: #b8936d;
+  background: #39290f;
+}
+
+.mobile-merchants-page__filter:last-child {
+  left: 62px;
+  width: 81px;
+  color: #938779;
+  background: #15120b;
+}
+
+.mobile-merchants-page__filter.is-active {
+  filter: none;
+}
+
+.mobile-merchants-page__empty {
+  position: absolute;
+  left: 22px;
+  top: 250px;
+  width: 362px;
+  height: 477px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #242017;
+  border-radius: 13px;
+  color: var(--mg-text);
+  text-align: center;
+  background: #0c0704;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.mobile-merchants-page__empty::after {
+  display: none;
+}
+
+.mobile-merchants-page__empty h2 {
+  position: absolute;
+  left: 87px;
+  top: 288px;
+  width: 184px;
+  height: 26px;
+  margin: 0;
+  color: #f3ddbb;
+  font-family: var(--mg-serif);
+  font-size: 22px;
+  line-height: 26px;
+  text-transform: uppercase;
+}
+
+.mobile-merchants-page__empty p {
+  position: absolute;
+  left: 73px;
+  top: 330px;
+  width: 213px;
+  height: 52px;
+  margin: 0;
+  color: #938779;
+  font-family: Roboto, Inter, system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 19px;
+}

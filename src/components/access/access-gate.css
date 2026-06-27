@@ -1,0 +1,152 @@
+.access-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  place-items: center;
+  min-height: 100svh;
+  padding: 24px;
+  overflow-y: auto;
+  color: #ead9bf;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(181, 113, 45, 0.2), transparent 34%),
+    linear-gradient(180deg, #170d08 0%, #080504 68%, #030202 100%);
+}
+
+.access-gate,
+.access-gate * {
+  box-sizing: border-box;
+}
+
+.access-gate-card {
+  position: relative;
+  width: min(100%, 440px);
+  padding: 38px 34px 34px;
+  border: 1px solid rgba(218, 156, 70, 0.46);
+  border-radius: 8px;
+  background:
+    linear-gradient(145deg, rgba(46, 27, 17, 0.97), rgba(18, 11, 8, 0.98));
+  box-shadow:
+    0 26px 80px rgba(0, 0, 0, 0.66),
+    inset 0 1px 0 rgba(255, 222, 166, 0.1);
+  text-align: center;
+}
+
+.access-gate-card::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  pointer-events: none;
+  border: 1px solid rgba(218, 156, 70, 0.14);
+}
+
+.access-gate-sigil {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 18px;
+  border: 1px solid rgba(240, 195, 119, 0.72);
+  color: #f0c377;
+  font: 700 19px/1 "Cinzel", Georgia, serif;
+  transform: rotate(45deg);
+  box-shadow: 0 0 24px rgba(217, 154, 58, 0.22);
+}
+
+.access-gate-sigil span {
+  display: block;
+  transform: rotate(-45deg);
+}
+
+.access-gate-kicker,
+.access-gate-subtitle {
+  margin: 0;
+  color: #b99b75;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.access-gate-card h1 {
+  margin: 12px 0 6px;
+  color: #e1a33e;
+  font-family: "Cinzel", Georgia, serif;
+  font-size: clamp(25px, 7vw, 36px);
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+
+.access-gate-subtitle {
+  color: #e5cfac;
+  font-size: 13px;
+}
+
+.access-gate-form {
+  display: grid;
+  gap: 11px;
+  margin-top: 30px;
+  text-align: left;
+}
+
+.access-gate-form label {
+  color: #cba66e;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.access-gate-form input {
+  width: 100%;
+  min-height: 50px;
+  border: 1px solid rgba(217, 154, 58, 0.4);
+  border-radius: 6px;
+  outline: none;
+  padding: 0 14px;
+  color: #f2e4cf;
+  background: rgba(4, 3, 2, 0.62);
+  font-size: 16px;
+}
+
+.access-gate-form input:focus {
+  border-color: #e1a33e;
+  box-shadow: 0 0 0 3px rgba(217, 154, 58, 0.12);
+}
+
+.access-gate-form button {
+  min-height: 50px;
+  margin-top: 5px;
+  border: 1px solid #e2a84d;
+  border-radius: 6px;
+  color: #211208;
+  background: linear-gradient(180deg, #e5ac4e, #b96f24);
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.34);
+}
+
+.access-gate-form button:active {
+  transform: translateY(1px);
+}
+
+.access-gate-error {
+  margin: 0;
+  color: #ffb2a3;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+@media (max-width: 640px) {
+  .access-gate {
+    padding: 16px;
+  }
+
+  .access-gate-card {
+    padding: 32px 22px 28px;
+  }
+
+  .access-gate-form input,
+  .access-gate-form button {
+    min-height: 52px;
+  }
+}
