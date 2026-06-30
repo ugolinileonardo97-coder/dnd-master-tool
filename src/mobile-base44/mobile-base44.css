@@ -1117,7 +1117,7 @@
   .mobile-premium-bottom-nav::before {
     content: "";
     position: absolute;
-    top: -14px;
+    top: -7px;
     left: 50%;
     width: 11px;
     height: 11px;
